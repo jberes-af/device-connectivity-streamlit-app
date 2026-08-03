@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass, field
 
-from src.application.ports.m365_email_ports import AccessTokenProviderPort
+from docs.m365_email_ports import AccessTokenProviderPort
 
 import msal
 

@@ -1,6 +1,6 @@
 # patient_overview_presenter.py
 
-from src.application.use_cases.get_patient_overview.get_patient_info_uc_dtos import (
+from src.application.use_cases.get_patient_records.patient_uc_dtos import (
     GetPatientOverviewResultDTO,
     PatientOverviewDevDTO,
 )
@@ -54,8 +54,8 @@ class PatientOverviewPresenter:
             # ),
         )
 
+    @staticmethod
     def _build_admin_card(
-            self,
             overview: PatientOverviewDevDTO,
     ) -> CardViewModel:
         admin = overview.administration
@@ -105,8 +105,8 @@ class PatientOverviewPresenter:
             ),
         )
 
+    @staticmethod
     def _build_enrollment_card(
-            self,
             overview: PatientOverviewDevDTO,
     ) -> CardViewModel:
         enrollment = overview.enrollment_summary

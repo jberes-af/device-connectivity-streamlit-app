@@ -16,7 +16,7 @@ from src.application.ports.patient_repo_ports import (
 
 # --- APPLICATION USE CASES
 
-from src.application.use_cases.get_patient_overview.get_patient_overview_uc import (
+from src.application.use_cases.get_patient_records.get_patient_overview_uc import (
     GetPatientOverviewUseCase,
 )
 

@@ -1,6 +1,6 @@
 # /src/main/compo_root_m365.py
 
-from src.application.ports.m365_email_ports import MailSenderPort
+from docs.m365_email_ports import MailSenderPort
 
 from src.infrastructure.config.settings_model import Settings
 

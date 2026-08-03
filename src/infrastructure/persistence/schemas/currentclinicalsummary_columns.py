@@ -1,0 +1,22 @@
+# AUTO GENERATED
+
+class CurrentClinicalSummaryColumns:
+    PATIENT_ID: str = "patient_id"
+    MEDICAL_NECESSITY_SUMMARY: str = "medical_necessity_summary"
+    TREATMENT_PLAN_ID: str = "treatment_plan_id"
+    TREATMENT_PLAN_SUMMARY: str = "treatment_plan_summary"
+    THERAPEUTIC_GOAL_SUMMARIES: str = "therapeutic_goal_summaries"
+    MONITORING_PERIOD_ID: str = "monitoring_period_id"
+    MONITORING_PERIOD_START: str = "monitoring_period_start"
+    MONITORING_PERIOD_END: str = "monitoring_period_end"
+    BILLING_YEAR: str = "billing_year"
+    BILLING_MONTH: str = "billing_month"
+    RECENT_CLINICAL_ALERT_COUNT: str = "recent_clinical_alert_count"
+    RECENT_CLINICAL_ALERT_SUMMARIES: str = "recent_clinical_alert_summaries"
+    MONTHLY_TREND_SUMMARY: str = "monthly_trend_summary"
+    MOST_RECENT_PROVIDER_REVIEW_AT: str = "most_recent_provider_review_at"
+    MOST_RECENT_PROVIDER_REVIEW_SUMMARY: str = "most_recent_provider_review_summary"
+    MOST_RECENT_COMMUNICATION_AT: str = "most_recent_communication_at"
+    MOST_RECENT_COMMUNICATION_SUMMARY: str = "most_recent_communication_summary"
+    BILLING_READINESS_STATUS: str = "billing_readiness_status"
+    MISSING_BILLING_REQUIREMENTS: str = "missing_billing_requirements"

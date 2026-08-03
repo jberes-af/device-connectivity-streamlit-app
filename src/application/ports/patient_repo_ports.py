@@ -1,4 +1,4 @@
-# /src/application/ports/google_sheets_repos/patient_repo_ports.py
+# /src/application/ports/patient_repo_ports.py
 
 from typing import Protocol
 

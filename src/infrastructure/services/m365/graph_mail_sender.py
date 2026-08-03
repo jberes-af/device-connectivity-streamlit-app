@@ -4,7 +4,7 @@ from typing import Any, Sequence
 
 from src.application.dto.send_email_dtos import MailSendResult
 
-from src.application.ports.m365_email_ports import (
+from docs.m365_email_ports import (
     AccessTokenProviderPort,
     MailSenderPort,
 )
