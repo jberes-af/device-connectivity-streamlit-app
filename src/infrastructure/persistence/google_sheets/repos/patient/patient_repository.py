@@ -5,7 +5,7 @@ from src.application.ports.patient_repo_ports import (
     PatientRepositoryPort,
 )
 
-from src.domain.entities.patient_entities import (
+from src.domain.entities.person.patient_entities import (
     Patient,
 )
 
@@ -21,12 +21,12 @@ from src.infrastructure.persistence.google_sheets.sheets_query_service import (
     GoogleSheetsQueryService,
 )
 
-from src.infrastructure.persistence.mappers.patient.patient_row_mapper import (
+from src.infrastructure.persistence.google_sheets.mappers.patient.patient_row_mapper import (
     PatientRowMapper,
 )
 
 
-from src.infrastructure.persistence.schemas.patient.patient_columns import (
+from src.infrastructure.persistence.google_sheets.schemas.patient.patient_columns import (
     PatientColumns,
 )
 
@@ -36,7 +36,7 @@ class GoogleSheetsPatientRepository(
     PatientRepositoryPort,
 ):
 
-    TABLE_NAME = "patient"
+    TABLE_NAME = "patient_profile"
     ID_COLUMN = PatientColumns.PATIENT_ID
 
 

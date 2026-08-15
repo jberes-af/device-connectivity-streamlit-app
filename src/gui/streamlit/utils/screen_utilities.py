@@ -4,7 +4,7 @@ from dataclasses import asdict
 from datetime import date, time, datetime
 from typing import Any, Sequence
 
-from src.domain.entities.patient_entities import (
+from src.domain.entities.person.patient_entities import (
     Facility,
     PaceProgram,
     PipelineEntity,

@@ -23,12 +23,12 @@ from src.infrastructure.persistence.google_sheets.sheets_query_service import (
     GoogleSheetsQueryService,
 )
 
-from src.infrastructure.persistence.mappers.therapeutic_goal.therapeutic_goal_row_mapper import (
+from src.infrastructure.persistence.google_sheets.mappers import (
     TherapeuticGoalRowMapper,
 )
 
 
-from src.infrastructure.persistence.schemas.therapeutic_goal.therapeutic_goal_columns import (
+from src.infrastructure.persistence.google_sheets.schemas import (
     TherapeuticGoalColumns,
 )
 

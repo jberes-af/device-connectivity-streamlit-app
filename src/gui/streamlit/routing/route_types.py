@@ -3,7 +3,7 @@
 from collections.abc import Callable
 from dataclasses import dataclass
 
-from src.main.composition_root import AppContainer
+from src.main.compose_root_application import AppContainer
 
 RouteHandler = Callable[
     [AppContainer],

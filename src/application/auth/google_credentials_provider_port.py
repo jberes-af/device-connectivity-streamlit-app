@@ -1,4 +1,4 @@
-# /application/ports/google_credentials_provider_port.py
+# /application/auth/google_credentials_provider_port.py
 
 from typing import Protocol
 from google.auth.credentials import Credentials

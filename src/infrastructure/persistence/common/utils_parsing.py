@@ -1,11 +1,14 @@
 # /src/infrastructure/persistence/google/google_sheets/utils_parsing.py
 
 from datetime import date, datetime, time
-from typing import Any
+from enum import StrEnum
+from typing import Any, TypeVar
+
+TEnum = TypeVar("TEnum", bound=StrEnum)
 
 
 def parse_text(
-    value: Any,
+        value: Any,
 ) -> str:
     if value is None:
         return ""
@@ -14,8 +17,8 @@ def parse_text(
 
 
 def parse_required_text(
-    value: Any,
-    field_name: str,
+        value: Any,
+        field_name: str,
 ) -> str:
     text = parse_text(value)
 
@@ -28,8 +31,8 @@ def parse_required_text(
 
 
 def parse_optional_text(
-    value: Any,
-    field_name: str,
+        value: Any,
+        field_name: str,
 ) -> str | None:
     del field_name
 
@@ -39,8 +42,8 @@ def parse_optional_text(
 
 
 def parse_required_int(
-    value: Any,
-    field_name: str,
+        value: Any,
+        field_name: str,
 ) -> int:
     number = parse_optional_int(
         value,
@@ -56,8 +59,8 @@ def parse_required_int(
 
 
 def parse_optional_int(
-    value: Any,
-    field_name: str,
+        value: Any,
+        field_name: str,
 ) -> int | None:
     if value is None:
         return None
@@ -80,8 +83,8 @@ def parse_optional_int(
 
 
 def parse_required_date(
-    value: Any,
-    field_name: str,
+        value: Any,
+        field_name: str,
 ) -> date:
     parsed = parse_optional_date(
         value,
@@ -97,8 +100,8 @@ def parse_required_date(
 
 
 def parse_optional_date(
-    value: Any,
-    field_name: str,
+        value: Any,
+        field_name: str,
 ) -> date | None:
     if value is None:
         return None
@@ -139,8 +142,8 @@ def parse_optional_date(
 
 
 def parse_required_time(
-    value: Any,
-    field_name: str,
+        value: Any,
+        field_name: str,
 ) -> time:
     parsed = parse_optional_time(
         value,
@@ -156,8 +159,8 @@ def parse_required_time(
 
 
 def parse_optional_time(
-    value: Any,
-    field_name: str,
+        value: Any,
+        field_name: str,
 ) -> time | None:
     if value is None:
         return None
@@ -194,8 +197,8 @@ def parse_optional_time(
 
 
 def parse_required_bool(
-    value: Any,
-    field_name: str,
+        value: Any,
+        field_name: str,
 ) -> bool:
     parsed = parse_optional_bool(
         value,
@@ -211,8 +214,8 @@ def parse_required_bool(
 
 
 def parse_optional_bool(
-    value: Any,
-    field_name: str,
+        value: Any,
+        field_name: str,
 ) -> bool | None:
     if value is None:
         return None
@@ -228,20 +231,20 @@ def parse_optional_bool(
     normalized = text.lower()
 
     if normalized in (
-        "true",
-        "t",
-        "yes",
-        "y",
-        "1",
+            "true",
+            "t",
+            "yes",
+            "y",
+            "1",
     ):
         return True
 
     if normalized in (
-        "false",
-        "f",
-        "no",
-        "n",
-        "0",
+            "false",
+            "f",
+            "no",
+            "n",
+            "0",
     ):
         return False
 
@@ -249,3 +252,99 @@ def parse_optional_bool(
         f"Invalid boolean value for "
         f"{field_name}: {text!r}"
     )
+
+
+def parse_optional_datetime(
+        value: Any,
+        field_name: str,
+) -> datetime | None:
+    if value is None:
+        return None
+
+    if isinstance(value, datetime):
+        return value
+
+    text = parse_text(value)
+
+    if not text:
+        return None
+
+    accepted_formats = (
+        # ISO-8601
+        "%Y-%m-%dT%H:%M:%S",
+        "%Y-%m-%dT%H:%M",
+        "%Y-%m-%d %H:%M:%S",
+        "%Y-%m-%d %H:%M",
+
+        # US formats
+        "%m/%d/%Y %H:%M:%S",
+        "%m/%d/%Y %H:%M",
+        "%m/%d/%Y %I:%M %p",
+        "%m/%d/%Y %I:%M:%S %p",
+
+        "%m/%d/%y %H:%M:%S",
+        "%m/%d/%y %H:%M",
+        "%m/%d/%y %I:%M %p",
+        "%m/%d/%y %I:%M:%S %p",
+    )
+
+    for datetime_format in accepted_formats:
+        try:
+            return datetime.strptime(
+                text,
+                datetime_format,
+            )
+
+        except ValueError:
+            continue
+
+    raise ValueError(
+        f"Invalid datetime value for "
+        f"{field_name}: {text!r}"
+    )
+
+
+def parse_required_datetime(
+        value: Any,
+        field_name: str,
+) -> datetime:
+    parsed = parse_optional_datetime(
+        value,
+        field_name,
+    )
+
+    if parsed is None:
+        raise ValueError(
+            f"Missing required field: {field_name}"
+        )
+
+    return parsed
+
+
+def parse_optional_enum(
+        value: object,
+        *,
+        enum_type: type[TEnum],
+        field_name: str,
+) -> TEnum | None:
+    if value is None:
+        return None
+
+    text = str(value).strip()
+
+    if not text:
+        return None
+
+    try:
+        return enum_type(text)
+
+    except ValueError as exc:
+        valid_values = ", ".join(
+            member.value
+            for member in enum_type
+        )
+
+        raise ValueError(
+            f"{field_name} has invalid value {text!r}. "
+            f"Expected one of: {valid_values}."
+        ) from exc

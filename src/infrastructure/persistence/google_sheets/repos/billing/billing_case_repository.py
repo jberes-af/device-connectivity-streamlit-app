@@ -23,12 +23,12 @@ from src.infrastructure.persistence.google_sheets.sheets_query_service import (
     GoogleSheetsQueryService,
 )
 
-from src.infrastructure.persistence.mappers.billing_case.billing_case_row_mapper import (
+from src.infrastructure.persistence.google_sheets.mappers import (
     BillingCaseRowMapper,
 )
 
 
-from src.infrastructure.persistence.schemas.billing_case.billing_case_columns import (
+from src.infrastructure.persistence.google_sheets.schemas import (
     BillingCaseColumns,
 )
 

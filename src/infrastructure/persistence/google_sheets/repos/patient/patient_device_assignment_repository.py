@@ -1,13 +1,10 @@
-# repository.py.tpl
+# /src/infrastructure/persistence/google_sheets/repos/patient/patient_device_assignment_repository.py
 
-
-# AUTO GENERATED
-
-from src.application.ports.patient_device_assignment_repository_port import (
+from src.application.ports.patient_repo_ports import (
     PatientDeviceAssignmentRepositoryPort,
 )
 
-from src.domain.entities.patient_device_assignment_entities import (
+from src.domain.entities.person.patient_entities import (
     PatientDeviceAssignment,
 )
 
@@ -23,12 +20,12 @@ from src.infrastructure.persistence.google_sheets.sheets_query_service import (
     GoogleSheetsQueryService,
 )
 
-from src.infrastructure.persistence.mappers.patient_device_assignment.patient_device_assignment_row_mapper import (
+from src.infrastructure.persistence.google_sheets.mappers.patient.patient_device_assignment_row_mapper import (
     PatientDeviceAssignmentRowMapper,
 )
 
 
-from src.infrastructure.persistence.schemas.patient_device_assignment.patient_device_assignment_columns import (
+from src.infrastructure.persistence.google_sheets.schemas.patient.patient_device_assignment_columns import (
     PatientDeviceAssignmentColumns,
 )
 
@@ -67,12 +64,12 @@ class GoogleSheetsPatientDeviceAssignmentRepository(
 
     def get_by_id(
             self,
-            patient_id: str,
+            assignment_id: str,
     ) -> PatientDeviceAssignment:
         raw_row = self._find_single_row(
             rows=self._read_rows(),
             column_name=self.ID_COLUMN,
-            value=patient_id,
+            value=assignment_id,
         )
 
         return self._mapper.to_domain(raw_row)

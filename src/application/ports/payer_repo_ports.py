@@ -2,7 +2,7 @@
 
 from typing import Protocol
 
-from src.domain.entities.payer_entities import (
+from src.domain.entities.billing.payer_entities import (
     Payer,
 )
 

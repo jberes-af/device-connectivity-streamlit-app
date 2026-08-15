@@ -1,4 +1,4 @@
-# /main/config/app_config_models.py
+# /src/infrastructure/config/app_config_models.py
 
 from dataclasses import dataclass
 from pathlib import Path

@@ -1,13 +1,16 @@
-# /src/application/firebase/dto.py
+# /src/application/auth/dto.py
+
+"""
+AuthenticationResultDTO = auth provider output
+TenantMembershipDTO = tenant membership projection
+LoginRequestDTO = client input
+LoginResultDTO = application output
+"""
 
 from dataclasses import dataclass
 
-
-@dataclass(frozen=True)
-class LoginRequestDTO:
-    email: str
-    password: str
-
+from src.domain.enums.person.tenant_enums import UserRoleEnum
+from src.domain.entities.person.user_entities import UserTenantMembership
 
 @dataclass(frozen=True)
 class AuthenticatedUserDTO:
@@ -16,3 +19,26 @@ class AuthenticatedUserDTO:
     id_token: str = ""
     refresh_token: str = ""
     display_name: str = ""
+
+
+"""
+@dataclass(frozen=True, slots=True)
+class TenantMembershipDTO:
+    tenant_id: str
+    role: UserRoleEnum
+"""
+
+
+@dataclass(frozen=True, slots=True)
+class LoginRequestDTO:
+    email: str
+    password: str
+
+
+@dataclass(frozen=True, slots=True)
+class LoginResultDTO:
+    user_id: str
+    email: str
+    display_name: str
+    # memberships: tuple[TenantMembershipDTO, ...]
+    memberships: tuple[UserTenantMembership, ...]

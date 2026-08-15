@@ -2,21 +2,31 @@
 
 import streamlit as st
 
-from src.interface_adapters.controllers.auth_controller import AuthController
-from src.interface_adapters.presenters.auth_presenter import AuthPresenter
+from src.application.context import (
+    UserContext,
+    SessionContext,
+)
+
+from src.interface_adapters.auth.auth_controller import (
+    AuthController,
+)
+
+from src.interface_adapters.presenters.auth.auth_presenter import (
+    AuthPresenter,
+)
 
 
 class LoginForm:
     def __init__(
-        self,
-        auth_controller: AuthController,
-        auth_presenter: AuthPresenter,
+            self,
+            auth_controller: AuthController,
+            auth_presenter: AuthPresenter,
     ) -> None:
         self.auth_controller = auth_controller
         self.auth_presenter = auth_presenter
 
     def render(self) -> None:
-        st.write("Alerta Family: Mobile App Screen Flows")
+        st.write("Alerta Clinical Platform")
         st.title("🔐 Sign in")
 
         email = st.text_input(
@@ -31,32 +41,41 @@ class LoginForm:
             key="auth_pwd",
         )
 
-        submitted = st.button("✅ Login")
-
-        if not submitted:
+        if not st.button("✅ Login"):
             return
 
         try:
-            user = self.auth_controller.login(
+            result = self.auth_controller.login(
                 email=email,
                 password=password,
             )
 
-            view_model = self.auth_presenter.present_success(user)
+            view_model = self.auth_presenter.present_success(result)
 
         except Exception as exc:
-            view_model = self.auth_presenter.present_error(exc)
+            view_model = self.auth_presenter.present_error(
+                str(exc)
+            )
 
         if not view_model.success:
             st.error(view_model.message)
             return
 
-        st.session_state["logged_in"] = True
-        st.session_state["user"] = {
-            "email": view_model.user.email,
-            "uid": view_model.user.uid,
-            "name": view_model.user.display_name,
-        }
+        if len(result.memberships) != 1:
+            st.error(
+                "Unable to determine a single active tenant membership."
+            )
+            return
+
+        membership = result.memberships[0]
+
+        st.session_state["session_context"] = SessionContext(
+            user_context=UserContext(
+                user_id=result.user_id,
+                tenant_id=membership.tenant_id,
+                role=membership.role,
+            )
+        )
 
         st.success(view_model.message)
         st.rerun()

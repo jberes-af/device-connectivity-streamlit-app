@@ -23,12 +23,12 @@ from src.infrastructure.persistence.google_sheets.sheets_query_service import (
     GoogleSheetsQueryService,
 )
 
-from src.infrastructure.persistence.mappers.billing_requirement_evidence.billing_requirement_evidence_row_mapper import (
+from src.infrastructure.persistence.google_sheets.mappers import (
     BillingRequirementEvidenceRowMapper,
 )
 
 
-from src.infrastructure.persistence.schemas.billing_requirement_evidence.billing_requirement_evidence_columns import (
+from src.infrastructure.persistence.google_sheets.schemas import (
     BillingRequirementEvidenceColumns,
 )
 

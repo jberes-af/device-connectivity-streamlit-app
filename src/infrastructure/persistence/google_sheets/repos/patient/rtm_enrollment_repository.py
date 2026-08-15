@@ -5,7 +5,7 @@ from src.application.ports.patient_repo_ports import (
     RTMEnrollmentRepositoryPort,
 )
 
-from src.domain.entities.patient_entities import (
+from src.domain.entities.person.patient_entities import (
     RTMEnrollment,
 )
 
@@ -21,12 +21,12 @@ from src.infrastructure.persistence.google_sheets.sheets_query_service import (
     GoogleSheetsQueryService,
 )
 
-from src.infrastructure.persistence.mappers.patient.rtm_enrollment_row_mapper import (
+from src.infrastructure.persistence.google_sheets.mappers.patient.rtm_enrollment_row_mapper import (
     RTMEnrollmentRowMapper,
 )
 
 
-from src.infrastructure.persistence.schemas.patient.rtm_enrollment_columns import (
+from src.infrastructure.persistence.google_sheets.schemas.patient.rtm_enrollment_columns import (
     RTMEnrollmentColumns,
 )
 

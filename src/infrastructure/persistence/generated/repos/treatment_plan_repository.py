@@ -23,12 +23,12 @@ from src.infrastructure.persistence.google_sheets.sheets_query_service import (
     GoogleSheetsQueryService,
 )
 
-from src.infrastructure.persistence.mappers.treatment_plan.treatment_plan_row_mapper import (
+from src.infrastructure.persistence.google_sheets.mappers import (
     TreatmentPlanRowMapper,
 )
 
 
-from src.infrastructure.persistence.schemas.treatment_plan.treatment_plan_columns import (
+from src.infrastructure.persistence.google_sheets.schemas import (
     TreatmentPlanColumns,
 )
 

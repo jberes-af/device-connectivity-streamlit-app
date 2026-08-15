@@ -1,52 +1,38 @@
 # /src/infrastructure/config/settings_model.py
 
+from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Mapping
+from typing import Any
 
 
 @dataclass(frozen=True, slots=True)
-class FirebaseAuthenticationSettings:
+class FirebaseClientSettings:
     api_key: str
     auth_domain: str
     project_id: str
     app_id: str
 
 
-@dataclass(frozen=True)
-class M365Settings:
-    m365_tenant_id: str
-    m365_client_id: str
-    m365_client_secret: str
-
-
-"""
 @dataclass(frozen=True)
 class FirebaseAdminSettings:
     database_url: str
     service_account_info: dict[str, Any]
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class FirebaseWebSettings:
-    api_key: str
-    auth_domain: str
+    client: FirebaseClientSettings
     database_url: str
-    project_id: str
     storage_bucket: str
     messaging_sender_id: str
-    app_id: str
 
-    def to_pyrebase_config(self) -> Mapping[str, str]:
-        return {
-            "apiKey": self.api_key,
-            "authDomain": self.auth_domain,
-            "databaseURL": self.database_url,
-            "projectId": self.project_id,
-            "storageBucket": self.storage_bucket,
-            "messagingSenderId": self.messaging_sender_id,
-            "appId": self.app_id,
-        }
+"""
+@dataclass(frozen=True)
+class M365Settings:
+    m365_tenant_id: str
+    m365_client_id: str
+    m365_client_secret: str
 """
 
 
@@ -58,6 +44,8 @@ class Settings:
     google_service_account: Mapping[str, str]
     spreadsheet_ids_by_file: Mapping[str, str]
 
-    firebase_authentication: FirebaseAuthenticationSettings
+    firebase_client: FirebaseClientSettings
+    firebase_web: FirebaseWebSettings
+    firebase_admin: FirebaseAdminSettings
 
     # m365_authentication: M365Settings

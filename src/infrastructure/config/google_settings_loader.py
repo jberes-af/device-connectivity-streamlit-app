@@ -64,6 +64,14 @@ def load_spreadsheet_ids(
         "SHEETS_ID_BILLING"
     )
 
+    spreadsheet_name_care_plan = secret_provider.get_required(
+        "SHEETS_NAME_CARE_PLAN"
+    )
+
+    spreadsheet_id_care_plan = secret_provider.get_required(
+        "SHEETS_ID_CARE_PLAN"
+    )
+
     spreadsheet_name_patient = secret_provider.get_required(
         "SHEETS_NAME_PATIENT"
     )
@@ -72,11 +80,36 @@ def load_spreadsheet_ids(
         "SHEETS_ID_PATIENT"
     )
 
+    spreadsheet_name_payer = secret_provider.get_required(
+        "SHEETS_NAME_PAYER"
+    )
+
+    spreadsheet_id_payer = secret_provider.get_required(
+        "SHEETS_ID_PAYER"
+    )
+
+    spreadsheet_name_provider = secret_provider.get_required(
+        "SHEETS_NAME_PROVIDER"
+    )
+
     spreadsheet_id_provider = secret_provider.get_required(
         "SHEETS_ID_PROVIDER"
     )
-    spreadsheet_name_provider = secret_provider.get_required(
-        "SHEETS_NAME_PROVIDER"
+
+    spreadsheet_name_resident = secret_provider.get_required(
+        "SHEETS_NAME_RESIDENT"
+    )
+
+    spreadsheet_id_resident = secret_provider.get_required(
+        "SHEETS_ID_RESIDENT"
+    )
+
+    spreadsheet_name_tenant = secret_provider.get_required(
+        "SHEETS_NAME_TENANT"
+    )
+
+    spreadsheet_id_tenant = secret_provider.get_required(
+        "SHEETS_ID_TENANT"
     )
 
     spreadsheet_name_treatment = secret_provider.get_required(
@@ -87,9 +120,22 @@ def load_spreadsheet_ids(
         "SHEETS_ID_TREATMENT"
     )
 
+    spreadsheet_name_user = secret_provider.get_required(
+        "SHEETS_NAME_USER"
+    )
+
+    spreadsheet_id_user = secret_provider.get_required(
+        "SHEETS_ID_USER"
+    )
+
     return {
         spreadsheet_name_billing: spreadsheet_id_billing,
+        spreadsheet_name_care_plan: spreadsheet_id_care_plan,
         spreadsheet_name_patient: spreadsheet_id_patient,
+        spreadsheet_name_payer: spreadsheet_id_payer,
         spreadsheet_name_provider: spreadsheet_id_provider,
+        spreadsheet_name_resident: spreadsheet_id_resident,
+        spreadsheet_name_tenant: spreadsheet_id_tenant,
         spreadsheet_name_treatment: spreadsheet_id_treatment,
+        spreadsheet_name_user: spreadsheet_id_user,
     }

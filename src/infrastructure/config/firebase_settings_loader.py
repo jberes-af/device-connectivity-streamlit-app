@@ -1,17 +1,31 @@
 # /src/infrastructure/config/firebase_settings_loader.py
 
+"""
+FirebaseClientSettings
+    = public Firebase project/client identity
+
+FirebaseWebSettings
+    = browser/Pyrebase-specific additions
+
+FirebaseAdminSettings
+    = privileged server-side Admin SDK configuration
+"""
+
 from typing import Any
 
 from src.infrastructure.config.secret_provider import SecretProvider
+
 from src.infrastructure.config.settings_model import (
-    FirebaseAuthenticationSettings,
+    FirebaseAdminSettings,
+    FirebaseClientSettings,
+    FirebaseWebSettings,
 )
 
 
-def load_firebase_authentication_settings(
+def load_firebase_client_settings(
         secret_provider: SecretProvider,
-) -> FirebaseAuthenticationSettings:
-    return FirebaseAuthenticationSettings(
+) -> FirebaseClientSettings:
+    return FirebaseClientSettings(
         api_key=secret_provider.get_required("FIREBASE_API_KEY"),
         auth_domain=secret_provider.get_required("FIREBASE_AUTH_DOMAIN"),
         project_id=secret_provider.get_required("FIREBASE_PROJECT_ID"),
@@ -19,34 +33,22 @@ def load_firebase_authentication_settings(
     )
 
 
-"""
-
-def load_firebase_web_settings2(
+def load_firebase_web_settings(
         secret_provider: SecretProvider,
+        client: FirebaseClientSettings,
 ) -> FirebaseWebSettings:
     return FirebaseWebSettings(
-        api_key=secret_provider.get_required("FIREBASE_API_KEY"),
-        auth_domain=secret_provider.get_required("FIREBASE_AUTH_DOMAIN"),
+        client=client,
         database_url=secret_provider.get_required("FIREBASE_DATABASE_URL"),
-        project_id=secret_provider.get_required("FIREBASE_PROJECT_ID"),
-        storage_bucket=secret_provider.get_required("FIREBASE_STORAGE_BUCKET"),
+        storage_bucket=secret_provider.get_required(
+            "FIREBASE_STORAGE_BUCKET"
+        ),
         messaging_sender_id=secret_provider.get_required(
             "FIREBASE_MESSAGING_SENDER_ID"
         ),
-        app_id=secret_provider.get_required("FIREBASE_APP_ID"),
     )
 
 
-def load_firebase_authentication_settings2(
-        secret_provider: SecretProvider,
-) -> FirebaseAuthenticationSettings:
-    return FirebaseAuthenticationSettings(
-        api_key=secret_provider.get_required("FIREBASE_API_KEY"),
-        auth_domain=secret_provider.get_required("FIREBASE_AUTH_DOMAIN"),
-        project_id=secret_provider.get_required("FIREBASE_PROJECT_ID"),
-        app_id=secret_provider.get_required("FIREBASE_APP_ID"),
-    )
-    
 def load_firebase_admin_service_account(
         secret_provider: SecretProvider,
 ) -> dict[str, Any]:
@@ -90,4 +92,3 @@ def load_firebase_admin_settings(
             secret_provider
         ),
     )
-"""

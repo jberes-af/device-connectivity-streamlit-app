@@ -9,7 +9,7 @@ from docs.m365_email_ports import (
     MailSenderPort,
 )
 
-from src.domain.entities.m365_email_entities import (
+from src.domain.entities.email.m365_email_entities import (
     EmailAttachment,
     EmailRecipient,
     OutboundEmail,

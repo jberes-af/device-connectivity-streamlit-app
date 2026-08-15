@@ -4,7 +4,7 @@ from src.application.ports.patient_repo_ports import (
     PatientDiagnosisRepositoryPort,
 )
 
-from src.domain.entities.patient_entities import (
+from src.domain.entities.person.patient_entities import (
     PatientDiagnosis,
 )
 
@@ -20,12 +20,12 @@ from src.infrastructure.persistence.google_sheets.sheets_query_service import (
     GoogleSheetsQueryService,
 )
 
-from src.infrastructure.persistence.mappers.patient.patient_diagnosis_row_mapper import (
+from src.infrastructure.persistence.google_sheets.mappers.patient.patient_diagnosis_row_mapper import (
     PatientDiagnosisRowMapper,
 )
 
 
-from src.infrastructure.persistence.schemas.patient.patient_diagnosis_columns import (
+from src.infrastructure.persistence.google_sheets.schemas.patient.patient_diagnosis_columns import (
     PatientDiagnosisColumns,
 )
 
@@ -54,7 +54,7 @@ class GoogleSheetsPatientDiagnosisRepository(
 
         self._mapper = mapper
 
-    def list_patient_diagnosises(self) -> tuple[PatientDiagnosis, ...]:
+    def list_patient_diagnoses(self) -> tuple[PatientDiagnosis, ...]:
 
         return tuple(
             self._mapper.to_domain(row)

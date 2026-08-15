@@ -23,12 +23,12 @@ from src.infrastructure.persistence.google_sheets.sheets_query_service import (
     GoogleSheetsQueryService,
 )
 
-from src.infrastructure.persistence.mappers.rtm_enrollment.rtm_enrollment_row_mapper import (
+from src.infrastructure.persistence.google_sheets.mappers import (
     RTMEnrollmentRowMapper,
 )
 
 
-from src.infrastructure.persistence.schemas.rtm_enrollment.rtm_enrollment_columns import (
+from src.infrastructure.persistence.google_sheets.schemas import (
     RTMEnrollmentColumns,
 )
 

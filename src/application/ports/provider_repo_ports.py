@@ -2,7 +2,7 @@
 
 from typing import Protocol
 
-from src.domain.entities.provider_entities import (
+from src.domain.entities.care.provider_entities import (
     Provider,
 )
 

@@ -1,6 +1,6 @@
 # /src/infrastructure/persistence/google/google_sheets/repos/raw_to_domain_patient_mapper.py
 
-from src.domain.entities.patient_entities import (
+from src.domain.entities.person.patient_entities import (
     PatientAdministration,
 )
 from src.infrastructure.persistence.common.types import RawRow
@@ -9,7 +9,7 @@ from src.infrastructure.persistence.common.utils_parsing import (
     parse_optional_text,
 )
 
-from src.infrastructure.persistence.schemas.patient_schemas import PatientAdminColumns
+from src.infrastructure.persistence.google_sheets.schemas import PatientAdminColumns
 
 
 class PatientAdminRowMapper:

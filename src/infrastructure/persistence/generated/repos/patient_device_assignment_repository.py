@@ -23,12 +23,12 @@ from src.infrastructure.persistence.google_sheets.sheets_query_service import (
     GoogleSheetsQueryService,
 )
 
-from src.infrastructure.persistence.mappers.patient_device_assignment.patient_device_assignment_row_mapper import (
+from src.infrastructure.persistence.google_sheets.mappers import (
     PatientDeviceAssignmentRowMapper,
 )
 
 
-from src.infrastructure.persistence.schemas.patient_device_assignment.patient_device_assignment_columns import (
+from src.infrastructure.persistence.google_sheets.schemas import (
     PatientDeviceAssignmentColumns,
 )
 

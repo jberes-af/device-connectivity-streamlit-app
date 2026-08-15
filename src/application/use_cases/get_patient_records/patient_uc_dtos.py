@@ -3,8 +3,6 @@
 from dataclasses import dataclass
 from datetime import date
 
-from src.domain.entities.patient_entities import Patient
-
 
 @dataclass(frozen=True)
 class PatientAdministrationDTO:

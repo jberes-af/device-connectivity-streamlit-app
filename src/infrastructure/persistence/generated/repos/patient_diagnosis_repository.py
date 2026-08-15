@@ -23,12 +23,12 @@ from src.infrastructure.persistence.google_sheets.sheets_query_service import (
     GoogleSheetsQueryService,
 )
 
-from src.infrastructure.persistence.mappers.patient_diagnosis.patient_diagnosis_row_mapper import (
+from src.infrastructure.persistence.google_sheets.mappers import (
     PatientDiagnosisRowMapper,
 )
 
 
-from src.infrastructure.persistence.schemas.patient_diagnosis.patient_diagnosis_columns import (
+from src.infrastructure.persistence.google_sheets.schemas import (
     PatientDiagnosisColumns,
 )
 

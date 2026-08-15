@@ -1,6 +1,6 @@
 # /src/application/use_cases/get_patient_records/get_patient_overview_uc.py
 
-from src.domain.entities.patient_entities import (
+from src.domain.entities.person.patient_entities import (
     Patient,
     PatientDiagnosis,
     PatientProvider,

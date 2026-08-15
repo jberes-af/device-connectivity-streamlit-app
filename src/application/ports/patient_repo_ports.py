@@ -2,9 +2,11 @@
 
 from typing import Protocol
 
-from src.domain.entities.patient_entities import (
+from src.domain.entities.person.patient_entities import (
     Patient,
+    PatientDeviceAssignment,
     PatientDiagnosis,
+    PatientEmergencyContact,
     PatientPayer,
     PatientProvider,
     RTMEnrollment,
@@ -82,4 +84,16 @@ class RTMEnrollmentRepositoryPort(Protocol):
             self,
             patient_id: str,
     ) -> RTMEnrollment:
+        ...
+
+
+class PatientDeviceAssignmentRepositoryPort(Protocol):
+
+    def list_patient_device_assignments(self) -> tuple[PatientDeviceAssignment, ...]:
+        ...
+
+    def get_by_id(
+            self,
+            assignment_id: str,
+    ) -> PatientDeviceAssignment:
         ...

@@ -1,6 +1,6 @@
 # /src/interface_adapters/presenters/texas_facilities_presenter.py
 
-from src.domain.entities.patient_entities import Facility
+from src.domain.entities.person.patient_entities import Facility
 from src.interface_adapters.view_models.table_view_model import (
     TableCellViewModel,
     TableRowViewModel,

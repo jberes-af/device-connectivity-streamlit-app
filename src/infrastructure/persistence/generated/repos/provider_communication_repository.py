@@ -23,12 +23,12 @@ from src.infrastructure.persistence.google_sheets.sheets_query_service import (
     GoogleSheetsQueryService,
 )
 
-from src.infrastructure.persistence.mappers.provider_communication.provider_communication_row_mapper import (
+from src.infrastructure.persistence.google_sheets.mappers import (
     ProviderCommunicationRowMapper,
 )
 
 
-from src.infrastructure.persistence.schemas.provider_communication.provider_communication_columns import (
+from src.infrastructure.persistence.google_sheets.schemas import (
     ProviderCommunicationColumns,
 )
 

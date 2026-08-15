@@ -1,7 +1,4 @@
-# base_repository.py
-
-
-# /src/infrastructure/persistence/google_sheets/google_sheets_repository.py
+# /src/infrastructure/persistence/google_sheets/base_repository.py
 
 from abc import ABC
 
@@ -47,17 +44,7 @@ class GoogleSheetsRepository(ABC):
             column_name: str,
             value: str,
     ) -> RawRow:
-        """
-        Return exactly one matching row.
-
-        Raises
-        ------
-        KeyError
-            No matching row was found.
-
-        ValueError
-            More than one matching row was found.
-        """
+        # Return exactly one matching row.
 
         normalized_value = value.strip()
 
@@ -111,3 +98,42 @@ class GoogleSheetsRepository(ABC):
                 row.get(column_name, "")
             ).strip() == normalized_value
         ]
+
+    @staticmethod
+    def _find_single_row_by_fields(
+            *,
+            rows: list[RawRow],
+            filters: dict[str, str],
+    ) -> RawRow:
+        normalized_filters = {
+            key: value.strip()
+            for key, value in filters.items()
+        }
+
+        for value in normalized_filters.values():
+            if not value:
+                raise ValueError(
+                    "Lookup values cannot be empty."
+                )
+
+        matches = [
+            row
+            for row in rows
+            if all(
+                str(row.get(column_name, "")).strip() == expected_value
+                for column_name, expected_value in normalized_filters.items()
+            )
+        ]
+
+        if not matches:
+            raise KeyError(
+                f"No row found for filters: {normalized_filters!r}."
+            )
+
+        if len(matches) > 1:
+            raise ValueError(
+                f"Expected exactly one row for filters "
+                f"{normalized_filters!r}, found {len(matches)}."
+            )
+
+        return matches[0]
