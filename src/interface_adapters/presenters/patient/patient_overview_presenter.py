@@ -1,6 +1,6 @@
 # patient_overview_presenter.py
 
-from src.application.use_cases.get_patient_records.patient_uc_dtos import (
+from src.application.use_cases.patient.patient_uc_dtos import (
     GetPatientOverviewResultDTO,
     PatientOverviewDevDTO,
 )
@@ -9,7 +9,7 @@ from src.interface_adapters.view_models.patient.patient_overview_page_view_model
     PatientOverviewPageViewModel,
 )
 
-from src.interface_adapters.view_models.common.card_view_model import (
+from src.interface_adapters.view_models.common.card_view_models import (
     CardViewModel,
 )
 # from src.interface_adapters.view_models.common.metric_view_model import MetricViewModel

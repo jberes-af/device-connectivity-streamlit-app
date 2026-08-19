@@ -1,9 +1,7 @@
-from __future__ import annotations
-
+# /src/infrastructure/persistence/firebase/schemas/gateway_schema.py
 
 class GatewayRtdbSchema:
-    ROOT = "gateway"
-
+    ROOT = "iotg"
     FIELD_SENSORS = "sensor"
     FIELD_USERS = "user"
     FIELD_TIMEZONE_NAME = "timezone_name"
@@ -11,4 +9,4 @@ class GatewayRtdbSchema:
 
     @classmethod
     def gateway_path(cls, gateway_id: str) -> str:
-        return f"{cls.ROOT}/{gateway_id}"
+        return f"/{cls.ROOT}/{gateway_id}"

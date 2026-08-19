@@ -1,13 +1,18 @@
-# AUTO GENERATED
+# /src/infrastructure/persistence/google_sheets/mappers/patient/patient_provide_row_mapper.py
+
+from src.domain.enums.person.patient_enums import PatientProviderRoleEnum
+from src.domain.entities.person.patient_entities import PatientProvider
 
 from src.infrastructure.persistence.common.types import RawRow
 
 from src.infrastructure.persistence.google_sheets.schemas.patient.patient_provider_columns import (
     PatientProviderColumns)
 
-from src.domain.entities.person.patient_entities import PatientProvider
-
-from src.infrastructure.persistence.common.utils_parsing import *
+from src.infrastructure.persistence.common.utils_parsing import (
+    parse_optional_enum,
+    parse_optional_date,
+    parse_required_text,
+)
 
 
 class PatientProviderRowMapper:
@@ -29,8 +34,9 @@ class PatientProviderRowMapper:
                 row.get(schema.PROVIDER_ID),
                 field_name=schema.PROVIDER_ID,
             ),
-            role=parse_optional_text(
+            role=parse_optional_enum(
                 row.get(schema.ROLE),
+                enum_type=PatientProviderRoleEnum,
                 field_name=schema.ROLE,
             ),
             effective_date=parse_optional_date(

@@ -33,7 +33,7 @@ class RoutineRtdbMapper:
     @staticmethod
     def to_rtdb(entity: AlertaRoutineProfile) -> dict[str, Any]:
         return {
-            "name": entity.name,
+            "name": entity.full_name,
             "start_time": entity.start_time,
             "end_time": entity.end_time,
         }

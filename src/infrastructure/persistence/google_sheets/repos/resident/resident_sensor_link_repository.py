@@ -1,13 +1,10 @@
-# /src/infrastructure/persistence/google_sheets/repos/ResidentSensorLink.py
+# /src/infrastructure/persistence/google_sheets/repos/resident/resident_sensor_link.py
 
-
-# AUTO GENERATED
-
-from src.application.ports.resident_sensor_link_repository_port import (
+from src.application.ports.resident_repo_ports import (
     ResidentSensorLinkRepositoryPort,
 )
 
-from src.domain.entities.resident_sensor_link_entities import (
+from src.domain.entities.person.resident_entities import (
     ResidentSensorLink,
 )
 
@@ -25,12 +22,11 @@ from src.infrastructure.persistence.google_sheets.sheets_query_service import (
     GoogleSheetsQueryService,
 )
 
-from src.infrastructure.persistence.google_sheets.mappers import (
+from src.infrastructure.persistence.google_sheets.mappers.resident.resident_sensor_link_row_mapper import (
     ResidentSensorLinkRowMapper,
 )
 
-
-from src.infrastructure.persistence.google_sheets.schemas import (
+from src.infrastructure.persistence.google_sheets.schemas.resident.resident_sensor_link_columns import (
     ResidentSensorLinkColumns,
 )
 
@@ -39,19 +35,16 @@ class GoogleSheetsResidentSensorLinkRepository(
     GoogleSheetsRepository,
     ResidentSensorLinkRepositoryPort,
 ):
-
     TABLE_NAME = "resident_sensor_link"
-    ID_COLUMN = ResidentSensorLinkColumns.ENTITY_ID
-
+    ID_COLUMN = ResidentSensorLinkColumns.RESIDENT_ID
 
     def __init__(
-        self,
-        *,
-        query_service: GoogleSheetsQueryService,
-        catalog: GoogleSheetCatalog,
-        mapper: ResidentSensorLinkRowMapper,
+            self,
+            *,
+            query_service: GoogleSheetsQueryService,
+            catalog: GoogleSheetCatalog,
+            mapper: ResidentSensorLinkRowMapper,
     ) -> None:
-
         super().__init__(
             query_service=query_service,
             catalog=catalog,
@@ -60,12 +53,10 @@ class GoogleSheetsResidentSensorLinkRepository(
         self._mapper = mapper
 
     def list_resident_sensor_links(self) -> tuple[ResidentSensorLink, ...]:
-
         return tuple(
             self._mapper.to_domain(row)
             for row in self._read_rows()
         )
-
 
     def get_by_id(
             self,
@@ -79,6 +70,7 @@ class GoogleSheetsResidentSensorLinkRepository(
 
         return self._mapper.to_domain(raw_row)
 
+    """
     def append_open_event(
             self,
             event: ResidentSensorLink,
@@ -89,3 +81,4 @@ class GoogleSheetsResidentSensorLinkRepository(
             row=raw_row,
             columns=ResidentSensorLinkColumns.ORDER,
         )
+    """

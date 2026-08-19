@@ -60,7 +60,7 @@ class GoogleSheetsProviderReviewRepository(
     def list_provider_reviews(self) -> tuple[ProviderReview, ...]:
 
         return tuple(
-            self._mapper.to_domain(row)
+            self._mapper.from_raw(row)
             for row in self._read_rows()
         )
 
@@ -75,4 +75,4 @@ class GoogleSheetsProviderReviewRepository(
             value=patient_id,
         )
 
-        return self._mapper.to_domain(raw_row)
+        return self._mapper.from_raw(raw_row)

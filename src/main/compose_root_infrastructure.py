@@ -26,6 +26,11 @@ from src.main.infrastructure_containers.sheets_repo_patient import (
     build_google_sheets_patient_repositories,
 )
 
+from src.main.infrastructure_containers.sheets_repo_resident import (
+    GoogleSheetsResidentRepositories,
+    build_google_sheets_resident_repositories,
+)
+
 from src.main.infrastructure_containers.sheets_repo_tenant import (
     GoogleSheetsTenantRepositories,
     build_google_sheets_tenant_repositories,
@@ -34,6 +39,11 @@ from src.main.infrastructure_containers.sheets_repo_tenant import (
 from src.main.infrastructure_containers.sheets_repo_user import (
     GoogleSheetsUserRepositories,
     build_google_sheets_user_repositories,
+)
+
+from src.main.infrastructure_containers.firebase_repositories import (
+    FirebaseSensingRepositories,
+    build_firebase_sensing_repositories,
 )
 
 # --- INTERFACE ADAPTERS
@@ -48,9 +58,12 @@ import logging
 @dataclass(frozen=True, slots=True)
 class InfrastructureContainer:
     settings: Settings
+
     rtdb: RealtimeDatabasePort
+    sensing_repositories: FirebaseSensingRepositories
 
     patient_repository: GoogleSheetsPatientRepositories
+    resident_repository: GoogleSheetsResidentRepositories
     tenant_repository: GoogleSheetsTenantRepositories
     user_repository: GoogleSheetsUserRepositories
 
@@ -61,14 +74,24 @@ def build_infrastructure_container(
 ) -> InfrastructureContainer:
     # FIREBASE REAL-TIME DATABASE
 
-    fb_rtdb = build_realtime_database_adapter(
+    fb_rtdb: RealtimeDatabasePort = build_realtime_database_adapter(
         settings=settings,
     )
 
-    # --- GOOGLE SHEETS REPOSITORIES: PATIENT
+    sensing_repos = build_firebase_sensing_repositories(
+        database=fb_rtdb,
+    )
+
+    # --- GOOGLE SHEETS REPOSITORIES
 
     patient_repos: GoogleSheetsPatientRepositories = (
         build_google_sheets_patient_repositories(
+            settings=settings,
+            app_config=app_config,
+        ))
+
+    resident_repos = (
+        build_google_sheets_resident_repositories(
             settings=settings,
             app_config=app_config,
         ))
@@ -89,16 +112,18 @@ def build_infrastructure_container(
     # care plan
     # payer
     # provider_repos TBD
-    # resident_repos TBD
     # treatment
 
     # --- ASSIGN PRESENTERS
 
     return InfrastructureContainer(
         settings=settings,
+
         rtdb=fb_rtdb,
+        sensing_repositories=sensing_repos,
 
         patient_repository=patient_repos,
+        resident_repository=resident_repos,
         tenant_repository=tenant_repos,
         user_repository=user_repos,
 

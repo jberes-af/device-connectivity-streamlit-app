@@ -1,17 +1,17 @@
-# device_entities.py
+# /src/domain/entities/sensing/device_entities.py
 
 from dataclasses import dataclass
 
-from src.domain.enums.sensing.notification_enums import NotificationMessageStatusEnum
-from src.domain.enums.sensing.device_enums import SensorStateDefinitionEnum
+from src.domain.enums.sensing.notification_enums import (
+    NotificationMessageStatusEnum)
 
-from src.domain.entities.person.user_entities import SensorUserProfile
+from src.domain.enums.sensing.device_enums import SensorStateDefinitionEnum
 
 
 # --- GENERAL
 
 @dataclass(frozen=True)
-class DeviceOwnershipDTO:
+class DeviceOwnership:
     device_id: str
     device_type: str
     owned_from_iso: str
@@ -23,14 +23,21 @@ class DeviceOwnershipDTO:
 # --- GATEWAY
 
 @dataclass(frozen=True)
-class GatewayProfileDTO:
+class GatewayProfile:
     gateway_id: str
     tenant_id: str | None = None
     timezone: str | None = None
     firmware_version: str | None = None
     hardware_version: str | None = None
-    last_seen_at_iso: str | None = None
-    is_online: bool = False
+
+
+@dataclass(frozen=True)
+class GatewayHealth:
+    gateway_id: str
+    tenant_id: str
+    is_online: bool
+    last_seen_at: str | None = None
+    signal_strength: float | None = None
 
 
 # --- SENSORS
@@ -41,18 +48,10 @@ class SensorSystemProfile:
     brand: str
     sensor_id: str
     sensor_type: str
+    tenant_id: str | None = None
     firmware_version: str | None = None
     hardware_version: str | None = None
     icon: str | None = None
-
-
-@dataclass(frozen=True)
-class SensorProfile:
-    sensor_id: str
-    system_configuration: SensorSystemProfile
-    state: SensorStateDefinitionEnum | None = None
-    tenant_id: str | None = None
-    user_configuration: SensorUserProfile | None = None
 
 
 @dataclass(frozen=True)
@@ -126,7 +125,7 @@ class GatewaySensorLink:
 
 @dataclass(frozen=True)
 class MovementDTO:
-    sensor_end: SensorProfile
-    sensor_start: SensorProfile
+    sensor_end: str
+    sensor_start: str
     time_end: str
     time_start: str

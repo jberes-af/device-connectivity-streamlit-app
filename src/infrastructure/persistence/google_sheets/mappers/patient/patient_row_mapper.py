@@ -1,4 +1,4 @@
-# AUTO GENERATED
+# /src/infrastructure/persistence/google_sheets/mappers/patient/patient_row_mapper.py
 
 from src.infrastructure.persistence.common.types import RawRow
 
@@ -6,13 +6,17 @@ from src.infrastructure.persistence.google_sheets.schemas.patient.patient_column
 
 from src.domain.entities.person.patient_entities import Patient
 
-from src.infrastructure.persistence.common.utils_parsing import *
+from src.infrastructure.persistence.common.utils_parsing import (
+    parse_optional_text,
+    parse_required_text,
+    parse_required_date,
+)
+
 
 class PatientRowMapper:
 
     @staticmethod
     def to_domain(row: RawRow) -> Patient:
-
         schema = PatientColumns
 
         return Patient(

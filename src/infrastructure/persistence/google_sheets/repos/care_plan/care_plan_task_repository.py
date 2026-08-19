@@ -62,7 +62,7 @@ class GoogleSheetsCarePlanTaskRepository(
     def list_care_plan_tasks(self) -> tuple[CarePlanTask, ...]:
 
         return tuple(
-            self._mapper.to_domain(row)
+            self._mapper.from_raw(row)
             for row in self._read_rows()
         )
 
@@ -77,7 +77,7 @@ class GoogleSheetsCarePlanTaskRepository(
             value=patient_id,
         )
 
-        return self._mapper.to_domain(raw_row)
+        return self._mapper.from_raw(raw_row)
 
     def append_open_event(
             self,

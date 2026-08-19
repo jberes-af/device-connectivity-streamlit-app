@@ -18,14 +18,22 @@ class FirebasePath:
     value: str
 
     def __post_init__(self) -> None:
-        v = self.value.strip()
-        if not v:
-            raise ValueError("firebase_auth path must be non-empty")
-        if not v.startswith("/"):
-            raise ValueError("firebase_auth path must start with '/'")
-        if "//" in v:
-            raise ValueError("firebase_auth path must not contain '//'")
-        object.__setattr__(self, "value", v)
+        value = self.value.strip()
+
+        if not value:
+            raise ValueError("Firebase RTDB path must be non-empty")
+
+        if not value.startswith("/"):
+            raise ValueError(
+                f"Firebase RTDB path must start with '/': {value!r}"
+            )
+
+        if "//" in value:
+            raise ValueError(
+                f"Firebase RTDB path must not contain '//': {value!r}"
+            )
+
+        object.__setattr__(self, "value", value)
 
 
 class FirebaseRtdbAdapter(RealtimeDatabasePort):

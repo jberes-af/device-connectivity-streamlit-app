@@ -5,9 +5,7 @@ from src.application.ports.user_repo_ports import (
     UserTenantMembershipRepositoryPort,
 )
 
-from src.domain.entities.person.user_entities import (
-    UserTenantMembership,
-)
+from src.domain.entities.person.user_entities import UserTenantMembership
 
 from src.infrastructure.persistence.common.types import RawRow
 

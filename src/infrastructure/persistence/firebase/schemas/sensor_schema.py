@@ -1,22 +1,19 @@
-from __future__ import annotations
-
+# /src/infrastructure/persistence/firebase/schemas/sensor_schema.py
 
 class SensorSystemRtdbSchema:
     ROOT = "sensor"
-
     FIELD_BRAND = "brand"
     FIELD_TYPE = "type"
     FIELD_ICON = "icon"
 
     @classmethod
     def sensor_path(cls, sensor_id: str) -> str:
-        return f"{cls.ROOT}/{sensor_id}"
+        return f"/{cls.ROOT}/{sensor_id}"
 
 
 class SensorUserRtdbSchema:
-    ROOT = "users"
-    DEVICES_NODE = "devices"
-
+    ROOT = "user"
+    DEVICES_NODE = "device"
     FIELD_NAME = "name"
     FIELD_LOCATION = "location"
     FIELD_ZONE = "zone"
@@ -24,4 +21,4 @@ class SensorUserRtdbSchema:
 
     @classmethod
     def sensor_path(cls, user_id: str, sensor_id: str) -> str:
-        return f"{cls.ROOT}/{user_id}/{cls.DEVICES_NODE}/{sensor_id}"
+        return f"/{cls.ROOT}/{user_id}/{cls.DEVICES_NODE}/{sensor_id}"

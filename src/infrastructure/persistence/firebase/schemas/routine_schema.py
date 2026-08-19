@@ -13,4 +13,4 @@ class RoutineRtdbSchema:
 
     @classmethod
     def routine_path(cls, routine_id: str) -> str:
-        return f"{cls.ROOT}/{routine_id}"
+        return f"/{cls.ROOT}/{routine_id}"

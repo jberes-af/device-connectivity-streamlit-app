@@ -1,15 +1,19 @@
-# /src/infrastructure/persistence/schemas
+# /src/infrastructure/persistence/schemas/resident/resident_sensor_link_columns.py
 
 class ResidentSensorLinkColumns:
     RESIDENT_ID: str = "resident_id"
     SENSOR_ID: str = "sensor_id"
     TENANT_ID: str = "tenant_id"
-    ACTIVE_FROM_ISO: str = "active_from_iso"
-    ACTIVE_TO_ISO: str = "active_to_iso"
+    ACTIVE_FROM_DATE: str = "active_from_date"
+    ACTIVE_TO_DATE: str = "active_to_date"
+    SETUP_DATE: str = "setup_date"
+    REMOVED_DATE: str = "removed_date"
     ORDER = (
-RESIDENT_ID,
-SENSOR_ID,
-TENANT_ID,
-ACTIVE_FROM_ISO,
-ACTIVE_TO_ISO,
-)
+        RESIDENT_ID,
+        SENSOR_ID,
+        TENANT_ID,
+        ACTIVE_FROM_DATE,
+        ACTIVE_TO_DATE,
+        SETUP_DATE,
+        REMOVED_DATE,
+    )

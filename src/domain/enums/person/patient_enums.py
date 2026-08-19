@@ -3,7 +3,7 @@
 from enum import StrEnum
 
 
-class PatientProviderRole(StrEnum):
+class PatientProviderRoleEnum(StrEnum):
     TREATING_PROVIDER = "treating_provider"
     ORDERING_PROVIDER = "ordering_provider"
     SUPERVISING_PROVIDER = "supervising_provider"
@@ -14,7 +14,7 @@ class PatientProviderRole(StrEnum):
     OTHER = "other"
 
 
-class ConsentMethod(StrEnum):
+class ConsentMethodEnum(StrEnum):
     WRITTEN = "written"
     ELECTRONIC_SIGNATURE = "electronic_signature"
     VERBAL = "verbal"
@@ -23,7 +23,7 @@ class ConsentMethod(StrEnum):
     OTHER = "other"
 
 
-class ConsentStatus(StrEnum):
+class ConsentStatusEnum(StrEnum):
     NOT_REQUESTED = "not_requested"
     PENDING = "pending"
     OBTAINED = "obtained"
@@ -31,7 +31,7 @@ class ConsentStatus(StrEnum):
     WITHDRAWN = "withdrawn"
 
 
-class MonitoringStatus(StrEnum):
+class MonitoringStatusEnum(StrEnum):
     PENDING_SETUP = "pending_setup"
     ACTIVE = "active"
     PAUSED = "paused"
@@ -39,7 +39,7 @@ class MonitoringStatus(StrEnum):
     COMPLETED = "completed"
 
 
-class EnrollmentStatus(StrEnum):
+class EnrollmentStatusEnum(StrEnum):
     PENDING = "pending"
     ACTIVE = "active"
     PAUSED = "paused"

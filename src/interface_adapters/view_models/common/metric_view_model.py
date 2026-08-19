@@ -6,9 +6,6 @@ from dataclasses import dataclass
 @dataclass(frozen=True)
 class MetricViewModel:
     label: str
-
     value: str
-
     delta: str | None = None
-
     help_text: str | None = None

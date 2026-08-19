@@ -62,7 +62,7 @@ class GoogleSheetsUserGatewayLinkRepository(
     def list_user_gateway_links(self) -> tuple[UserGatewayLink, ...]:
 
         return tuple(
-            self._mapper.to_domain(row)
+            self._mapper.from_raw(row)
             for row in self._read_rows()
         )
 
@@ -77,7 +77,7 @@ class GoogleSheetsUserGatewayLinkRepository(
             value=patient_id,
         )
 
-        return self._mapper.to_domain(raw_row)
+        return self._mapper.from_raw(raw_row)
 
     def append_open_event(
             self,

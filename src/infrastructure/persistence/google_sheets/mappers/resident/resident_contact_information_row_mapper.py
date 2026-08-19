@@ -1,12 +1,16 @@
-# /src/infrastructure/persistence/mappers
+# /src/infrastructure/persistence/mappers/resident/resident_contact_information_row_mapper.py
 
 from src.infrastructure.persistence.common.types import RawRow
 
-from src.infrastructure.persistence.google_sheets.schemas import ResidentContactInformationColumns
+from src.infrastructure.persistence.google_sheets.schemas.resident.resident_contact_information_columns import (
+    ResidentContactInformationColumns,
+)
 
-from src.domain.entities.entities import ResidentContactInformation
+from src.domain.entities.person.resident_entities import ResidentContactInformation
 
-from src.infrastructure.persistence.common.utils_parsing import *
+from src.infrastructure.persistence.common.utils_parsing import (
+    parse_required_text,
+)
 
 
 class ResidentContactInformationRowMapper:
@@ -20,32 +24,27 @@ class ResidentContactInformationRowMapper:
                 row.get(schema.RESIDENT_ID),
                 field_name=schema.RESIDENT_ID,
             ),
-            resident_name=parse_required_text(
-                row.get(schema.RESIDENT_NAME),
-                field_name=schema.RESIDENT_NAME,
-            ),
-            primary_contact_name=parse_required_text(
+            contact_name=parse_required_text(
                 row.get(schema.PRIMARY_CONTACT_NAME),
                 field_name=schema.PRIMARY_CONTACT_NAME,
             ),
-            primary_contact_email=parse_required_text(
+            contact_email=parse_required_text(
                 row.get(schema.PRIMARY_CONTACT_EMAIL),
                 field_name=schema.PRIMARY_CONTACT_EMAIL,
             ),
-            primary_contact_telephone=parse_required_text(
+            contact_telephone=parse_required_text(
                 row.get(schema.PRIMARY_CONTACT_TELEPHONE),
                 field_name=schema.PRIMARY_CONTACT_TELEPHONE,
             ),
-            primary_contact_address=parse_required_text(
+            contact_address=parse_required_text(
                 row.get(schema.PRIMARY_CONTACT_ADDRESS),
                 field_name=schema.PRIMARY_CONTACT_ADDRESS,
             ),
         )
 
-
     @staticmethod
     def to_row(
-        resident_contact_information: ResidentContactInformation,
+            resident_contact_information: ResidentContactInformation,
     ) -> RawRow:
         schema = ResidentContactInformationColumns
 
@@ -54,19 +53,16 @@ class ResidentContactInformationRowMapper:
             schema.RESIDENT_ID:
                 resident_contact_information.resident_id,
 
-            schema.RESIDENT_NAME:
-                resident_contact_information.resident_name,
-
             schema.PRIMARY_CONTACT_NAME:
-                resident_contact_information.primary_contact_name,
+                resident_contact_information.contact_name,
 
             schema.PRIMARY_CONTACT_EMAIL:
-                resident_contact_information.primary_contact_email,
+                resident_contact_information.contact_email,
 
             schema.PRIMARY_CONTACT_TELEPHONE:
-                resident_contact_information.primary_contact_telephone,
+                resident_contact_information.contact_telephone,
 
             schema.PRIMARY_CONTACT_ADDRESS:
-                resident_contact_information.primary_contact_address,
+                resident_contact_information.contact_address,
 
         }

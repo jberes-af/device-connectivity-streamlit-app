@@ -23,7 +23,7 @@ class FirebaseRoutineRepository:
         if raw is None:
             return None
 
-        return RoutineRtdbMapper.to_domain(
+        return RoutineRtdbMapper.from_raw(
             routine_id=routine_id,
             tenant_id=tenant_id,
             data=raw,

@@ -1,4 +1,4 @@
-# AUTO GENERATED
+# /src/infrastructure/persistence/google_sheets/mappers/patient/patient_payer_row_mapper.py
 
 from src.infrastructure.persistence.common.types import RawRow
 
@@ -7,7 +7,13 @@ from src.infrastructure.persistence.google_sheets.schemas.patient.patient_payer_
 
 from src.domain.entities.person.patient_entities import PatientPayer
 
-from src.infrastructure.persistence.common.utils_parsing import *
+from src.infrastructure.persistence.common.utils_parsing import (
+    parse_optional_bool,
+    parse_optional_date,
+    parse_optional_text,
+    parse_required_text,
+)
+
 
 class PatientPayerRowMapper:
 

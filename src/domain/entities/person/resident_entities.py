@@ -1,6 +1,7 @@
 # /src/domain/entities/person/resident_entities.py
 
 from dataclasses import dataclass
+from datetime import date
 
 from src.domain.entities.person.tenant_entities import TenantProfile
 from src.domain.enums.person.resident_enums import ResidentAccessLevelEnum
@@ -11,8 +12,10 @@ class ResidentSensorLink:
     resident_id: str
     sensor_id: str
     tenant_id: str | None
-    active_from_iso: str | None = None
-    active_to_iso: str | None = None
+    active_from_date: date | None = None
+    active_to_date: date | None = None
+    setup_date: date | None = None
+    removed_date: date | None = None
 
 
 @dataclass(frozen=True)
@@ -20,18 +23,10 @@ class ResidentGatewayLink:
     resident_id: str
     gateway_id: str
     tenant_id: str | None
-    active_from_iso: str | None = None
-    active_to_iso: str | None = None
-
-
-@dataclass(frozen=True)
-class ResidentContactInformation:
-    resident_id: str
-    resident_name: str
-    primary_contact_name: str
-    primary_contact_email: str
-    primary_contact_telephone: str
-    primary_contact_address: str
+    active_from_date: date | None = None
+    active_to_date: date | None = None
+    setup_date: date | None = None
+    removed_date: date | None = None
 
 
 @dataclass(frozen=True)
@@ -41,17 +36,28 @@ class UserResidentAccess:
     resident_id: str
     access_level: ResidentAccessLevelEnum
     granted_by_user_id: str
-    granted_at_iso: str
+    granted_at_date: date
     active: bool | None
+
+
+@dataclass(frozen=True)
+class ResidentContactInformation:
+    resident_id: str
+    # resident_name: str
+    contact_name: str
+    contact_email: str
+    contact_telephone: str
+    contact_address: str
 
 
 @dataclass(frozen=True)
 class ResidentProfile:
     resident_id: str
     tenant_id: str | None
-    name: str
+    full_name: str
     preferred_name: str
-    contact_information: ResidentContactInformation
-    tenant_facility_profile: TenantProfile
+    # contact_info: ResidentContactInformation
+    date_of_birth: date | None
+    # tenant_facility_profile: TenantProfile
     room_reference: str | None = None
     active_status: bool = True

@@ -1,13 +1,11 @@
-# /src/infrastructure/persistence/google_sheets/repos/ResidentContactInformation.py
+# /src/infrastructure/persistence/google_sheets/repos/resident/resident_contact_information.py
 
 
-# AUTO GENERATED
-
-from src.application.ports.resident_contact_information_repository_port import (
+from src.application.ports.resident_repo_ports import (
     ResidentContactInformationRepositoryPort,
 )
 
-from src.domain.entities.resident_contact_information_entities import (
+from src.domain.entities.person.resident_entities import (
     ResidentContactInformation,
 )
 
@@ -25,12 +23,11 @@ from src.infrastructure.persistence.google_sheets.sheets_query_service import (
     GoogleSheetsQueryService,
 )
 
-from src.infrastructure.persistence.google_sheets.mappers import (
+from src.infrastructure.persistence.google_sheets.mappers.resident.resident_contact_information_row_mapper import (
     ResidentContactInformationRowMapper,
 )
 
-
-from src.infrastructure.persistence.google_sheets.schemas import (
+from src.infrastructure.persistence.google_sheets.schemas.resident.resident_contact_information_columns import (
     ResidentContactInformationColumns,
 )
 
@@ -39,33 +36,22 @@ class GoogleSheetsResidentContactInformationRepository(
     GoogleSheetsRepository,
     ResidentContactInformationRepositoryPort,
 ):
-
     TABLE_NAME = "resident_contact_information"
-    ID_COLUMN = ResidentContactInformationColumns.ENTITY_ID
-
+    ID_COLUMN = ResidentContactInformationColumns.RESIDENT_ID
 
     def __init__(
-        self,
-        *,
-        query_service: GoogleSheetsQueryService,
-        catalog: GoogleSheetCatalog,
-        mapper: ResidentContactInformationRowMapper,
+            self,
+            *,
+            query_service: GoogleSheetsQueryService,
+            catalog: GoogleSheetCatalog,
+            mapper: ResidentContactInformationRowMapper,
     ) -> None:
-
         super().__init__(
             query_service=query_service,
             catalog=catalog,
         )
 
         self._mapper = mapper
-
-    def list_resident_contact_informations(self) -> tuple[ResidentContactInformation, ...]:
-
-        return tuple(
-            self._mapper.to_domain(row)
-            for row in self._read_rows()
-        )
-
 
     def get_by_id(
             self,
@@ -78,14 +64,3 @@ class GoogleSheetsResidentContactInformationRepository(
         )
 
         return self._mapper.to_domain(raw_row)
-
-    def append_open_event(
-            self,
-            event: ResidentContactInformation,
-    ) -> None:
-        raw_row: RawRow = self._mapper.to_row(event)
-
-        self._append_raw_row(
-            row=raw_row,
-            columns=ResidentContactInformationColumns.ORDER,
-        )

@@ -12,7 +12,7 @@ import streamlit as st
 # --- APPLICATION
 
 from src.application.context import (
-    UserContext,
+    # UserContext,
     SessionContext,
 )
 
@@ -51,7 +51,7 @@ from src.main.host_inputs import HostInputs, load_host_inputs
 # --- PROGRAM
 
 _APP_NAME = "Alerta Clinical Platform"
-_DEFAULT_ROUTE_ID = "dashboard"
+_DEFAULT_ROUTE_ID = "residents"
 
 _PATH_FILE_FAVICON = PROJECT_ROOT / "src/gui/streamlit/static/favicon" / "favicon.ico"
 

@@ -9,8 +9,8 @@ LoginResultDTO = application output
 
 from dataclasses import dataclass
 
-from src.domain.enums.person.tenant_enums import UserRoleEnum
 from src.domain.entities.person.user_entities import UserTenantMembership
+
 
 @dataclass(frozen=True)
 class AuthenticatedUserDTO:

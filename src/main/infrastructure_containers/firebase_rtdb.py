@@ -6,7 +6,7 @@ from src.application.ports.sensing.realtime_database_port import (
 
 from src.infrastructure.config.settings_model import Settings
 
-from src.infrastructure.persistence.firebase.firebase_app import (
+from src.infrastructure.config.firebase_app import (
     init_firebase_admin_app
 )
 
@@ -16,7 +16,7 @@ from src.infrastructure.persistence.firebase.firebase_rtdb_adapter import (
 
 def build_realtime_database_adapter(
         settings: Settings,
-):
+) -> RealtimeDatabasePort:
     # --- Firebase Admin SDK, used for backend RTDB
 
     fb_admin_app = init_firebase_admin_app(
@@ -24,5 +24,6 @@ def build_realtime_database_adapter(
         service_account_info=settings.firebase_admin.service_account_info,
     )
 
-    rtdb: RealtimeDatabasePort = FirebaseRtdbAdapter(app=fb_admin_app)
-    return rtdb
+    return FirebaseRtdbAdapter(
+        app=fb_admin_app,
+    )

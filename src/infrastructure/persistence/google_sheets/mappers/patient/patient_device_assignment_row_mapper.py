@@ -1,4 +1,4 @@
-# AUTO GENERATED
+# /src/infrastructure/persistence/google_sheets/mappers/patient/patient_device_assignment_row_mapper.py
 
 from src.infrastructure.persistence.common.types import RawRow
 
@@ -7,13 +7,18 @@ from src.infrastructure.persistence.google_sheets.schemas.patient.patient_device
 
 from src.domain.entities.person.patient_entities import PatientDeviceAssignment
 
-from src.infrastructure.persistence.common.utils_parsing import *
+from src.infrastructure.persistence.common.utils_parsing import (
+    parse_optional_bool,
+    parse_optional_date,
+    parse_required_date,
+    parse_required_text,
+)
+
 
 class PatientDeviceAssignmentRowMapper:
 
     @staticmethod
     def to_domain(row: RawRow) -> PatientDeviceAssignment:
-
         schema = PatientDeviceAssignmentColumns
 
         return PatientDeviceAssignment(
@@ -37,7 +42,7 @@ class PatientDeviceAssignmentRowMapper:
                 row.get(schema.REMOVED_DATE),
                 field_name=schema.REMOVED_DATE,
             ),
-            setup_completed=parse_optional_text(
+            setup_completed=parse_optional_bool(
                 row.get(schema.SETUP_COMPLETED),
                 field_name=schema.SETUP_COMPLETED,
             ),
@@ -45,7 +50,7 @@ class PatientDeviceAssignmentRowMapper:
                 row.get(schema.SETUP_DATE),
                 field_name=schema.SETUP_DATE,
             ),
-            patient_education_completed=parse_optional_text(
+            patient_education_completed=parse_optional_bool(
                 row.get(schema.PATIENT_EDUCATION_COMPLETED),
                 field_name=schema.PATIENT_EDUCATION_COMPLETED,
             ),

@@ -1,12 +1,19 @@
-# /src/infrastructure/persistence/mappers
+# /src/infrastructure/persistence/mappers/resident/resident_profile_row_mapper.py
 
 from src.infrastructure.persistence.common.types import RawRow
 
-from src.infrastructure.persistence.google_sheets.schemas import ResidentProfileColumns
+from src.infrastructure.persistence.google_sheets.schemas.resident.resident_profile_columns import (
+    ResidentProfileColumns,
+)
 
-from src.domain.entities.entities import ResidentProfile
+from src.domain.entities.person.resident_entities import ResidentProfile
 
-from src.infrastructure.persistence.common.utils_parsing import *
+from src.infrastructure.persistence.common.utils_parsing import (
+    parse_optional_bool,
+    parse_optional_date,
+    parse_optional_text,
+    parse_required_text,
+)
 
 
 class ResidentProfileRowMapper:
@@ -24,36 +31,31 @@ class ResidentProfileRowMapper:
                 row.get(schema.TENANT_ID),
                 field_name=schema.TENANT_ID,
             ),
-            name=parse_required_text(
-                row.get(schema.NAME),
-                field_name=schema.NAME,
+            full_name=parse_required_text(
+                row.get(schema.FULL_NAME),
+                field_name=schema.FULL_NAME,
             ),
             preferred_name=parse_required_text(
                 row.get(schema.PREFERRED_NAME),
                 field_name=schema.PREFERRED_NAME,
             ),
-            contact_information=parse_optional_text(
-                row.get(schema.CONTACT_INFORMATION),
-                field_name=schema.CONTACT_INFORMATION,
-            ),
-            tenant_facility_profile=parse_optional_text(
-                row.get(schema.TENANT_FACILITY_PROFILE),
-                field_name=schema.TENANT_FACILITY_PROFILE,
+            date_of_birth=parse_optional_date(
+                row.get(schema.DATE_OF_BIRTH),
+                field_name=schema.DATE_OF_BIRTH,
             ),
             room_reference=parse_optional_text(
                 row.get(schema.ROOM_REFERENCE),
                 field_name=schema.ROOM_REFERENCE,
             ),
-            active_status=parse_optional_text(
+            active_status=parse_optional_bool(
                 row.get(schema.ACTIVE_STATUS),
                 field_name=schema.ACTIVE_STATUS,
             ),
         )
 
-
     @staticmethod
     def to_row(
-        resident_profile: ResidentProfile,
+            resident_profile: ResidentProfile,
     ) -> RawRow:
         schema = ResidentProfileColumns
 
@@ -65,17 +67,14 @@ class ResidentProfileRowMapper:
             schema.TENANT_ID:
                 resident_profile.tenant_id,
 
-            schema.NAME:
-                resident_profile.name,
+            schema.FULL_NAME:
+                resident_profile.full_name,
 
             schema.PREFERRED_NAME:
                 resident_profile.preferred_name,
 
-            schema.CONTACT_INFORMATION:
-                resident_profile.contact_information,
-
-            schema.TENANT_FACILITY_PROFILE:
-                resident_profile.tenant_facility_profile,
+            schema.DATE_OF_BIRTH:
+                resident_profile.date_of_birth,
 
             schema.ROOM_REFERENCE:
                 resident_profile.room_reference,

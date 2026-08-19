@@ -1,13 +1,10 @@
-# /src/infrastructure/persistence/google_sheets/repos/ResidentProfile.py
+# /src/infrastructure/persistence/google_sheets/repos/resident_profile_repository.py
 
-
-# AUTO GENERATED
-
-from src.application.ports.resident_profile_repository_port import (
+from src.application.ports.resident_repo_ports import (
     ResidentProfileRepositoryPort,
 )
 
-from src.domain.entities.resident_profile_entities import (
+from src.domain.entities.person.resident_entities import (
     ResidentProfile,
 )
 
@@ -25,12 +22,11 @@ from src.infrastructure.persistence.google_sheets.sheets_query_service import (
     GoogleSheetsQueryService,
 )
 
-from src.infrastructure.persistence.google_sheets.mappers import (
+from src.infrastructure.persistence.google_sheets.mappers.resident.resident_profile_row_mapper import (
     ResidentProfileRowMapper,
 )
 
-
-from src.infrastructure.persistence.google_sheets.schemas import (
+from src.infrastructure.persistence.google_sheets.schemas.resident.resident_profile_columns import (
     ResidentProfileColumns,
 )
 
@@ -39,19 +35,16 @@ class GoogleSheetsResidentProfileRepository(
     GoogleSheetsRepository,
     ResidentProfileRepositoryPort,
 ):
-
     TABLE_NAME = "resident_profile"
-    ID_COLUMN = ResidentProfileColumns.ENTITY_ID
-
+    ID_COLUMN = ResidentProfileColumns.RESIDENT_ID
 
     def __init__(
-        self,
-        *,
-        query_service: GoogleSheetsQueryService,
-        catalog: GoogleSheetCatalog,
-        mapper: ResidentProfileRowMapper,
+            self,
+            *,
+            query_service: GoogleSheetsQueryService,
+            catalog: GoogleSheetCatalog,
+            mapper: ResidentProfileRowMapper,
     ) -> None:
-
         super().__init__(
             query_service=query_service,
             catalog=catalog,
@@ -60,25 +53,24 @@ class GoogleSheetsResidentProfileRepository(
         self._mapper = mapper
 
     def list_resident_profiles(self) -> tuple[ResidentProfile, ...]:
-
         return tuple(
             self._mapper.to_domain(row)
             for row in self._read_rows()
         )
 
-
     def get_by_id(
             self,
-            patient_id: str,
+            resident_id: str,
     ) -> ResidentProfile:
-        raw_row = self._find_single_row(
+        raw_row: RawRow = self._find_single_row(
             rows=self._read_rows(),
             column_name=self.ID_COLUMN,
-            value=patient_id,
+            value=resident_id,
         )
 
         return self._mapper.to_domain(raw_row)
 
+    """
     def append_open_event(
             self,
             event: ResidentProfile,
@@ -89,3 +81,4 @@ class GoogleSheetsResidentProfileRepository(
             row=raw_row,
             columns=ResidentProfileColumns.ORDER,
         )
+    """

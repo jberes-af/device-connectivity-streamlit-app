@@ -2,7 +2,7 @@
 
 import pandas as pd
 
-from src.interface_adapters.view_models.table_view_model import (
+from src.interface_adapters.view_models.common.table_view_model import (
     TableViewModel,
 )
 
