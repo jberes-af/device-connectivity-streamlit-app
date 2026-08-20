@@ -1,6 +1,7 @@
 # /src/domain/entities/sensing/device_entities.py
 
 from dataclasses import dataclass
+from datetime import datetime
 
 from src.domain.enums.sensing.notification_enums import (
     NotificationMessageStatusEnum)
@@ -92,11 +93,11 @@ class SensorHealth:
 
 @dataclass(frozen=True)
 class SensorEvent:
-    current_state: SensorStateDefinitionEnum
-    event_id: str
     sensor_id: str
-    tenant_id: str
-    timestamp: str
+    sensor_state: SensorStateDefinitionEnum
+    activated_at_utc: datetime    # UTC
+    activated_at_local: datetime  # local time: default America / New_York
+    event_id: str | None = None
 
 
 @dataclass(frozen=True)

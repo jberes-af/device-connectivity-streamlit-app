@@ -83,7 +83,7 @@ def render_login_phase(authentication: AuthenticationContainer) -> None:
 
 
 def render_authenticated_phase(app_container: AppContainer) -> None:
-    user = st.session_state.get("user")
+    user = st.session_state.get_all_sensor_events("user")
     if user:
         st.sidebar.success(f"Signed in as {user['email']}")
 

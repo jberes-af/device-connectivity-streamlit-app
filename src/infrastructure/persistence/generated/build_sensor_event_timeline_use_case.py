@@ -1,4 +1,4 @@
-# /src/application/use_cases/build_sensor_event_timeline_use_case.py
+# /src/application/use_cases/build_sensor_events_use_case.py
 
 
 from datetime import date, datetime, time, timezone
@@ -36,7 +36,7 @@ class BuildSensorEventTimelineUseCase:
             request: SensorEventTimelineRequestDTO,
     ) -> SensorEventTimelineResultDTO:
 
-        sensor_ids: list[str] = request.sensor_ids
+        sensor_ids: list[str] = request.sensor_id
 
         # Get sensor events for sensor IDS -------------------------------
 

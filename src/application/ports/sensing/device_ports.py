@@ -5,6 +5,7 @@ from typing import Protocol
 from src.domain.entities.sensing.device_entities import (
     GatewayProfile,
     SensorSystemProfile,
+    SensorEvent,
 )
 
 from src.application.models.sensing_models import GatewayDomainObjects
@@ -23,7 +24,7 @@ class GatewayRepositoryPort(Protocol):
         ...
 
 
-class SensorRepositoryPort(Protocol):
+class SensorDeviceRepositoryPort(Protocol):
 
     def get(
             self,
@@ -33,4 +34,19 @@ class SensorRepositoryPort(Protocol):
         ...
 
     def save(self, gateway: SensorSystemProfile) -> None:
+        ...
+
+
+class SensorEventRepositoryPort(Protocol):
+
+    def get_all_sensor_events(
+            self,
+            sensor_id: str,
+    ) -> tuple[SensorEvent, ...] | None:
+        ...
+
+    def get_last_sensor_event(
+            self,
+            sensor_id: str,
+    ) -> SensorEvent | None:
         ...

@@ -1,15 +1,32 @@
 # /src/gui/streamlit/screens/resident_screen.py
 
 from collections.abc import Callable
+from datetime import datetime
+from datetime import datetime, date, timedelta
+
 from streamlit.elements.lib.column_types import Column
 from typing import Any
 
 import streamlit as st
 
+# --- APPLICATION
+
 from src.application.use_cases.resident.resident_uc_dtos import (
     GetAllResidentRecordsRequestDTO,
     GetAllResidentRecordsResultDTO,
 )
+
+from src.application.use_cases.sensing.profiles.user_sensing_account_uc_dtos import (
+    UserSensingAccountRequestDTO,
+    UserSensingAccountResultDTO,
+)
+
+from src.application.use_cases.sensing.trends.build_sensor_events_use_case import (
+    SensorEventsRequestDTO,
+    SensorEventsResultDTO,
+)
+
+# --- GUI
 
 from src.gui.streamlit.components.common.table_searchable_renderer import (
     render_searchable_table,
@@ -20,30 +37,6 @@ from src.gui.streamlit.components.common.card_grid_renderer import (
     render_metric_card_grid,
 )
 
-# from src.interface_adapters.view_models.patient.patient_overview_page_view_model import (    PatientOverviewPageViewModel,)
-
-from src.interface_adapters.view_models.common.table_view_model import TableViewModel
-from src.interface_adapters.view_models.resident.resident_main_page_view_model import (
-    ResidentMainPageTopViewModel,
-)
-
-from src.main.compose_root_application import AppContainer
-
-from src.interface_adapters.presenters.resident.demo_top_metrics_presenter import (
-    DemoResidentDashMetricsPresenter
-)
-
-from src.interface_adapters.view_models.common.card_grid_view_model import (
-    CardGridViewModel
-)
-
-from src.interface_adapters.presenters.resident.demo_record_dash.demo_presenter import (
-    DemoSelectedResidentCardGridPresenter
-)
-
-from src.interface_adapters.presenters.resident.demo_record_dash.demo_segmented_controls_presenter import (
-    ResidentSegmentedControlPresenter)
-
 from src.gui.streamlit.components.common.dashboard_card_grid_renderer import (
     render_dashboard_card_grid
 )
@@ -52,20 +45,6 @@ from src.gui.streamlit.components.common.segmented_control_renderer import (
     render_vertical_segmented_control,
 )
 
-from src.interface_adapters.view_models.resident.segmented_controls_view_model import (
-    ResidentSectionEnum,
-)
-
-from src.gui.streamlit.components.resident.sensing_renderer import (
-    render_resident_sensing,
-)
-
-from src.gui.streamlit.components.resident.appointments_renderer import (
-    render_resident_appointments,
-)
-from src.gui.streamlit.components.resident.billing_renderer import (
-    render_resident_billing,
-)
 from src.gui.streamlit.components.resident.care_plan_renderer import (
     render_resident_care_plan,
 )
@@ -90,10 +69,44 @@ from src.gui.streamlit.components.resident.resident_renderer import (
 from src.gui.streamlit.components.resident.treatment_plan_renderer import (
     render_resident_treatment_plan,
 )
+from src.gui.streamlit.components.resident.sensing_renderer import (
+    render_resident_sensing,
+)
 
-from src.application.use_cases.sensing.user_sensing_account_uc_dtos import (
-    UserSensingAccountRequestDTO,
-    UserSensingAccountResultDTO,
+from src.gui.streamlit.components.resident.appointments_renderer import (
+    render_resident_appointments,
+)
+from src.gui.streamlit.components.resident.billing_renderer import (
+    render_resident_billing,
+)
+
+# --- INTERFACE ADAPTERS
+
+# from src.interface_adapters.view_models.patient.patient_overview_page_view_model import (    PatientOverviewPageViewModel,)
+
+from src.interface_adapters.view_models.common.table_view_model import TableViewModel
+
+from src.interface_adapters.view_models.resident.resident_main_page_view_model import (
+    ResidentMainPageTopViewModel,
+)
+
+from src.interface_adapters.presenters.resident.demo_top_metrics_presenter import (
+    DemoResidentDashMetricsPresenter
+)
+
+from src.interface_adapters.view_models.common.card_grid_view_model import (
+    CardGridViewModel
+)
+
+from src.interface_adapters.presenters.resident.demo_record_dash.demo_presenter import (
+    DemoSelectedResidentCardGridPresenter
+)
+
+from src.interface_adapters.presenters.resident.demo_record_dash.demo_segmented_controls_presenter import (
+    ResidentSegmentedControlPresenter)
+
+from src.interface_adapters.view_models.resident.segmented_controls_view_model import (
+    ResidentSectionEnum,
 )
 
 from src.interface_adapters.presenters.resident.resident_sensing_section_presenter import (
@@ -103,6 +116,10 @@ from src.interface_adapters.presenters.resident.resident_sensing_section_present
 from src.interface_adapters.view_models.sensing.resident_sensing_view_model import (
     SensorSectionViewModel,
 )
+
+# --- MAIN
+
+from src.main.compose_root_application import AppContainer
 
 # --- PROGRAM
 
@@ -169,22 +186,31 @@ def render_residents_page(
         if selected_control:
 
             if selected_control == "sensing":
-                use_case_result: Any = _dispatch_run_use_case(
+
+                result_user_sensing_account: UserSensingAccountResultDTO
+                result_sensor_events: SensorEventsResultDTO
+
+                use_case_results = _dispatch_run_use_case(
                     domain_key=selected_control,
                     app_container=container,
                 )
 
-                section_vm: SensorSectionViewModel = (
+                result_user_sensing_account = use_case_results[0]
+                result_sensor_events = use_case_results[1]
+
+                section_dash_vm: SensorSectionViewModel = (
                     ResidentSensingSectionPresenter()
-                    .present_sensing_section(use_case_result)
+                    .present_sensing_section(result_user_sensing_account)
                 )
+
+                # trends_vm: SensorTrendsViewModel = (ResidentSensingTrendsPresenter().present(result_sensor_events))
 
                 with col_content:
                     with st.container(border=False):
-
                         render_resident_sensing(
                             resident_id=selected_resident_id,
-                            section_vm=section_vm,
+                            section_dash_vm=section_dash_vm,
+                            # section_trends_vm=trends_vm
                         )
 
             else:
@@ -280,18 +306,34 @@ def _dispatch_run_use_case(
         domain_key: ResidentSectionEnum,
         app_container: AppContainer,
 ) -> Any:
-
-    print("domain key", domain_key)
-
     match domain_key:
         case "sensing":
-            request = UserSensingAccountRequestDTO(
+            request_usa = UserSensingAccountRequestDTO(
                 user_id=app_container.user_context.user_id,
             )
 
-            result: UserSensingAccountResultDTO = (
+            result_user_sensing_account: UserSensingAccountResultDTO = (
                 app_container.get_user_sensing_account_use_case.execute(
-                    request=request,
+                    request=request_usa,
                 ))
 
-            return result
+            """
+            CHANGE!  ok for dev
+            """
+
+            today: date = date.today()
+            yesterday: date = today - timedelta(days=1)
+            start_date: date = yesterday - timedelta(days=90)
+
+            request_se = SensorEventsRequestDTO(
+                sensor_ids=result_user_sensing_account.sensor_ids,
+                start_date=start_date,
+                end_date=yesterday,
+            )
+
+            result_sensor_events: SensorEventsResultDTO = (
+                app_container.build_sensor_event_timeline_use_case.execute(
+                    request=request_se,
+                ))
+
+            return result_user_sensing_account, result_sensor_events

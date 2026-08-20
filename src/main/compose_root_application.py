@@ -18,8 +18,12 @@ from src.application.use_cases.resident.get_all_resident_records_for_user_uc imp
     GetAllResidentRecordsForUserUseCase,
 )
 
-from src.application.use_cases.sensing.get_user_sensing_account_uc import (
+from src.application.use_cases.sensing.profiles.get_user_sensing_account_uc import (
     GetUserSensingAccountUseCase,
+)
+
+from src.application.use_cases.sensing.trends.build_sensor_events_use_case import (
+    BuildSensorEventsUseCase,
 )
 
 # from src.application.use_cases.patient.get_patient_overview_uc import (GetPatientOverviewUseCase, )
@@ -52,6 +56,7 @@ class AppContainer:
     resident_main_page_presenter: ResidentMainPagePresenter
 
     get_user_sensing_account_use_case: GetUserSensingAccountUseCase
+    build_sensor_event_timeline_use_case: BuildSensorEventsUseCase
     # get_patient_overview_use_case: GetPatientOverviewUseCase
     # patient_overview_presenter: PatientOverviewPresenter
 
@@ -73,7 +78,11 @@ def build_application_container(
     get_user_sensing_account = GetUserSensingAccountUseCase(
         user_sensing_repository=sensing_repos.user_sensing_repository,
         gateway_repository=sensing_repos.gateway_repository,
-        sensor_repository=sensing_repos.sensor_repository,
+        sensor_repository=sensing_repos.sensor_device_repository,
+    )
+
+    build_sensor_events = BuildSensorEventsUseCase(
+        sensor_event_repository=sensing_repos.sensor_event_repository,
     )
 
     # --- ASSIGN PRESENTERS
@@ -84,7 +93,8 @@ def build_application_container(
         get_resident_records_for_user_use_case=get_resident_records_for_user,
         resident_main_page_presenter=ResidentMainPagePresenter(),
 
-        get_user_sensing_account_use_case=get_user_sensing_account
+        get_user_sensing_account_use_case=get_user_sensing_account,
+        build_sensor_event_timeline_use_case=build_sensor_events,
     )
 
 

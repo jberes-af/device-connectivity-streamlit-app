@@ -15,7 +15,17 @@ _CSS_ATTRIBUTE = """
     border: 1px solid #ededed;
 }
 
-.card-title {
+[class*="st-key-card_container_"] [data-testid="stMarkdownContainer"] {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+[class*="st-key-card_container_"] [data-testid="stMarkdownContainer"] p {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.attribute-title {
     padding: 6px 10px;
 
     font-size: 1.1rem;
@@ -36,11 +46,11 @@ _CSS_ATTRIBUTE = """
 
 .attributes-properties {
     height: 100px;
-    padding: 0px 0px;
-    box-sizing: border-box;
+    padding-left: 12px;
+    margin: 0;
+    /* box-sizing: border-box; */
 
     background-color: white;
-
     overflow-y: auto;
     overflow-x: hidden;
 
@@ -49,18 +59,18 @@ _CSS_ATTRIBUTE = """
     font-weight: 400;
 }
 
-.property-list {
+.attribute-list {
     list-style: none;
     margin: 0;
     padding: 0;
-    /* padding-left: 0.9rem; */
 }
 
-.property-field {
-    margin-bottom: 8px;
+.attribute-field {
+    margin: 0 0 6px 0;
+    padding: 0;
 }
 
-.property-field:last-child {
+.attribute-field:last-child {
     margin-bottom: 0;
 }
 
@@ -88,7 +98,7 @@ def render_attribute_card(
     ):
         st.markdown(
             f"""
-<div class="card-title">
+<div class="attribute-title">
     {escape(title)}
 </div>
 
@@ -104,10 +114,19 @@ def render_attribute_card(
         )
 
 
+"""
 def _create_list(data: tuple[str, ...]) -> str:
     items = "".join(
-        f'<li class="property-field">{escape(field)}</li>'
+        f'<li class="attribute-field">{escape(field)}</li>'
         for field in data
     )
 
-    return f'<ul class="property-list">{items}</ul>'
+    return f'<ul class="attribute-list">{items}</ul>'
+"""
+
+
+def _create_list(data: tuple[str, ...]) -> str:
+    return "".join(
+        f'<div class="attribute-field">{escape(field)}</div>'
+        for field in data
+    )

@@ -12,6 +12,9 @@ from src.application.context import SessionContext, UserContext
 from dataclasses import dataclass
 
 
+LOCAL_TIME_ZONE = "America/New_York"
+
+
 @dataclass(frozen=True, slots=True)
 class HostInputs:
     bypass_authentication: bool

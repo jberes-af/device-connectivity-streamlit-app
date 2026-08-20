@@ -21,16 +21,16 @@ from src.interface_adapters.view_models.common.card_view_models import (
 
 def render_resident_sensing(
         resident_id: str,
-        section_vm: SensorSectionViewModel,
+        section_dash_vm: SensorSectionViewModel,
 ) -> None:
-    st.markdown(f"#### {section_vm.section_header}")
+    st.markdown(f"#### {section_dash_vm.section_header}")
 
     # --- DASHBOARD CARDS
 
     dash_card_view_models: tuple[CardAttributeNameCountListViewModel, ...]
-    dash_card_view_models = section_vm.dash_card_grid_vm.cards
+    dash_card_view_models = section_dash_vm.dash_card_grid_vm.cards
 
-    columns = st.columns(int(section_vm.dash_card_grid_vm.columns))
+    columns = st.columns(int(section_dash_vm.dash_card_grid_vm.columns))
 
     for i, vm in enumerate(dash_card_view_models):
         with columns[i % len(columns)]:
@@ -46,7 +46,7 @@ def render_resident_sensing(
 
     st.write("")
 
-    tabs_vm = section_vm.sensing_detail_section_vm
+    tabs_vm = section_dash_vm.sensing_detail_section_vm
 
     tabs = st.tabs(
         [tab.label for tab in tabs_vm.tabs]

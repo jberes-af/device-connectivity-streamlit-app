@@ -8,6 +8,9 @@ class RealtimeDatabasePort(Protocol):
     def read_node(self, path: str) -> Any:
         ...
 
+    def read_nodes(self, paths: tuple[str, ...]) -> dict[str, Any]:
+        ...
+
     def node_exists(self, path: str) -> bool:
         ...
 

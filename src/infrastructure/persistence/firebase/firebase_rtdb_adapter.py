@@ -44,6 +44,12 @@ class FirebaseRtdbAdapter(RealtimeDatabasePort):
         firebase_path = FirebasePath(path)
         return db.reference(firebase_path.value, app=self._app).get()
 
+    def read_nodes(self, paths: tuple[str, ...]) -> dict[str, Any]:
+        return {
+            path: self.read_node(path)
+            for path in paths
+        }
+
     def node_exists(self, path: str) -> bool:
         firebase_path = FirebasePath(path)
         return db.reference(firebase_path.value, app=self._app).get() is not None

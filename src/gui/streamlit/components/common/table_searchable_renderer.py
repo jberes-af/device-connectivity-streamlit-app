@@ -74,7 +74,7 @@ def render_searchable_table(
 
         st.session_state[session_key] = selected_domain_id
 
-    return st.session_state.get(session_key)
+    return st.session_state.get_all_sensor_events(session_key)
 
 
 def _to_dataframe(

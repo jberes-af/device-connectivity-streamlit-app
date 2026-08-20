@@ -248,7 +248,7 @@ def _render_patients_results_table(
 
         st.session_state[_SELECTED_ENTITY_ID_KEY] = selected_entity_id
 
-    selected_entity_id = st.session_state.get(
+    selected_entity_id = st.session_state.get_all_sensor_events(
         _SELECTED_ENTITY_ID_KEY
     )
 

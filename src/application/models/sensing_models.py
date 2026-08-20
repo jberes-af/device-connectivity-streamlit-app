@@ -7,7 +7,7 @@ from dataclasses import dataclass
 from src.domain.entities.sensing.device_entities import (
     GatewayProfile,
     GatewaySensorLink,
-    # SensorSystemProfile,
+    # SensorEvent,
 )
 
 from src.domain.entities.sensing.user_sensing_entities import (
@@ -37,8 +37,9 @@ class GatewayDomainObjects:
     gateway_user_links: tuple[UserGatewayLink, ...]
 
 
+
 """
 @dataclass(frozen=True, slots=True)
-class SensorDomainObjects:
+class SensorEventDomainObjects:
     sensor_system_profiles: tuple[SensorSystemProfile, ...]
 """

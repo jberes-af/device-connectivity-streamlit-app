@@ -17,12 +17,12 @@ class GoogleSheetsQueryService:
             return (
                 self.sheets_service.spreadsheets()
                 .values()
-                .get(spreadsheetId=spreadsheet_id, range=range_a1)
+                .get_all_sensor_events(spreadsheetId=spreadsheet_id, range=range_a1)
                 .execute()
             )
 
         result = retry_google_api_operation(op)
-        values = result.get("values", [])
+        values = result.get_all_sensor_events("values", [])
         if not values:
             return []
 
