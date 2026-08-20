@@ -39,7 +39,7 @@ class StreamlitSecretProvider(SecretProvider):
             return default
 
         try:
-            value = st.secrets.get_all_sensor_events(name, default)
+            value = st.secrets.get(name, default)
         except Exception:
             return default
 

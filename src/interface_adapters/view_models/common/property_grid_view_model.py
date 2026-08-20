@@ -1,4 +1,4 @@
-# /src/interface_adapters/view_models/common/property_grid_view_model.py
+# /src/interface_adapters/view_models/widgets/property_grid_view_model.py
 
 from dataclasses import dataclass
 

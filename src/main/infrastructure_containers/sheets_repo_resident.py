@@ -5,7 +5,6 @@ from dataclasses import dataclass
 from src.application.ports.resident_repo_ports import (
     ResidentProfileRepositoryPort,
     ResidentContactInformationRepositoryPort,
-    UserResidentAccessRepositoryPort,
 )
 
 from src.infrastructure.config.app_config_models import (
@@ -21,18 +20,12 @@ from src.infrastructure.persistence.google_sheets.mappers.resident.resident_prof
 from src.infrastructure.persistence.google_sheets.mappers.resident.resident_contact_information_row_mapper import (
     ResidentContactInformationRowMapper,
 )
-from src.infrastructure.persistence.google_sheets.mappers.resident.user_resident_access_row_mapper import (
-    UserResidentAccessRowMapper,
-)
 
 from src.infrastructure.persistence.google_sheets.repos.resident.resident_profile_repository import (
     GoogleSheetsResidentProfileRepository,
 )
 from src.infrastructure.persistence.google_sheets.repos.resident.resident_contact_information_repository import (
     GoogleSheetsResidentContactInformationRepository,
-)
-from src.infrastructure.persistence.google_sheets.repos.resident.user_resident_access_repository import (
-    GoogleSheetsUserResidentAccessRepository,
 )
 
 from src.main.infrastructure_containers.utils_sheets_composition_root import (
@@ -45,7 +38,7 @@ from src.main.infrastructure_containers.utils_sheets_composition_root import (
 class GoogleSheetsResidentRepositories:
     resident_profile_repository: ResidentProfileRepositoryPort
     resident_contact_info_repository: ResidentContactInformationRepositoryPort
-    user_resident_access_repository: UserResidentAccessRepositoryPort
+    # user_resident_access_repository: UserResidentAccessRepositoryPort
 
 
 def build_google_sheets_resident_repositories(
@@ -76,15 +69,17 @@ def build_google_sheets_resident_repositories(
             mapper=ResidentContactInformationRowMapper(),
         ))
 
+    """
     user_resident_access_repo: UserResidentAccessRepositoryPort = (
         GoogleSheetsUserResidentAccessRepository(
             query_service=query_service,
             catalog=catalog,
             mapper=UserResidentAccessRowMapper(),
         ))
+    """
 
     return GoogleSheetsResidentRepositories(
         resident_profile_repository=resident_profile_repo,
         resident_contact_info_repository=resident_contact_info_repo,
-        user_resident_access_repository=user_resident_access_repo,
+        # user_resident_access_repository=user_resident_access_repo,
     )

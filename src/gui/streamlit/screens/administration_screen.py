@@ -8,5 +8,5 @@ from src.main.compose_root_application import AppContainer
 def render_administration_page(
         container: AppContainer,
 ) -> None:
-    st.title("🚧 Administration")
+    st.title("🚧 :material/note_alt: Administration")
     st.write("Clinical reviews and scheduled activities.")

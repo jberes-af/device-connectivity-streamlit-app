@@ -1,15 +1,20 @@
 # /src/gui/streamlit/routing/routes.py
 
 from src.gui.streamlit.routing.route_types import Route
+
 from src.gui.streamlit.screens.administration_screen import (
     render_administration_page,
 )
-from src.gui.streamlit.screens.billing_screen import render_billing_page
-from src.gui.streamlit.screens.dashboard_screen import render_dashboard_page
-from src.gui.streamlit.screens.resident_screen import render_residents_page
-from src.gui.streamlit.screens.reports_screen import render_reports_page
-from src.gui.streamlit.screens.schedule_screen import render_schedule_page
 
+from src.gui.streamlit.screens.billing_screen import render_billing_page
+
+from src.gui.streamlit.screens.dashboard_screen import render_dashboard_page
+
+from src.gui.streamlit.screens.resident.resident_screen import render_residents_page
+
+from src.gui.streamlit.screens.reports_screen import render_reports_page
+
+from src.gui.streamlit.screens.schedule_screen import render_schedule_page
 
 ROUTES: tuple[Route, ...] = (
     Route(
@@ -46,6 +51,6 @@ ROUTES: tuple[Route, ...] = (
         route_id="administration",
         label="Administration",
         handler=render_administration_page,
-        icon=":material/settings:",
+        icon=":material/note_alt:",
     ),
 )

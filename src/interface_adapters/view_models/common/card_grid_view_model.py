@@ -1,4 +1,4 @@
-# /src/interface_adapters/view_models/common/card_grid_view_model.py
+# /src/interface_adapters/view_models/widgets/card_grid_view_model.py
 
 from dataclasses import dataclass, field
 
@@ -6,7 +6,7 @@ from src.interface_adapters.view_models.common.card_view_models import (
     CardAttributeNameCountListViewModel,
     CardPropertyFieldsButtonViewModel,
     CardTitleTextButtonViewModel,
-    CardViewModel,
+    CardPropertyFieldsViewModel,
 )
 
 from src.interface_adapters.view_models.common.metric_view_model import (
@@ -14,7 +14,7 @@ from src.interface_adapters.view_models.common.metric_view_model import (
 )
 
 type CardGridItemViewModel = (
-        CardViewModel
+        CardPropertyFieldsViewModel
         | CardAttributeNameCountListViewModel
         | CardPropertyFieldsButtonViewModel
         | CardTitleTextButtonViewModel

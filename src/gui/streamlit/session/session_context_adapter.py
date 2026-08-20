@@ -6,7 +6,7 @@ from src.application.context import SessionContext
 
 
 def get_session_context() -> SessionContext:
-    context = st.session_state.get_all_sensor_events("session_context")
+    context = st.session_state.get("session_context")
 
     if context is None:
         context = SessionContext()

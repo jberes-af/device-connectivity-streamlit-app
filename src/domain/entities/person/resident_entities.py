@@ -3,42 +3,6 @@
 from dataclasses import dataclass
 from datetime import date
 
-from src.domain.entities.person.tenant_entities import TenantProfile
-from src.domain.enums.person.resident_enums import ResidentAccessLevelEnum
-
-
-@dataclass(frozen=True)
-class ResidentSensorLink:
-    resident_id: str
-    sensor_id: str
-    tenant_id: str | None
-    active_from_date: date | None = None
-    active_to_date: date | None = None
-    setup_date: date | None = None
-    removed_date: date | None = None
-
-
-@dataclass(frozen=True)
-class ResidentGatewayLink:
-    resident_id: str
-    gateway_id: str
-    tenant_id: str | None
-    active_from_date: date | None = None
-    active_to_date: date | None = None
-    setup_date: date | None = None
-    removed_date: date | None = None
-
-
-@dataclass(frozen=True)
-class UserResidentAccess:
-    user_id: str
-    tenant_id: str | None
-    resident_id: str
-    access_level: ResidentAccessLevelEnum
-    granted_by_user_id: str
-    granted_at_date: date
-    active: bool | None
-
 
 @dataclass(frozen=True)
 class ResidentContactInformation:

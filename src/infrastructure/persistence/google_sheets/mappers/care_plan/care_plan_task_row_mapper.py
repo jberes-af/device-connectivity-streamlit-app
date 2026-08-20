@@ -76,7 +76,7 @@ class CarePlanTaskRowMapper:
                 care_plan_task.title,
 
             schema.DESCRIPTION:
-                care_plan_task.description,
+                care_plan_task.card_text,
 
             schema.ASSIGNED_ROLE:
                 care_plan_task.assigned_role,

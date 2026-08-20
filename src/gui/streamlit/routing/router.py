@@ -4,8 +4,16 @@ from collections.abc import Callable
 
 import streamlit as st
 
+from src.application.use_cases.access.access_scope_uc_dtos import (
+    AccessScopeResultDTO,
+)
+
 from src.gui.streamlit.routing.route_types import Route
 from src.gui.streamlit.routing.routes import ROUTES
+
+from src.gui.streamlit.screens.access_scope_screen import (
+    render_account_and_access_page,
+)
 
 from src.main.compose_root_application import AppContainer
 
@@ -24,8 +32,9 @@ def render_router(
     app_name: str,
     default_route: str,
     container: AppContainer,
+    access_scope: AccessScopeResultDTO,
 ) -> None:
-    pages = [
+    main_pages = [
         st.Page(
             _create_page_handler(
                 route=route,
@@ -39,9 +48,25 @@ def render_router(
         for route in ROUTES
     ]
 
+    def render_account_page() -> None:
+        render_account_and_access_page(
+            user_context=container.user_context,
+            access_scope=access_scope,
+        )
+
+    account_page = st.Page(
+        render_account_page,
+        title="Account & Access",
+        icon=":material/account_circle:",
+        url_path="account",
+    )
+
     page = st.navigation(
         {
-            app_name.upper(): pages,
+            app_name.upper(): main_pages,
+            "ACCOUNT": [
+                account_page,
+            ],
         },
         position="sidebar",
     )

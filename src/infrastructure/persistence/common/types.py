@@ -1,4 +1,4 @@
-# /src/infrastructure/persistence/common/types.py
+# /src/infrastructure/persistence/widgets/types.py
 
 from typing import TypeAlias, Mapping, Any
 

@@ -9,37 +9,46 @@ from src.infrastructure.persistence.google_sheets.google_retry_utility import re
 class GoogleSheetsQueryService:
     sheets_service: Any  # googleapiclient.discovery.Resource
 
-    def read_values(self,
-                    *,
-                    spreadsheet_id: str,
-                    range_a1: str) -> list[dict[str, str]]:
+    def read_values(
+            self,
+            *,
+            spreadsheet_id: str,
+            range_a1: str,
+    ) -> list[dict[str, str]]:
         def op():
             return (
-                self.sheets_service.spreadsheets()
+                self.sheets_service
+                .spreadsheets()
                 .values()
-                .get_all_sensor_events(spreadsheetId=spreadsheet_id, range=range_a1)
+                .get(
+                    spreadsheetId=spreadsheet_id,
+                    range=range_a1,
+                )
                 .execute()
             )
 
         result = retry_google_api_operation(op)
-        values = result.get_all_sensor_events("values", [])
+
+        values = result.get("values", [])
+
         if not values:
             return []
-
-        """
-        normalized: list[list[str]] = []
-        for row in values:
-            normalized.append([("" if cell is None else str(cell)) for cell in row])
-        """
 
         headers: list[str] = values[0]
         data_rows: list[list[str]] = values[1:]
 
         normalized_rows: list[dict[str, str]] = []
+
         for row in data_rows:
             row_dict: dict[str, str] = {}
+
             for index, header in enumerate(headers):
-                row_dict[header] = row[index] if index < len(row) else ""
+                row_dict[header] = (
+                    row[index]
+                    if index < len(row)
+                    else ""
+                )
+
             normalized_rows.append(row_dict)
 
         return normalized_rows

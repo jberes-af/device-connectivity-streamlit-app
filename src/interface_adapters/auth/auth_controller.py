@@ -1,11 +1,12 @@
 # /src/interface_adapters/controllers/auth_controller.py
 
 from src.application.auth.dto import LoginRequestDTO
-from src.application.auth.login_user import LoginUser
+from src.application.auth.login_user_use_case import LoginUser
 
 
 class AuthController:
-    def __init__(self, login_user: LoginUser):
+    def __init__(self,
+                 login_user: LoginUser):
         self._login_user = login_user
 
     def login(self, email: str, password: str):

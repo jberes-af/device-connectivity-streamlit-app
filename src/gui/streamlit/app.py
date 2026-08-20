@@ -2,7 +2,10 @@
 
 from pathlib import Path
 
+import logging
 import sys
+# import traceback
+
 
 PROJECT_ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(PROJECT_ROOT))
@@ -14,6 +17,11 @@ import streamlit as st
 from src.application.context import (
     # UserContext,
     SessionContext,
+)
+
+from src.application.use_cases.access.access_scope_uc_dtos import (
+    AccessScopeRequestDTO,
+    AccessScopeResultDTO,
 )
 
 # --- GUI
@@ -56,6 +64,12 @@ _DEFAULT_ROUTE_ID = "residents"
 _PATH_FILE_FAVICON = PROJECT_ROOT / "src/gui/streamlit/static/favicon" / "favicon.ico"
 
 
+def configure_logging() -> None:
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(levelname)s |  %(message)s | %(filename)s:%(lineno)d",
+    )
+
 def configure_page() -> None:
     st.set_page_config(
         page_title=_APP_NAME,
@@ -66,11 +80,54 @@ def configure_page() -> None:
 
 
 def initialize_session_state() -> None:
-    if "logged_in" not in st.session_state:
-        st.session_state["logged_in"] = False
+    if "session_context" not in st.session_state:
+        st.session_state["session_context"] = SessionContext()
 
-    if "user" not in st.session_state:
-        st.session_state["user"] = None
+    if "access_scope" not in st.session_state:
+        st.session_state["access_scope"] = None
+
+
+def logout() -> None:
+    st.session_state["session_context"] = SessionContext()
+    st.session_state.pop("access_scope", None)
+    st.session_state.pop("access_scope_user_id", None)
+
+    st.rerun()
+
+
+def get_or_load_access_scope(
+        app_container: AppContainer,
+) -> AccessScopeResultDTO:
+    user_context = app_container.user_context
+
+    access_scope = st.session_state.get("access_scope")
+    cached_user_id = st.session_state.get(
+        "access_scope_user_id"
+    )
+
+    if (
+            access_scope is not None
+            and cached_user_id == user_context.user_id
+    ):
+        return access_scope
+
+    request = AccessScopeRequestDTO(
+        user_id=user_context.user_id,
+        tenant_id=user_context.tenant_id,
+    )
+
+    access_scope = (
+        app_container
+        .get_user_access_scope_use_case
+        .execute(request=request)
+    )
+
+    st.session_state["access_scope"] = access_scope
+    st.session_state["access_scope_user_id"] = (
+        user_context.user_id
+    )
+
+    return access_scope
 
 
 def render_login_phase(authentication: AuthenticationContainer) -> None:
@@ -82,25 +139,25 @@ def render_login_phase(authentication: AuthenticationContainer) -> None:
     login_form.render()
 
 
-def render_authenticated_phase(app_container: AppContainer) -> None:
-    user = st.session_state.get_all_sensor_events("user")
-    if user:
-        st.sidebar.success(f"Signed in as {user['email']}")
+def render_authenticated_phase(
+        app_container: AppContainer,
+) -> None:
+    # user_context = app_container.user_context
+    # st.sidebar.success(f"Signed in as {user_context.user_id}")
 
-    # --- PAGE NAVIGATION / ROUTING
+    access_scope = get_or_load_access_scope(
+        app_container=app_container,
+    )
 
     render_router(
         app_name=_APP_NAME,
         default_route=_DEFAULT_ROUTE_ID,
-        container=app_container
+        container=app_container,
+        access_scope=access_scope,
     )
 
-    # --- LOGOUT
-
     if st.sidebar.button("Logout"):
-        st.session_state["logged_in"] = False
-        st.session_state["user"] = None
-        st.rerun()
+        logout()
 
 
 @st.cache_resource
@@ -114,7 +171,11 @@ def get_infrastructure_container() -> InfrastructureContainer:
 
 
 def run_app() -> None:
+    configure_logging()
+
     configure_page()
+
+    initialize_session_state()
 
     infrastructure: InfrastructureContainer = (
         get_infrastructure_container())

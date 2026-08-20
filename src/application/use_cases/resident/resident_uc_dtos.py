@@ -5,9 +5,8 @@ from src.domain.enums.person.tenant_enums import UserRoleEnum
 from src.domain.entities.person.resident_entities import (
     ResidentProfile,
     ResidentContactInformation,
-    ResidentGatewayLink,
-    ResidentSensorLink,
 )
+from src.domain.entities.access.access_entities import ResidentGatewayLink, ResidentSensorLink
 
 from dataclasses import dataclass
 from datetime import date

@@ -1,8 +1,6 @@
 # /src/application/use_cases/build_sensor_events_use_case.py
 
-
 from datetime import date, datetime, time
-from typing import Any
 from zoneinfo import ZoneInfo
 
 from src.application.ports.sensing.device_ports import (
@@ -12,6 +10,7 @@ from src.application.ports.sensing.device_ports import (
 from src.domain.entities.sensing.device_entities import SensorEvent
 
 from src.application.use_cases.sensing.trends.sensor_events_uc_dtos import (
+    SensorEventsBySensorDTO,
     SensorEventsRequestDTO,
     SensorEventsResultDTO,
 )
@@ -22,40 +21,64 @@ class BuildSensorEventsUseCase:
             self,
             sensor_event_repository: SensorEventRepositoryPort,
     ) -> None:
-        self._sensor_event_repo = sensor_event_repository
+        self._event_repo = sensor_event_repository
 
     def execute(
             self,
             request: SensorEventsRequestDTO,
     ) -> SensorEventsResultDTO:
 
-        sensor_ids: list[str] = request.sensor_id
+        sensor_ids: tuple[str, ...] = request.sensor_ids
+
+        # --- FETCH EVENTS FROM FIREBASE RTDB REPOSITORY
+
+        events_by_id: dict[str, tuple[SensorEvent, ...]] = {
+            sid: self._event_repo.get_all_sensor_events(sensor_id=sid)
+            for sid in sensor_ids
+        }
+
+        # --- DEFINE START & END DATETIME
 
         start_time: datetime
         end_time: datetime
         start_time, end_time = self._convert_date_to_datetime(
             start_date=request.start_date,
             end_date=request.end_date,
-            local_timezone=local_tz,
+            local_timezone=request.local_timezone,
         )
 
-        time_period_events: list[SensorEvent] = (
-            self._filter_events_by_time_period(
+        # --- FILTER EVENTS BY START & END DATETIME
+
+        filtered_events_by_id: dict[str, list[SensorEvent]] = {
+            sid: (self._filter_events_by_time_period(
                 events=events,
                 start_time=start_time,
                 end_time=end_time,
             ))
+            for sid, events in events_by_id.items()
+        }
 
-        # collapsed events: local time from request
-        collapsed_events: list[SensorEvent] = (
-            self._collapse_consecutive_sensor_events(
-                time_period_events
+        # --- DUPLICATE SEQUENTIAL SENSOR ID EVENTS
+
+        collapsed_events_by_id: dict[str, list[SensorEvent]] = {
+            sid: (self._collapse_consecutive_sensor_events(
+                filtered_events_by_id[sid]
             ))
+            for sid, events in filtered_events_by_id.items()
+        }
+
+        sensor_collapsed_events: [SensorEventsBySensorDTO] = [
+            SensorEventsBySensorDTO(
+                sensor_id=sid,
+                collapsed_events=tuple(collapsed_events_by_id[sid]),
+            )
+            for sid in sensor_ids
+        ]
 
         return SensorEventsResultDTO(
             start_time=start_time,
             end_time=end_time,
-            collapsed_events=collapsed_events,
+            sensor_collapsed_events=tuple(sensor_collapsed_events),
         )
 
     @staticmethod
@@ -91,26 +114,31 @@ class BuildSensorEventsUseCase:
     def _convert_date_to_datetime(
             start_date: date,
             end_date: date,
-            local_timezone: ZoneInfo,
+            local_timezone: ZoneInfo | str,
     ) -> tuple[datetime, datetime]:
+        tz = (
+            ZoneInfo(local_timezone)
+            if isinstance(local_timezone, str)
+            else local_timezone
+        )
 
         start_time = datetime.combine(
             start_date,
             time.min,
-            tzinfo=local_timezone,
+            tzinfo=tz,
         )
 
         end_time = datetime.combine(
             end_date,
             time.max,
-            tzinfo=local_timezone,
+            tzinfo=tz,
         )
 
         return start_time, end_time
 
     @staticmethod
     def _filter_events_by_time_period(
-            events: list[SensorEvent],
+            events: tuple[SensorEvent, ...],
             start_time: datetime,
             end_time: datetime,
     ) -> list[SensorEvent]:

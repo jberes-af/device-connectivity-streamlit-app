@@ -34,13 +34,13 @@ class MsalClientSecretTokenProvider(AccessTokenProviderPort):
             # scopes=["https://graph.microsoft.com/.default"]
         )
 
-        token = result.get_all_sensor_events("access_token")
+        token = result.get("access_token")
         if token:
             return str(token)
 
-        error = str(result.get_all_sensor_events("error") or "unknown_error")
-        desc = str(result.get_all_sensor_events("error_description") or "").strip()
-        correlation_id = str(result.get_all_sensor_events("correlation_id") or "").strip()
+        error = str(result.get("error") or "unknown_error")
+        desc = str(result.get("error_description") or "").strip()
+        correlation_id = str(result.get("correlation_id") or "").strip()
 
         msg = f"Token acquisition failed: {error}"
         if desc:

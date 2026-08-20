@@ -2,15 +2,11 @@
 
 import streamlit as st
 
-from src.interface_adapters.presenters.resident.resident_sensing_section_presenter import (
-    ResidentSensingSectionPresenter
-)
-
 from src.interface_adapters.view_models.sensing.resident_sensing_view_model import (
     SensorSectionViewModel,
 )
 
-from src.gui.streamlit.components.common.attribute_card_renderer import (
+from src.gui.streamlit.components.cards import (
     render_attribute_card
 )
 

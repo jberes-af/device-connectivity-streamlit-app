@@ -4,7 +4,6 @@ from dataclasses import dataclass
 
 from src.application.ports.user_repo_ports import (
     UserProfileRepositoryPort,
-    UserTenantMembershipRepositoryPort,
 )
 
 from src.infrastructure.config.app_config_models import (
@@ -17,16 +16,8 @@ from src.infrastructure.persistence.google_sheets.mappers.user.user_profile_row_
     UserProfileRowMapper,
 )
 
-from src.infrastructure.persistence.google_sheets.mappers.user.user_tenant_membership_row_mapper import (
-    UserTenantMembershipRowMapper,
-)
-
 from src.infrastructure.persistence.google_sheets.repos.user.user_profile_repository import (
     GoogleSheetsUserProfileRepository,
-)
-
-from src.infrastructure.persistence.google_sheets.repos.user.user_tenant_membership_repository import (
-    GoogleSheetsUserTenantMembershipRepository,
 )
 
 from src.main.infrastructure_containers.utils_sheets_composition_root import (
@@ -38,7 +29,6 @@ from src.main.infrastructure_containers.utils_sheets_composition_root import (
 @dataclass(frozen=True, slots=True)
 class GoogleSheetsUserRepositories:
     user_profile_repository: UserProfileRepositoryPort
-    user_tenant_membership_repository: UserTenantMembershipRepositoryPort
 
 
 def build_google_sheets_user_repositories(
@@ -62,14 +52,6 @@ def build_google_sheets_user_repositories(
             mapper=UserProfileRowMapper(),
         ))
 
-    user_tenant_membership_repository: UserTenantMembershipRepositoryPort = (
-        GoogleSheetsUserTenantMembershipRepository(
-            query_service=query_service,
-            catalog=catalog,
-            mapper=UserTenantMembershipRowMapper(),
-        ))
-
     return GoogleSheetsUserRepositories(
         user_profile_repository=user_profile_repository,
-        user_tenant_membership_repository=user_tenant_membership_repository,
     )

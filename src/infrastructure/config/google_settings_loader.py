@@ -56,6 +56,14 @@ def load_google_service_account_key(
 def load_spreadsheet_ids(
         secret_provider: SecretProvider,
 ) -> dict[str, str]:
+    spreadsheet_name_access = secret_provider.get_required(
+        "SHEETS_NAME_ACCESS"
+    )
+
+    spreadsheet_id_access = secret_provider.get_required(
+        "SHEETS_ID_ACCESS"
+    )
+
     spreadsheet_name_billing = secret_provider.get_required(
         "SHEETS_NAME_BILLING"
     )
@@ -129,6 +137,7 @@ def load_spreadsheet_ids(
     )
 
     return {
+        spreadsheet_name_access: spreadsheet_id_access,
         spreadsheet_name_billing: spreadsheet_id_billing,
         spreadsheet_name_care_plan: spreadsheet_id_care_plan,
         spreadsheet_name_patient: spreadsheet_id_patient,

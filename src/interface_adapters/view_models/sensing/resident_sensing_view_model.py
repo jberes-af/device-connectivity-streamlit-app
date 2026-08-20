@@ -16,7 +16,7 @@ class SensingTabIdEnum(StrEnum):
     ANALYTICS = "analytics"
     DATA = "data"
     LIVE_STATUS = "live_status"
-    PROFILES = "profiles"
+    PROFILES = "device_profiles"
 
 
 SENSING_SEGMENT_ORDER: tuple[SensingTabIdEnum, ...] = (

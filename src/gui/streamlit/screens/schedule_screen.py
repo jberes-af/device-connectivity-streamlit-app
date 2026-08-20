@@ -9,5 +9,5 @@ def render_schedule_page(
 
         container: AppContainer,
 ) -> None:
-    st.title("🚧 Schedule")
+    st.title("🚧 :material/calendar_month: Schedule")
     st.write("Clinical reviews and scheduled activities.")

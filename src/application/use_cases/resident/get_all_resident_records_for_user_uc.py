@@ -3,9 +3,11 @@
 
 from src.domain.entities.person.resident_entities import (
     ResidentProfile,
-    ResidentSensorLink,
-    ResidentGatewayLink,
     ResidentContactInformation,
+)
+from src.domain.entities.access.access_entities import (
+    ResidentGatewayLink,
+    ResidentSensorLink,
     UserResidentAccess,
 )
 
@@ -16,9 +18,11 @@ from src.application.context import (
 from src.application.ports.resident_repo_ports import (
     ResidentProfileRepositoryPort,
     ResidentContactInformationRepositoryPort,
+)
+from src.application.ports.access_repo_ports import (
+    UserResidentAccessRepositoryPort,
     ResidentGatewayLinkRepositoryPort,
     ResidentSensorLinkRepositoryPort,
-    UserResidentAccessRepositoryPort,
 )
 
 """

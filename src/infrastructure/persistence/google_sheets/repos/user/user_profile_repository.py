@@ -6,7 +6,7 @@ from src.application.ports.user_repo_ports import (
 
 from src.domain.entities.person.user_entities import UserProfile
 
-# from src.infrastructure.persistence.common.types import RawRow
+# from src.infrastructure.persistence.widgets.types import RawRow
 
 from src.infrastructure.persistence.google_sheets.base_repository import (
     GoogleSheetsRepository,

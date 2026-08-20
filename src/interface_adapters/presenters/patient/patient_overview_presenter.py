@@ -10,9 +10,9 @@ from src.interface_adapters.view_models.patient.patient_overview_page_view_model
 )
 
 from src.interface_adapters.view_models.common.card_view_models import (
-    CardViewModel,
+    CardPropertyFieldsViewModel,
 )
-# from src.interface_adapters.view_models.common.metric_view_model import MetricViewModel
+# from src.interface_adapters.view_models.widgets.metric_view_model import MetricViewModel
 from src.interface_adapters.view_models.common.badge_view_model import (
     BadgeViewModel,
     BadgeStyle,
@@ -57,10 +57,10 @@ class PatientOverviewPresenter:
     @staticmethod
     def _build_admin_card(
             overview: PatientOverviewDevDTO,
-    ) -> CardViewModel:
+    ) -> CardPropertyFieldsViewModel:
         admin = overview.administration
 
-        return CardViewModel(
+        return CardPropertyFieldsViewModel(
 
             title="Patient Administration",
 
@@ -108,10 +108,10 @@ class PatientOverviewPresenter:
     @staticmethod
     def _build_enrollment_card(
             overview: PatientOverviewDevDTO,
-    ) -> CardViewModel:
+    ) -> CardPropertyFieldsViewModel:
         enrollment = overview.enrollment_summary
 
-        return CardViewModel(
+        return CardPropertyFieldsViewModel(
 
             title="RTM Enrollment",
 

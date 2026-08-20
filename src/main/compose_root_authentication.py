@@ -8,11 +8,9 @@ from src.application.ports.user_repo_ports import (
     UserProfileRepositoryPort,
 )
 
-from src.application.ports.user_repo_ports import (
-    UserTenantMembershipRepositoryPort,
-)
+from src.application.ports.access_repo_ports import UserTenantMembershipRepositoryPort
 
-from src.application.auth.login_user import LoginUser
+from src.application.auth.login_user_use_case import LoginUser
 
 from src.infrastructure.auth.firebase.firebase_client_auth_service import (
     FirebaseAuthenticationAdapter,

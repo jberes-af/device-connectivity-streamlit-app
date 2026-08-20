@@ -1,4 +1,4 @@
-# /src/interface_adapters/view_models/common/metric_view_model.py
+# /src/interface_adapters/view_models/widgets/metric_view_model.py
 
 from dataclasses import dataclass
 

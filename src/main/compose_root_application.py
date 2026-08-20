@@ -9,16 +9,17 @@ from src.application.context import (
     # SessionContext,
 )
 
-# --- APPLICATION DTOs
-
-
 # --- APPLICATION USE CASES
+
+from src.application.use_cases.access.get_access_scope_uc import (
+    GetUserAccessScopeUseCase,
+)
 
 from src.application.use_cases.resident.get_all_resident_records_for_user_uc import (
     GetAllResidentRecordsForUserUseCase,
 )
 
-from src.application.use_cases.sensing.profiles.get_user_sensing_account_uc import (
+from src.application.use_cases.sensing.device_profiles.get_user_sensing_account_uc import (
     GetUserSensingAccountUseCase,
 )
 
@@ -52,11 +53,14 @@ from src.interface_adapters.presenters.resident.resident_main_page_presenter imp
 class AppContainer:
     user_context: UserContext
 
+    get_user_access_scope_use_case: GetUserAccessScopeUseCase
+
     get_resident_records_for_user_use_case: GetAllResidentRecordsForUserUseCase
     resident_main_page_presenter: ResidentMainPagePresenter
 
     get_user_sensing_account_use_case: GetUserSensingAccountUseCase
     build_sensor_event_timeline_use_case: BuildSensorEventsUseCase
+
     # get_patient_overview_use_case: GetPatientOverviewUseCase
     # patient_overview_presenter: PatientOverviewPresenter
 
@@ -65,21 +69,42 @@ def build_application_container(
         infrastructure: InfrastructureContainer,
         user_context: UserContext,
 ) -> AppContainer:
-    # --- ASSIGN USE CASES
+    # --- ASSIGN REPOSITORIES
 
+    access_repos = infrastructure.access_repository
     resident_repos = infrastructure.resident_repository
+    tenant_repos = infrastructure.tenant_repository
+
+    sensing_repos = infrastructure.sensing_repositories
+
+    # --- ACCESS RECORDS
+
+    get_access_scope = GetUserAccessScopeUseCase(
+        user_tenant_membership_repository=access_repos.user_tenant_membership_repository,
+        user_resident_repository=access_repos.user_resident_access_repository,
+        resident_gateway_repository=access_repos.resident_gateway_link_repository,
+        resident_sensor_repository=access_repos.resident_sensor_link_repository,
+        user_sensing_repository=sensing_repos.user_sensing_repository,
+        tenant_profile_repository=tenant_repos.tenant_profile_repository
+    )
+
+    # --- RESIDENT RECORDS
+
     get_resident_records_for_user = GetAllResidentRecordsForUserUseCase(
-        user_resident_access_repository=resident_repos.user_resident_access_repository,
+        user_resident_access_repository=access_repos.user_resident_access_repository,  # IS THIS NEEDED?????
         resident_profile_repository=resident_repos.resident_profile_repository,
         resident_contacts_repository=resident_repos.resident_contact_info_repository,
     )
 
-    sensing_repos = infrastructure.sensing_repositories
+    # --- RESIDENT SENSING RECORDS
+
     get_user_sensing_account = GetUserSensingAccountUseCase(
         user_sensing_repository=sensing_repos.user_sensing_repository,
         gateway_repository=sensing_repos.gateway_repository,
         sensor_repository=sensing_repos.sensor_device_repository,
     )
+
+    # --- SENSOR EVENTS
 
     build_sensor_events = BuildSensorEventsUseCase(
         sensor_event_repository=sensing_repos.sensor_event_repository,
@@ -89,6 +114,8 @@ def build_application_container(
 
     return AppContainer(
         user_context=user_context,
+
+        get_user_access_scope_use_case=get_access_scope,
 
         get_resident_records_for_user_use_case=get_resident_records_for_user,
         resident_main_page_presenter=ResidentMainPagePresenter(),

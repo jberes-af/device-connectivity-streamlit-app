@@ -8,5 +8,5 @@ from src.main.compose_root_application import AppContainer
 def render_reports_page(
         container: AppContainer,
 ) -> None:
-    st.title("🚧 Reports")
+    st.title("🚧 :material/analytics: Reports")
     st.write("Clinical reviews and scheduled activities.")

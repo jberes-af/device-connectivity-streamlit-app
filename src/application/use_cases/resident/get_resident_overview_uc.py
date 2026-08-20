@@ -2,18 +2,15 @@
 
 from src.domain.entities.person.resident_entities import (
     ResidentProfile,
-    ResidentSensorLink,
-    ResidentGatewayLink,
     ResidentContactInformation,
-    UserResidentAccess,
 )
+from src.domain.entities.access.access_entities import ResidentGatewayLink, ResidentSensorLink, UserResidentAccess
 
 from src.application.ports.resident_repo_ports import (
     ResidentProfileRepositoryPort,
     ResidentContactInformationRepositoryPort,
-    ResidentGatewayLinkRepositoryPort,
-    ResidentSensorLinkRepositoryPort,
 )
+from src.application.ports.access_repo_ports import ResidentGatewayLinkRepositoryPort, ResidentSensorLinkRepositoryPort
 
 from src.application.use_cases.patient.patient_uc_dtos import (
     PatientOverviewDevDTO,

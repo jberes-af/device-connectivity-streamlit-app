@@ -21,6 +21,11 @@ from src.main.infrastructure_containers.firebase_rtdb import (
     build_realtime_database_adapter,
 )
 
+from src.main.infrastructure_containers.sheets_repo_access import (
+    GoogleSheetsAccessRepositories,
+    build_google_sheets_access_repositories,
+)
+
 from src.main.infrastructure_containers.sheets_repo_patient import (
     GoogleSheetsPatientRepositories,
     build_google_sheets_patient_repositories,
@@ -62,6 +67,7 @@ class InfrastructureContainer:
     rtdb: RealtimeDatabasePort
     sensing_repositories: FirebaseSensingRepositories
 
+    access_repository: GoogleSheetsAccessRepositories
     patient_repository: GoogleSheetsPatientRepositories
     resident_repository: GoogleSheetsResidentRepositories
     tenant_repository: GoogleSheetsTenantRepositories
@@ -83,6 +89,12 @@ def build_infrastructure_container(
     )
 
     # --- GOOGLE SHEETS REPOSITORIES
+
+    access_repos: GoogleSheetsAccessRepositories = (
+        build_google_sheets_access_repositories(
+            settings=settings,
+            app_config=app_config,
+        ))
 
     patient_repos: GoogleSheetsPatientRepositories = (
         build_google_sheets_patient_repositories(
@@ -122,6 +134,7 @@ def build_infrastructure_container(
         rtdb=fb_rtdb,
         sensing_repositories=sensing_repos,
 
+        access_repository=access_repos,
         patient_repository=patient_repos,
         resident_repository=resident_repos,
         tenant_repository=tenant_repos,

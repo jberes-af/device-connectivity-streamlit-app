@@ -1,4 +1,4 @@
-# /src/interface_adapters/view_models/common/badge_view_model.py
+# /src/interface_adapters/view_models/widgets/badge_view_model.py
 
 from dataclasses import dataclass
 from enum import StrEnum

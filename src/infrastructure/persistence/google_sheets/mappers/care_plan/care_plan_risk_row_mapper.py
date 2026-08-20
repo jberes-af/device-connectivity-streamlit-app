@@ -68,7 +68,7 @@ class CarePlanRiskRowMapper:
                 care_plan_risk.severity,
 
             schema.DESCRIPTION:
-                care_plan_risk.description,
+                care_plan_risk.card_text,
 
             schema.MITIGATION_PLAN:
                 care_plan_risk.mitigation_plan,

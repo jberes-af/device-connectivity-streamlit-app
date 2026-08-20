@@ -1,5 +1,27 @@
 {
   "google_sheets": {
+    "tables_access": {
+      "user_tenant_membership": {
+        "file_name": "access_admin",
+        "worksheet_name": "user_tenant_membership",
+        "worksheet_range": "A1:D"
+      },
+      "user_resident_access": {
+        "file_name": "access_admin",
+        "worksheet_name": "user_resident_access",
+        "worksheet_range": "A1:E"
+      },
+      "resident_sensor_link": {
+        "file_name": "access_admin",
+        "worksheet_name": "resident_sensor_link",
+        "worksheet_range": "A1:E"
+      },
+      "resident_gateway_link": {
+        "file_name": "access_admin",
+        "worksheet_name": "resident_gateway_link",
+        "worksheet_range": "A1:E"
+      }
+    },
     "tables_billing": {
       "billing_case": {
         "file_name": "billing_admin",
@@ -174,21 +196,6 @@
       "resident_contact_information": {
         "file_name": "resident_admin",
         "worksheet_name": "resident_contact_information",
-        "worksheet_range": "A1:E"
-      },
-      "user_resident_access": {
-        "file_name": "resident_admin",
-        "worksheet_name": "user_resident_access",
-        "worksheet_range": "A1:E"
-      },
-      "resident_sensor_link": {
-        "file_name": "resident_admin",
-        "worksheet_name": "resident_sensor_link",
-        "worksheet_range": "A1:E"
-      },
-      "resident_gateway_link": {
-        "file_name": "resident_admin",
-        "worksheet_name": "resident_gateway_link",
         "worksheet_range": "A1:E"
       }
     },

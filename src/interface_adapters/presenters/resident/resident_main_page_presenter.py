@@ -117,7 +117,7 @@ class ResidentMainPagePresenter:
             CardTitleTextButtonViewModel(
                 id="resident_profile",
                 title="Resident Profile",
-                description=(
+                card_text=(
                     "View resident demographics, contact information, "
                     "and administrative details."
                 ),
@@ -126,7 +126,7 @@ class ResidentMainPagePresenter:
             CardTitleTextButtonViewModel(
                 id="care_plan",
                 title="Care Plan",
-                description=(
+                card_text=(
                     "View care goals, activities of daily living, "
                     "priority items, and care instructions."
                 ),
@@ -135,7 +135,7 @@ class ResidentMainPagePresenter:
             CardTitleTextButtonViewModel(
                 id="sensing",
                 title="Sensing",
-                description=(
+                card_text=(
                     "View assigned sensors, activity events, "
                     "movement, and monitoring information."
                 ),
@@ -144,7 +144,7 @@ class ResidentMainPagePresenter:
             CardTitleTextButtonViewModel(
                 id="analytics",
                 title="Analytics",
-                description=(
+                card_text=(
                     "View trends, comparisons, baselines, "
                     "and resident activity insights."
                 ),

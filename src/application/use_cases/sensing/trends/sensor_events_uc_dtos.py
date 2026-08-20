@@ -5,6 +5,28 @@ from datetime import date, datetime
 
 from src.domain.entities.sensing.device_entities import SensorEvent
 
+
+@dataclass(frozen=True)
+class SensorEventsBySensorDTO:
+    sensor_id: str
+    collapsed_events: tuple[SensorEvent, ...]
+
+
+@dataclass(frozen=True)
+class SensorEventsRequestDTO:
+    sensor_ids: tuple[str, ...]
+    start_date: date
+    end_date: date
+    local_timezone: str = "America/New_York"
+
+
+@dataclass(frozen=True)
+class SensorEventsResultDTO:
+    start_time: datetime
+    end_time: datetime
+    sensor_collapsed_events: tuple[SensorEventsBySensorDTO, ...]
+
+
 """
 @dataclass(frozen=True)
 class MostRecentSensorEventDTO:
@@ -20,20 +42,3 @@ class SensorLastSeenDTO:
     connectivity_status: str
     status_timestamp: datetime
 """
-
-
-@dataclass(frozen=True)
-class SensorEventsRequestDTO:
-    sensor_ids: tuple[str, ...]
-    start_date: date
-    end_date: date
-    local_timezone: str = "America/New_York"
-
-
-@dataclass(frozen=True)
-class SensorEventsResultDTO:
-    sensor_id: str
-    start_time: datetime
-    end_time: datetime
-    collapsed_events: tuple[SensorEvent, ...]
-    # all_events:  list[SensorEvent]

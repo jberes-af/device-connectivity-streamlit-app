@@ -1,4 +1,4 @@
-# /src/interface_adapters/view_models/common/property_field_view_model.py
+# /src/interface_adapters/view_models/widgets/property_field_view_model.py
 
 from dataclasses import dataclass
 from enum import StrEnum

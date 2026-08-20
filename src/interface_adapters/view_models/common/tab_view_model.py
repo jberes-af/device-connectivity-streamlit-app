@@ -1,4 +1,4 @@
-# /src/interface_adapters/view_models/common/tab_view_model.py
+# /src/interface_adapters/view_models/widgets/tab_view_model.py
 
 from dataclasses import dataclass
 from typing import Generic, TypeVar

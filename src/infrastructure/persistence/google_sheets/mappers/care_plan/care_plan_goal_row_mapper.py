@@ -69,7 +69,7 @@ class CarePlanGoalRowMapper:
                 care_plan_goal.title,
 
             schema.DESCRIPTION:
-                care_plan_goal.description,
+                care_plan_goal.card_text,
 
             schema.PRIORITY:
                 care_plan_goal.priority,
