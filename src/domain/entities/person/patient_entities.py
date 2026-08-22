@@ -70,7 +70,7 @@ class PatientEmergencyContact:
 
 
 @dataclass(frozen=True)
-class RTMEnrollment:
+class RtmEnrollment:
     enrollment_id: str
     patient_id: str
     enrollment_status: EnrollmentStatusEnum

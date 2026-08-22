@@ -6,7 +6,7 @@ from src.domain.enums.billing.payer_enums import PayerType
 
 
 @dataclass(frozen=True)
-class Payer:
+class PayerProfile:
     payer_id: str
     payer_name: str
     payer_type: PayerType

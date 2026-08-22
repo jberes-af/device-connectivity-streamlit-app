@@ -1,8 +1,10 @@
 # /src/infrastructure/persistence/google_sheets/repos/provider/provider_repository.py
 
+from typing import Sequence
+
 from src.application.ports.provider_repo_ports import ProviderRepositoryPort
 
-from src.domain.entities.care.provider_entities import Provider
+from src.domain.entities.care.provider_entities import ProviderProfile
 
 from src.infrastructure.persistence.common.types import RawRow
 
@@ -48,27 +50,42 @@ class GoogleSheetsProviderRepository(
 
         self._mapper = mapper
 
-    def list_providers(self) -> tuple[Provider, ...]:
+    def list_providers(self) -> tuple[ProviderProfile, ...]:
         return tuple(
             self._mapper.to_domain(row)
             for row in self._read_rows()
         )
 
+    def get_by_ids(
+            self,
+            provider_ids: Sequence[str],
+    ) -> tuple[ProviderProfile, ...]:
+        raw_rows: list[RawRow] = self._find_rows_for_multiple_values(
+            rows=self._read_rows(),
+            column_name=self.ID_COLUMN,
+            values=provider_ids,
+        )
+
+        return tuple(
+            self._mapper.to_domain(row)
+            for row in raw_rows
+        )
+
     def get_by_id(
             self,
-            patient_id: str,
-    ) -> Provider:
+            provider_id: str,
+    ) -> ProviderProfile:
         raw_row = self._find_single_row(
             rows=self._read_rows(),
             column_name=self.ID_COLUMN,
-            value=patient_id,
+            value=provider_id,
         )
 
         return self._mapper.to_domain(raw_row)
 
     def append_open_event(
             self,
-            event: Provider,
+            event: ProviderProfile,
     ) -> None:
         raw_row: RawRow = self._mapper.to_row(event)
 

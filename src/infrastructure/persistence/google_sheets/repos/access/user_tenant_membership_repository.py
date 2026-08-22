@@ -1,6 +1,5 @@
 # /src/infrastructure/persistence/google_sheets/repos/user/user_tenant_membership.py
 
-
 from src.application.ports.access_repo_ports import UserTenantMembershipRepositoryPort
 
 from src.domain.entities.access.access_entities import UserTenantMembership

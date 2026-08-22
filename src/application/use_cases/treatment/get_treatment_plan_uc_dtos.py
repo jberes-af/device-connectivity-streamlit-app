@@ -5,24 +5,6 @@ from dataclasses import dataclass
 from datetime import date
 
 
-
-@dataclass(frozen=True)
-class TreatmentPlanReadDTO:
-    diagnosis: DiagnosisAndMedicalNecessityDTO
-    treatment: TreatmentInformationDTO
-    outcome_measures: tuple[OutcomeMeasureDTO, ...]
-    history: tuple[TreatmentPlanHistoryEntryDTO, ...]
-
-
-@dataclass(frozen=True)
-class DiagnosisAndMedicalNecessityDTO:
-    primary_diagnosis: str
-    relevant_secondary_diagnoses: tuple[str, ...]
-    functional_limitation: str
-    medical_necessity_for_rtm: str
-    remote_monitoring_rationale: str
-
-
 @dataclass(frozen=True)
 class TreatmentInformationDTO:
     treating_provider: str
@@ -30,7 +12,6 @@ class TreatmentInformationDTO:
     expected_treatment_end_date: date | None
     treatment_status: str
     treatment_types: tuple[str, ...]
-
 
 
 @dataclass(frozen=True)
@@ -54,3 +35,11 @@ class TreatmentPlanHistoryEntryDTO:
     previous_value: str | None
     new_value: str | None
     reason: str
+
+
+@dataclass(frozen=True)
+class TreatmentPlanReadDTO:
+    # diagnosis: DiagnosisAndMedicalNecessityDTO
+    treatment: TreatmentInformationDTO
+    outcome_measures: tuple[OutcomeMeasureDTO, ...]
+    history: tuple[TreatmentPlanHistoryEntryDTO, ...]

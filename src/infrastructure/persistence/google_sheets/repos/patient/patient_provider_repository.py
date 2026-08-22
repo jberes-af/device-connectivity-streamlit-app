@@ -8,6 +8,8 @@ from src.domain.entities.person.patient_entities import (
     PatientProvider,
 )
 
+from src.infrastructure.persistence.common.types import RawRow
+
 from src.infrastructure.persistence.google_sheets.base_repository import (
     GoogleSheetsRepository,
 )
@@ -24,7 +26,6 @@ from src.infrastructure.persistence.google_sheets.mappers.patient.patient_provid
     PatientProviderRowMapper,
 )
 
-
 from src.infrastructure.persistence.google_sheets.schemas.patient.patient_provider_columns import (
     PatientProviderColumns,
 )
@@ -34,19 +35,16 @@ class GoogleSheetsPatientProviderRepository(
     GoogleSheetsRepository,
     PatientProviderRepositoryPort,
 ):
-
     TABLE_NAME = "patient_provider"
     ID_COLUMN = PatientProviderColumns.PATIENT_ID
 
-
     def __init__(
-        self,
-        *,
-        query_service: GoogleSheetsQueryService,
-        catalog: GoogleSheetCatalog,
-        mapper: PatientProviderRowMapper,
+            self,
+            *,
+            query_service: GoogleSheetsQueryService,
+            catalog: GoogleSheetCatalog,
+            mapper: PatientProviderRowMapper,
     ) -> None:
-
         super().__init__(
             query_service=query_service,
             catalog=catalog,
@@ -55,12 +53,25 @@ class GoogleSheetsPatientProviderRepository(
         self._mapper = mapper
 
     def list_patient_providers(self) -> tuple[PatientProvider, ...]:
-
         return tuple(
             self._mapper.to_domain(row)
             for row in self._read_rows()
         )
 
+    def get_all_providers_for_patient_id(
+            self,
+            patient_id: str,
+    ) -> tuple[PatientProvider, ...]:
+        raw_rows: list[RawRow] = self._find_rows(
+            rows=self._read_rows(),
+            column_name=self.ID_COLUMN,
+            value=patient_id,
+        )
+
+        return tuple(
+            self._mapper.to_domain(row)
+            for row in raw_rows
+        )
 
     def get_by_id(
             self,

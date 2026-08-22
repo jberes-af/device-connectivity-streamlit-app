@@ -31,7 +31,7 @@ class PatientOverviewPresenter:
             self,
             result: GetPatientOverviewResultDTO,
     ) -> PatientOverviewPageViewModel:
-        overview = result.overview
+        overview = result.payer_profile
 
         return PatientOverviewPageViewModel(
 

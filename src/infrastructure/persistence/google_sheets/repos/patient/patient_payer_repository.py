@@ -1,6 +1,5 @@
 # /src/infrastructure/persistence/google_sheets/repos/patient/patient_payer_repository.py# repository.py.tpl
 
-
 from src.application.ports.patient_repo_ports import (
     PatientPayerRepositoryPort,
 )
@@ -8,6 +7,8 @@ from src.application.ports.patient_repo_ports import (
 from src.domain.entities.person.patient_entities import (
     PatientPayer,
 )
+
+from src.infrastructure.persistence.common.types import RawRow
 
 from src.infrastructure.persistence.google_sheets.base_repository import (
     GoogleSheetsRepository,
@@ -25,7 +26,6 @@ from src.infrastructure.persistence.google_sheets.mappers.patient.patient_payer_
     PatientPayerRowMapper,
 )
 
-
 from src.infrastructure.persistence.google_sheets.schemas.patient.patient_payer_columns import (
     PatientPayerColumns,
 )
@@ -35,19 +35,16 @@ class GoogleSheetsPatientPayerRepository(
     GoogleSheetsRepository,
     PatientPayerRepositoryPort,
 ):
-
     TABLE_NAME = "patient_payer"
     ID_COLUMN = PatientPayerColumns.PATIENT_ID
 
-
     def __init__(
-        self,
-        *,
-        query_service: GoogleSheetsQueryService,
-        catalog: GoogleSheetCatalog,
-        mapper: PatientPayerRowMapper,
+            self,
+            *,
+            query_service: GoogleSheetsQueryService,
+            catalog: GoogleSheetCatalog,
+            mapper: PatientPayerRowMapper,
     ) -> None:
-
         super().__init__(
             query_service=query_service,
             catalog=catalog,
@@ -56,12 +53,25 @@ class GoogleSheetsPatientPayerRepository(
         self._mapper = mapper
 
     def list_patient_payers(self) -> tuple[PatientPayer, ...]:
-
         return tuple(
             self._mapper.to_domain(row)
             for row in self._read_rows()
         )
 
+    def get_all_payers_for_patient_id(
+            self,
+            patient_id: str,
+    ) -> tuple[PatientPayer, ...]:
+        raw_rows: list[RawRow] = self._find_rows(
+            rows=self._read_rows(),
+            column_name=self.ID_COLUMN,
+            value=patient_id,
+        )
+
+        return tuple(
+            self._mapper.to_domain(row)
+            for row in raw_rows
+        )
 
     def get_by_id(
             self,

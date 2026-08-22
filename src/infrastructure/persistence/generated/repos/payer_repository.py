@@ -8,7 +8,7 @@ from src.application.ports.payer_repository_port import (
 )
 
 from src.domain.entities.billing.payer_entities import (
-    Payer,
+    PayerProfile,
 )
 
 from src.infrastructure.persistence.common.types import RawRow
@@ -59,7 +59,7 @@ class GoogleSheetsPayerRepository(
 
         self._mapper = mapper
 
-    def list_payers(self) -> tuple[Payer, ...]:
+    def list_payers(self) -> tuple[PayerProfile, ...]:
 
         return tuple(
             self._mapper.to_domain(row)
@@ -70,7 +70,7 @@ class GoogleSheetsPayerRepository(
     def get_by_id(
             self,
             patient_id: str,
-    ) -> Payer:
+    ) -> PayerProfile:
         raw_row = self._find_single_row(
             rows=self._read_rows(),
             column_name=self.ID_COLUMN,
@@ -81,7 +81,7 @@ class GoogleSheetsPayerRepository(
 
     def append_open_event(
             self,
-            event: Payer,
+            event: PayerProfile,
     ) -> None:
         raw_row: RawRow = self._mapper.to_row(event)
 

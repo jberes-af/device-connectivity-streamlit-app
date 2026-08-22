@@ -9,9 +9,13 @@ from src.interface_adapters.view_models.common.property_field_view_model import 
     PropertyFieldViewModel,
 )
 
-from src.interface_adapters.view_models.common.metric_view_model import (
-    MetricViewModel
-)
+
+@dataclass(frozen=True)
+class MetricCardViewModel:
+    label: str
+    value: str
+    delta: str | None = None
+    help_text: str | None = None
 
 
 @dataclass(frozen=True, kw_only=True)
@@ -28,7 +32,7 @@ class BaseCardViewModel:
 class CardPropertyFieldsViewModel(BaseCardViewModel):
     badge: BadgeViewModel | None = None
     property_fields: tuple[PropertyFieldViewModel, ...] = ()
-    metrics: tuple[MetricViewModel, ...] = ()
+    metrics: tuple[MetricCardViewModel, ...] = ()
 
 
 # --- ATTRIBUTE CARDS

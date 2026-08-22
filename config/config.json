@@ -112,24 +112,9 @@
       }
     },
     "tables_patient": {
-      "patient_profile": {
-        "file_name": "patient_admin",
-        "worksheet_name": "patient",
-        "worksheet_range": "A1:Z"
-      },
-      "patient_device_assignment": {
-        "file_name": "patient_admin",
-        "worksheet_name": "patient_device_assignment",
-        "worksheet_range": "A1:Z"
-      },
       "patient_diagnosis": {
         "file_name": "patient_admin",
         "worksheet_name": "patient_diagnosis",
-        "worksheet_range": "A1:Z"
-      },
-      "patient_emergency_contact": {
-        "file_name": "patient_admin",
-        "worksheet_name": "patient_emergency_contact",
         "worksheet_range": "A1:Z"
       },
       "patient_payer": {
@@ -140,11 +125,6 @@
       "patient_provider": {
         "file_name": "patient_admin",
         "worksheet_name": "patient_provider",
-        "worksheet_range": "A1:Z"
-      },
-      "rtm_enrollment": {
-        "file_name": "patient_admin",
-        "worksheet_name": "rtm_enrollment",
         "worksheet_range": "A1:Z"
       }
     },
@@ -197,6 +177,13 @@
         "file_name": "resident_admin",
         "worksheet_name": "resident_contact_information",
         "worksheet_range": "A1:E"
+      }
+    },
+    "tables_rtm": {
+      "rtm_enrollment": {
+        "file_name": "patient_admin",
+        "worksheet_name": "rtm_enrollment",
+        "worksheet_range": "A1:Z"
       }
     },
     "tables_tenant": {

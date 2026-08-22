@@ -9,7 +9,7 @@ from src.interface_adapters.view_models.common.table_view_model import (
 
 _SELECTED_DOMAIN_ID_KEY = "selected_domain_id"
 
-_TABLE_HEIGHT: int = 240
+_TABLE_HEIGHT: int = 200
 
 def render_searchable_table(
         view_model: TableViewModel,
@@ -18,15 +18,19 @@ def render_searchable_table(
         domain_id_column: str,
         placeholder: str = "Search table...",
 ) -> str | None:
+
+    col1, _ = st.columns([1, 1])
+
+    with col1:
+
+        search_text = st.text_input(
+            "Search",
+            key=f"{key}_search",
+            placeholder=placeholder,
+            label_visibility="collapsed",
+        )
+
     dataframe = _to_dataframe(view_model)
-
-    search_text = st.text_input(
-        "Search",
-        key=f"{key}_search",
-        placeholder=placeholder,
-        label_visibility="collapsed",
-    )
-
     filtered_dataframe = dataframe
 
     if search_text:

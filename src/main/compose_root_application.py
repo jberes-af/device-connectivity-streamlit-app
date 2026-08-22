@@ -9,6 +9,16 @@ from src.application.context import (
     # SessionContext,
 )
 
+# --- APPLICATION SERVICES
+
+from src.application.services.get_payer_profile_service import (
+    FetchPayerProfileService,
+)
+
+from src.application.services.get_provider_profile_service import (
+    FetchProviderProfileService,
+)
+
 # --- APPLICATION USE CASES
 
 from src.application.use_cases.access.get_access_scope_uc import (
@@ -17,6 +27,14 @@ from src.application.use_cases.access.get_access_scope_uc import (
 
 from src.application.use_cases.resident.get_all_resident_records_for_user_uc import (
     GetAllResidentRecordsForUserUseCase,
+)
+
+from src.application.use_cases.patient.get_patient_payer_profile_uc import (
+    GetPatientPayerProfileUseCase,
+)
+
+from src.application.use_cases.patient.get_patient_provider_profile_uc import (
+    GetPatientProviderProfileUseCase,
 )
 
 from src.application.use_cases.sensing.device_profiles.get_user_sensing_account_uc import (
@@ -58,8 +76,13 @@ class AppContainer:
     get_resident_records_for_user_use_case: GetAllResidentRecordsForUserUseCase
     resident_main_page_presenter: ResidentMainPagePresenter
 
+    get_patient_payer_profile_use_case: GetPatientPayerProfileUseCase
+
     get_user_sensing_account_use_case: GetUserSensingAccountUseCase
     build_sensor_event_timeline_use_case: BuildSensorEventsUseCase
+
+    get_patient_payer_profile_use_case: GetPatientPayerProfileUseCase
+    get_patient_provider_profile_use_case: GetPatientProviderProfileUseCase
 
     # get_patient_overview_use_case: GetPatientOverviewUseCase
     # patient_overview_presenter: PatientOverviewPresenter
@@ -72,10 +95,25 @@ def build_application_container(
     # --- ASSIGN REPOSITORIES
 
     access_repos = infrastructure.access_repository
+
     resident_repos = infrastructure.resident_repository
     tenant_repos = infrastructure.tenant_repository
 
+    patient_repos = infrastructure.patient_repository
+    payer_repos = infrastructure.payer_repository
+    provider_repos = infrastructure.provider_repository
+
     sensing_repos = infrastructure.sensing_repositories
+
+    # --- SERVICES
+
+    fetch_payer_profile_service = FetchPayerProfileService(
+        payer_repository=payer_repos.payer_repository,
+    )
+
+    fetch_provider_profile_service = FetchProviderProfileService(
+        provider_repository=provider_repos.provider_repository,
+    )
 
     # --- ACCESS RECORDS
 
@@ -94,6 +132,20 @@ def build_application_container(
         user_resident_access_repository=access_repos.user_resident_access_repository,  # IS THIS NEEDED?????
         resident_profile_repository=resident_repos.resident_profile_repository,
         resident_contacts_repository=resident_repos.resident_contact_info_repository,
+    )
+
+    # --- RESIDENT / PATIENT PAYER RECORDS
+
+    get_patient_payer_profile = GetPatientPayerProfileUseCase(
+        fetch_payer_profile_service=fetch_payer_profile_service,
+        patient_payer_repository=patient_repos.patient_payer_repository,
+    )
+
+    # --- RESIDENT / PATIENT PROVIDER RECORDS
+
+    get_patient_provider_profile = GetPatientProviderProfileUseCase(
+        fetch_provider_profile_service=fetch_provider_profile_service,
+        patient_provider_repository=patient_repos.patient_provider_repository,
     )
 
     # --- RESIDENT SENSING RECORDS
@@ -122,6 +174,9 @@ def build_application_container(
 
         get_user_sensing_account_use_case=get_user_sensing_account,
         build_sensor_event_timeline_use_case=build_sensor_events,
+
+        get_patient_payer_profile_use_case=get_patient_payer_profile,
+        get_patient_provider_profile_use_case=get_patient_provider_profile,
     )
 
 

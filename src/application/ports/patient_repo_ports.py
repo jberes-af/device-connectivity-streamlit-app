@@ -3,40 +3,12 @@
 from typing import Protocol
 
 from src.domain.entities.person.patient_entities import (
-    Patient,
-    PatientDeviceAssignment,
+    # Patient,
+    # PatientDeviceAssignment,
     PatientDiagnosis,
-    PatientEmergencyContact,
     PatientPayer,
     PatientProvider,
-    RTMEnrollment,
 )
-
-
-class PatientRepositoryPort(Protocol):
-
-    def list_patients(self) -> tuple[Patient, ...]:
-        ...
-
-    def get_by_id(
-            self,
-            patient_id: str,
-    ) -> Patient:
-        ...
-
-    """
-    def add_patient(
-            self,
-            patient_record: Patient,
-    ) -> Patient:
-        ...
-
-    def update_patient(
-            self,
-            patient_record: Patient,
-    ) -> Patient:
-        ...
-    """
 
 
 class PatientDiagnosisRepositoryPort(Protocol):
@@ -56,6 +28,12 @@ class PatientProviderRepositoryPort(Protocol):
     def list_patient_providers(self) -> tuple[PatientProvider, ...]:
         ...
 
+    def get_all_providers_for_patient_id(
+            self,
+            patient_id: str,
+    ) -> tuple[PatientProvider, ...]:
+        ...
+
     def get_by_id(
             self,
             patient_id: str,
@@ -68,6 +46,12 @@ class PatientPayerRepositoryPort(Protocol):
     def list_patient_payers(self) -> tuple[PatientPayer, ...]:
         ...
 
+    def get_all_payers_for_patient_id(
+            self,
+            patient_id: str,
+    ) -> tuple[PatientPayer, ...]:
+        ...
+
     def get_by_id(
             self,
             patient_id: str,
@@ -75,17 +59,17 @@ class PatientPayerRepositoryPort(Protocol):
         ...
 
 
-class RTMEnrollmentRepositoryPort(Protocol):
+"""
+class PatientRepositoryPort(Protocol):
 
-    def list_rtm_enrollments(self) -> tuple[RTMEnrollment, ...]:
+    def list_patients(self) -> tuple[Patient, ...]:
         ...
 
     def get_by_id(
             self,
             patient_id: str,
-    ) -> RTMEnrollment:
+    ) -> Patient:
         ...
-
 
 class PatientDeviceAssignmentRepositoryPort(Protocol):
 
@@ -97,3 +81,4 @@ class PatientDeviceAssignmentRepositoryPort(Protocol):
             assignment_id: str,
     ) -> PatientDeviceAssignment:
         ...
+"""

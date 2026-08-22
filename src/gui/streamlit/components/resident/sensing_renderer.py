@@ -6,7 +6,7 @@ from src.interface_adapters.view_models.sensing.resident_sensing_view_model impo
     SensorSectionViewModel,
 )
 
-from src.gui.streamlit.components.cards import (
+from src.gui.streamlit.components.cards.card_attribute_renderer import (
     render_attribute_card
 )
 

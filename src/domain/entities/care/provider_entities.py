@@ -13,7 +13,7 @@ from src.domain.enums.care.provider_enums import (
 
 
 @dataclass(frozen=True)
-class Provider:
+class ProviderProfile:
     provider_id: str
     national_provider_identifier: str | None
     first_name: str

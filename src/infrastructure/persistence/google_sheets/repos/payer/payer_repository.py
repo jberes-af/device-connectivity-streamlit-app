@@ -1,11 +1,13 @@
 # /src/infrastructure/persistence/google_sheets/repos/payer/payer_repository.py
 
+from typing import Sequence
+
 from src.application.ports.payer_repo_ports import (
     PayerRepositoryPort,
 )
 
 from src.domain.entities.billing.payer_entities import (
-    Payer,
+    PayerProfile,
 )
 
 from src.infrastructure.persistence.common.types import RawRow
@@ -56,7 +58,7 @@ class GoogleSheetsPayerRepository(
 
         self._mapper = mapper
 
-    def list_payers(self) -> tuple[Payer, ...]:
+    def list_payers(self) -> tuple[PayerProfile, ...]:
 
         return tuple(
             self._mapper.to_domain(row)
@@ -64,21 +66,38 @@ class GoogleSheetsPayerRepository(
         )
 
 
+    def get_by_ids(
+            self,
+            payer_ids: Sequence[str],
+    ) -> tuple[PayerProfile, ...]:
+        raw_rows: list[RawRow] = self._find_rows_for_multiple_values(
+            rows=self._read_rows(),
+            column_name=self.ID_COLUMN,
+            values=payer_ids,
+        )
+
+        return tuple(
+            self._mapper.to_domain(row)
+            for row in raw_rows
+        )
+
+
     def get_by_id(
             self,
-            patient_id: str,
-    ) -> Payer:
+            payer_id: str,
+    ) -> PayerProfile:
         raw_row = self._find_single_row(
             rows=self._read_rows(),
             column_name=self.ID_COLUMN,
-            value=patient_id,
+            value=payer_id,
         )
 
         return self._mapper.to_domain(raw_row)
 
+    """
     def append_open_event(
             self,
-            event: Payer,
+            event: PayerProfile,
     ) -> None:
         raw_row: RawRow = self._mapper.to_row(event)
 
@@ -86,3 +105,4 @@ class GoogleSheetsPayerRepository(
             row=raw_row,
             columns=PayerColumns.ORDER,
         )
+    """

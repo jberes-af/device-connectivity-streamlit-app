@@ -80,7 +80,7 @@ _CSS: str = """
     text-align: right;
     font-size: 1.0rem;
     font-weight: 600;
-    color: #0000ff;
+    color: #0070C0;
 }
 
 [class*="st-key-card_"] button {
@@ -116,14 +116,14 @@ _CSS: str = """
 .property-label {
     color: #6B7280;
     font-size: 0.90rem;
-    font-weight: 600;
+    font-weight: 400;
     margin-bottom: 2px;
 }
 
 .property-value {
     color: #111827;
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 </style>

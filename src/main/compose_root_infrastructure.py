@@ -31,9 +31,24 @@ from src.main.infrastructure_containers.sheets_repo_patient import (
     build_google_sheets_patient_repositories,
 )
 
+from src.main.infrastructure_containers.sheets_repo_payer import (
+    GoogleSheetsPayerRepositories,
+    build_google_sheets_payer_repositories,
+)
+
+from src.main.infrastructure_containers.sheets_repo_provider import (
+    GoogleSheetsProviderRepositories,
+    build_google_sheets_provider_repositories,
+)
+
 from src.main.infrastructure_containers.sheets_repo_resident import (
     GoogleSheetsResidentRepositories,
     build_google_sheets_resident_repositories,
+)
+
+from src.main.infrastructure_containers.sheets_repo_rtm import (
+    GoogleSheetsRtmRepositories,
+    build_google_sheets_rtm_repositories,
 )
 
 from src.main.infrastructure_containers.sheets_repo_tenant import (
@@ -57,7 +72,7 @@ from src.main.infrastructure_containers.firebase_repositories import (
 
 # from src.main.compo_root_m365 import build_m365_graph_mail_service
 
-import logging
+# import logging
 
 
 @dataclass(frozen=True, slots=True)
@@ -69,7 +84,10 @@ class InfrastructureContainer:
 
     access_repository: GoogleSheetsAccessRepositories
     patient_repository: GoogleSheetsPatientRepositories
+    payer_repository: GoogleSheetsPayerRepositories
+    provider_repository: GoogleSheetsProviderRepositories
     resident_repository: GoogleSheetsResidentRepositories
+    rtm_repository: GoogleSheetsRtmRepositories
     tenant_repository: GoogleSheetsTenantRepositories
     user_repository: GoogleSheetsUserRepositories
 
@@ -96,14 +114,32 @@ def build_infrastructure_container(
             app_config=app_config,
         ))
 
+    payer_repos: GoogleSheetsPayerRepositories = (
+        build_google_sheets_payer_repositories(
+            settings=settings,
+            app_config=app_config,
+        ))
+
+    provider_repos: GoogleSheetsProviderRepositories = (
+        build_google_sheets_provider_repositories(
+            settings=settings,
+            app_config=app_config,
+        ))
+
     patient_repos: GoogleSheetsPatientRepositories = (
         build_google_sheets_patient_repositories(
             settings=settings,
             app_config=app_config,
         ))
 
-    resident_repos = (
+    resident_repos: GoogleSheetsResidentRepositories = (
         build_google_sheets_resident_repositories(
+            settings=settings,
+            app_config=app_config,
+        ))
+
+    rtm_repos: GoogleSheetsRtmRepositories = (
+        build_google_sheets_rtm_repositories(
             settings=settings,
             app_config=app_config,
         ))
@@ -122,8 +158,6 @@ def build_infrastructure_container(
 
     # billing repos TBD
     # care plan
-    # payer
-    # provider_repos TBD
     # treatment
 
     # --- ASSIGN PRESENTERS
@@ -136,8 +170,10 @@ def build_infrastructure_container(
 
         access_repository=access_repos,
         patient_repository=patient_repos,
+        payer_repository=payer_repos,
+        provider_repository=provider_repos,
         resident_repository=resident_repos,
+        rtm_repository=rtm_repos,
         tenant_repository=tenant_repos,
         user_repository=user_repos,
-
     )

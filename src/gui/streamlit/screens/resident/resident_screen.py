@@ -84,7 +84,7 @@ from src.interface_adapters.view_models.resident.resident_main_page_view_model i
     ResidentMainPageTopViewModel,
 )
 
-from src.interface_adapters.presenters.resident.demo_top_metrics_presenter import (
+from src.interface_adapters.presenters.dashboard.demo_top_metrics_presenter import (
     DemoResidentDashMetricsPresenter
 )
 
@@ -193,10 +193,6 @@ def render_residents_page(
 
         logging.info("Rendered segmented control section")
 
-        """
-        DEV ONLY: test to filter on sensing section
-        """
-
         if selected_control:
 
             if selected_control == "sensing":
@@ -260,9 +256,9 @@ def _render_top_section(
     st.title(header_vm.page_title)
     # st.write(header_vm.page_subtitle)
 
-    metrics_grid_vm: CardGridViewModel = DemoResidentDashMetricsPresenter.present()
+    # metrics_grid_vm: CardGridViewModel = DemoResidentDashMetricsPresenter.present()
 
-    render_metric_card_grid(metrics_grid_vm)
+    # render_metric_card_grid(metrics_grid_vm)
 
     st.divider()
 
@@ -277,6 +273,8 @@ def _render_table_section(
         key="resident_records",
         domain_id_column="Resident ID",
     )
+
+    st.divider()
 
     return selected_resident_id
 

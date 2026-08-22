@@ -3,19 +3,9 @@
 from dataclasses import dataclass
 
 from src.application.ports.patient_repo_ports import (
-    PatientRepositoryPort,
     PatientDiagnosisRepositoryPort,
     PatientProviderRepositoryPort,
     PatientPayerRepositoryPort,
-    RTMEnrollmentRepositoryPort,
-)
-
-from src.application.ports.provider_repo_ports import (
-    ProviderRepositoryPort,
-)
-
-from src.application.ports.payer_repo_ports import (
-    PayerRepositoryPort,
 )
 
 from src.infrastructure.config.app_config_models import (
@@ -23,9 +13,6 @@ from src.infrastructure.config.app_config_models import (
 )
 from src.infrastructure.config.settings_model import (
     Settings,
-)
-from src.infrastructure.persistence.google_sheets.mappers.patient.patient_row_mapper import (
-    PatientRowMapper,
 )
 
 from src.infrastructure.persistence.google_sheets.mappers.patient.patient_diagnosis_row_mapper import (
@@ -40,22 +27,6 @@ from src.infrastructure.persistence.google_sheets.mappers.patient.patient_payer_
     PatientPayerRowMapper,
 )
 
-from src.infrastructure.persistence.google_sheets.mappers.patient.rtm_enrollment_row_mapper import (
-    RTMEnrollmentRowMapper,
-)
-
-from src.infrastructure.persistence.google_sheets.mappers.provider.provider_row_mapper import (
-    ProviderRowMapper,
-)
-
-from src.infrastructure.persistence.google_sheets.mappers.payer.payer_row_mapper import (
-    PayerRowMapper,
-)
-
-from src.infrastructure.persistence.google_sheets.repos.patient.patient_repository import (
-    GoogleSheetsPatientRepository,
-)
-
 from src.infrastructure.persistence.google_sheets.repos.patient.patient_diagnosis_repository import (
     GoogleSheetsPatientDiagnosisRepository,
 )
@@ -68,18 +39,6 @@ from src.infrastructure.persistence.google_sheets.repos.patient.patient_payer_re
     GoogleSheetsPatientPayerRepository,
 )
 
-from src.infrastructure.persistence.google_sheets.repos.patient.rtm_enrollment_repository import (
-    GoogleSheetsRTMEnrollmentRepository,
-)
-
-from src.infrastructure.persistence.google_sheets.repos.provider.provider_repository import (
-    GoogleSheetsProviderRepository,
-)
-
-from src.infrastructure.persistence.google_sheets.repos.payer.payer_repository import (
-    GoogleSheetsPayerRepository,
-)
-
 from src.main.infrastructure_containers.utils_sheets_composition_root import (
     build_google_sheets_query_service,
     build_google_sheet_catalog,
@@ -88,13 +47,13 @@ from src.main.infrastructure_containers.utils_sheets_composition_root import (
 
 @dataclass(frozen=True, slots=True)
 class GoogleSheetsPatientRepositories:
-    patient_repository: PatientRepositoryPort
     patient_diagnosis_repository: PatientDiagnosisRepositoryPort
     patient_provider_repository: PatientProviderRepositoryPort
     patient_payer_repository: PatientPayerRepositoryPort
-    rtm_enrollment_repository: RTMEnrollmentRepositoryPort
-    provider_repository: ProviderRepositoryPort
-    payer_repository: PayerRepositoryPort
+    # patient_repository: PatientRepositoryPort
+    # rtm_enrollment_repository: RTMEnrollmentRepositoryPort
+    # provider_repository: ProviderRepositoryPort
+    # payer_repository: PayerRepositoryPort
 
 
 def build_google_sheets_patient_repositories(
@@ -110,13 +69,6 @@ def build_google_sheets_patient_repositories(
         settings=settings,
         app_config=app_config,
     )
-
-    patient_repository: PatientRepositoryPort = (
-        GoogleSheetsPatientRepository(
-            query_service=query_service,
-            catalog=catalog,
-            mapper=PatientRowMapper(),
-        ))
 
     patient_diagnosis_repository: PatientDiagnosisRepositoryPort = (
         GoogleSheetsPatientDiagnosisRepository(
@@ -139,6 +91,13 @@ def build_google_sheets_patient_repositories(
             mapper=PatientPayerRowMapper(),
         ))
 
+    """
+    patient_repository: PatientRepositoryPort = (
+        GoogleSheetsPatientRepository(
+            query_service=query_service,
+            catalog=catalog,
+            mapper=PatientRowMapper(),
+        ))
     rtm_enrollment_repository: RTMEnrollmentRepositoryPort = (
         GoogleSheetsRTMEnrollmentRepository(
             query_service=query_service,
@@ -159,13 +118,11 @@ def build_google_sheets_patient_repositories(
             catalog=catalog,
             mapper=PayerRowMapper(),
         ))
+   
+    """
 
     return GoogleSheetsPatientRepositories(
-        patient_repository=patient_repository,
         patient_diagnosis_repository=patient_diagnosis_repository,
         patient_provider_repository=patient_provider_repository,
         patient_payer_repository=patient_payer_repository,
-        rtm_enrollment_repository=rtm_enrollment_repository,
-        provider_repository=provider_repository,
-        payer_repository=payer_repository,
     )

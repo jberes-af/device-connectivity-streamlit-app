@@ -1,6 +1,6 @@
-# /src/infrastructure/persistence/mappers
+# /src/infrastructure/persistence/mappers/payer/payer_row_mapper.py
 
-from src.domain.entities.billing.payer_entities import Payer
+from src.domain.entities.billing.payer_entities import PayerProfile
 from src.domain.enums.billing.payer_enums import PayerType
 
 from src.infrastructure.persistence.common.types import RawRow
@@ -19,10 +19,10 @@ from src.infrastructure.persistence.common.utils_parsing import (
 class PayerRowMapper:
 
     @staticmethod
-    def to_domain(row: RawRow) -> Payer:
+    def to_domain(row: RawRow) -> PayerProfile:
         schema = PayerColumns
 
-        return Payer(
+        return PayerProfile(
             payer_id=parse_required_text(
                 row.get(schema.PAYER_ID),
                 field_name=schema.PAYER_ID,
@@ -75,7 +75,7 @@ class PayerRowMapper:
 
     @staticmethod
     def to_row(
-            payer: Payer,
+            payer: PayerProfile,
     ) -> RawRow:
         schema = PayerColumns
 

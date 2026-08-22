@@ -1,6 +1,7 @@
 # /src/infrastructure/persistence/google_sheets/base_repository.py
 
 from abc import ABC
+from typing import Sequence
 
 from src.infrastructure.persistence.common.types import RawRow
 
@@ -97,6 +98,32 @@ class GoogleSheetsRepository(ABC):
             if str(
                 row.get(column_name, "")
             ).strip() == normalized_value
+        ]
+
+    @staticmethod
+    def _find_rows_for_multiple_values(
+            *,
+            rows: list[RawRow],
+            column_name: str,
+            values: Sequence[str],
+    ) -> list[RawRow]:
+
+        normalized_values = {
+            value.strip()
+            for value in values
+        }
+
+        if "" in normalized_values:
+            raise ValueError(
+                "Lookup values cannot contain empty strings."
+            )
+
+        return [
+            row
+            for row in rows
+            if str(
+                row.get(column_name, "")
+            ).strip() in normalized_values
         ]
 
     @staticmethod

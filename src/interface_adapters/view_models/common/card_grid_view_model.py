@@ -6,11 +6,7 @@ from src.interface_adapters.view_models.common.card_view_models import (
     CardAttributeNameCountListViewModel,
     CardPropertyFieldsButtonViewModel,
     CardTitleTextButtonViewModel,
-    CardPropertyFieldsViewModel,
-)
-
-from src.interface_adapters.view_models.common.metric_view_model import (
-    MetricViewModel,
+    CardPropertyFieldsViewModel, MetricCardViewModel,
 )
 
 type CardGridItemViewModel = (
@@ -18,7 +14,7 @@ type CardGridItemViewModel = (
         | CardAttributeNameCountListViewModel
         | CardPropertyFieldsButtonViewModel
         | CardTitleTextButtonViewModel
-        | MetricViewModel
+        | MetricCardViewModel
 )
 
 

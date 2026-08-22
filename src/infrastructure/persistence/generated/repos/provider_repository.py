@@ -8,7 +8,7 @@ from src.application.ports.provider_repository_port import (
 )
 
 from src.domain.entities.care.provider_entities import (
-    Provider,
+    ProviderProfile,
 )
 
 from src.infrastructure.persistence.common.types import RawRow
@@ -59,7 +59,7 @@ class GoogleSheetsProviderRepository(
 
         self._mapper = mapper
 
-    def list_providers(self) -> tuple[Provider, ...]:
+    def list_providers(self) -> tuple[ProviderProfile, ...]:
 
         return tuple(
             self._mapper.to_domain(row)
@@ -70,7 +70,7 @@ class GoogleSheetsProviderRepository(
     def get_by_id(
             self,
             patient_id: str,
-    ) -> Provider:
+    ) -> ProviderProfile:
         raw_row = self._find_single_row(
             rows=self._read_rows(),
             column_name=self.ID_COLUMN,
@@ -81,7 +81,7 @@ class GoogleSheetsProviderRepository(
 
     def append_open_event(
             self,
-            event: Provider,
+            event: ProviderProfile,
     ) -> None:
         raw_row: RawRow = self._mapper.to_row(event)
 

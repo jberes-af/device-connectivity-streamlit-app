@@ -6,7 +6,7 @@ from src.infrastructure.persistence.google_sheets.schemas.provider.provider_colu
     ProviderColumns,
 )
 
-from src.domain.entities.care.provider_entities import Provider
+from src.domain.entities.care.provider_entities import ProviderProfile
 
 from src.infrastructure.persistence.common.utils_parsing import (
     parse_optional_bool,
@@ -18,10 +18,10 @@ from src.infrastructure.persistence.common.utils_parsing import (
 class ProviderRowMapper:
 
     @staticmethod
-    def to_domain(row: RawRow) -> Provider:
+    def to_domain(row: RawRow) -> ProviderProfile:
         schema = ProviderColumns
 
-        return Provider(
+        return ProviderProfile(
             provider_id=parse_required_text(
                 row.get(schema.PROVIDER_ID),
                 field_name=schema.PROVIDER_ID,
@@ -90,7 +90,7 @@ class ProviderRowMapper:
 
     @staticmethod
     def to_row(
-            provider: Provider,
+            provider: ProviderProfile,
     ) -> RawRow:
         schema = ProviderColumns
 

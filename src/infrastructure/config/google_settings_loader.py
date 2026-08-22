@@ -112,6 +112,14 @@ def load_spreadsheet_ids(
         "SHEETS_ID_RESIDENT"
     )
 
+    spreadsheet_name_rtm = secret_provider.get_required(
+        "SHEETS_NAME_RTM"
+    )
+
+    spreadsheet_id_rtm = secret_provider.get_required(
+        "SHEETS_ID_RTM"
+    )
+
     spreadsheet_name_tenant = secret_provider.get_required(
         "SHEETS_NAME_TENANT"
     )
@@ -144,6 +152,7 @@ def load_spreadsheet_ids(
         spreadsheet_name_payer: spreadsheet_id_payer,
         spreadsheet_name_provider: spreadsheet_id_provider,
         spreadsheet_name_resident: spreadsheet_id_resident,
+        spreadsheet_name_rtm: spreadsheet_id_rtm,
         spreadsheet_name_tenant: spreadsheet_id_tenant,
         spreadsheet_name_treatment: spreadsheet_id_treatment,
         spreadsheet_name_user: spreadsheet_id_user,

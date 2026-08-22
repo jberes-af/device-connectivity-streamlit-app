@@ -54,23 +54,23 @@ class GetResidentOverviewUseCase:
 
         patient_id = request.patient_id
         patient_record: Patient = self._patient_repo.get_by_id(
-            patient_id=patient_id,
+            payer_id=patient_id,
         )
 
         patient_diagnosis: PatientDiagnosis = self._patient_diagnosis_repository.get_by_id(
-            patient_id=patient_id,
+            payer_id=patient_id,
         )
 
         patient_provider: PatientProvider = self._patient_provider_repository.get_by_id(
-            patient_id=patient_id,
+            payer_id=patient_id,
         )
 
         patient_payer: PatientPayer = self._patient_payer_repository.get_by_id(
-            patient_id=patient_id,
+            payer_id=patient_id,
         )
 
         rtm_enrollment: RTMEnrollment = self._enrollment_repository.get_by_id(
-            patient_id=patient_id,
+            payer_id=patient_id,
         )
 
         patient_admin: PatientAdministrationDTO = (
