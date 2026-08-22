@@ -20,8 +20,8 @@ class MetricCardViewModel:
 
 @dataclass(frozen=True, kw_only=True)
 class BaseCardViewModel:
-    id: str
     title: str
+    id: str | None = None
     title_icon: str | None = None
     description: str | None = None
 

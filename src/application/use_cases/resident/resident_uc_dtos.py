@@ -2,11 +2,12 @@
 
 from src.domain.enums.person.tenant_enums import UserRoleEnum
 
+from src.domain.entities.access.access_entities import ResidentGatewayLink, ResidentSensorLink
+
 from src.domain.entities.person.resident_entities import (
     ResidentProfile,
-    ResidentContactInformation,
+    ResidentInCaseOfNeedContact,
 )
-from src.domain.entities.access.access_entities import ResidentGatewayLink, ResidentSensorLink
 
 from dataclasses import dataclass
 from datetime import date
@@ -120,6 +121,8 @@ class GetAllResidentRecordsRequestDTO:
 @dataclass(frozen=True)
 class GetAllResidentRecordsResultDTO:
     # summary: ResidentOverviewDevDTO | None
+    resident_profiles: tuple[ResidentProfile, ...]
+    resident_need_case_contacts: tuple[ResidentInCaseOfNeedContact, ...]
     resident_table_records: tuple[ResidentSearchableRecordDTO, ...]
 
 

@@ -17,15 +17,15 @@ from src.infrastructure.config.settings_model import (
 from src.infrastructure.persistence.google_sheets.mappers.resident.resident_profile_row_mapper import (
     ResidentProfileRowMapper,
 )
-from src.infrastructure.persistence.google_sheets.mappers.resident.resident_contact_information_row_mapper import (
-    ResidentContactInformationRowMapper,
+from src.infrastructure.persistence.google_sheets.mappers.resident.resident_need_case_contact_row_mapper import (
+    ResidentNeedCaseContactRowMapper,
 )
 
 from src.infrastructure.persistence.google_sheets.repos.resident.resident_profile_repository import (
     GoogleSheetsResidentProfileRepository,
 )
-from src.infrastructure.persistence.google_sheets.repos.resident.resident_contact_information_repository import (
-    GoogleSheetsResidentContactInformationRepository,
+from src.infrastructure.persistence.google_sheets.repos.resident.resident_need_case_contact_repository import (
+    GoogleSheetsResidentNeedCaseContactRepository,
 )
 
 from src.main.infrastructure_containers.utils_sheets_composition_root import (
@@ -63,10 +63,10 @@ def build_google_sheets_resident_repositories(
         ))
 
     resident_contact_info_repo: ResidentContactInformationRepositoryPort = (
-        GoogleSheetsResidentContactInformationRepository(
+        GoogleSheetsResidentNeedCaseContactRepository(
             query_service=query_service,
             catalog=catalog,
-            mapper=ResidentContactInformationRowMapper(),
+            mapper=ResidentNeedCaseContactRowMapper(),
         ))
 
     """

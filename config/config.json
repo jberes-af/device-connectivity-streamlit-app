@@ -176,7 +176,7 @@
       "resident_contact_information": {
         "file_name": "resident_admin",
         "worksheet_name": "resident_contact_information",
-        "worksheet_range": "A1:E"
+        "worksheet_range": "A1:F"
       }
     },
     "tables_rtm": {

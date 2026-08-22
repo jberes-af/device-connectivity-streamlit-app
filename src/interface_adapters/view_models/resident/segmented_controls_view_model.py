@@ -12,12 +12,12 @@ class ResidentSectionEnum(StrEnum):
     PAYERS = "payers"
     PRIORITY_ITEMS = "priority_items"
     PROVIDERS = "providers"
-    RESIDENT = "resident"
+    CONTACT = "contact_info"
     SENSING = "sensing"
     TREATMENT_PLAN = "treatment_plan"
 
 RESIDENT_SEGMENT_ORDER: tuple[ResidentSectionEnum, ...] = (
-    ResidentSectionEnum.RESIDENT,
+    ResidentSectionEnum.CONTACT,
     ResidentSectionEnum.PRIORITY_ITEMS,
     ResidentSectionEnum.APPOINTMENTS,
     ResidentSectionEnum.CARE_PLAN,

@@ -1,12 +1,30 @@
 # /src/gui/streamlit/screens/resident_screen.py
 
-from collections.abc import Callable
+"""
+Page Flow:
+render_residents_page()
+→ load resident records
+→ present + render searchable table
+→ resolve selected resident
+→ render selected resident summary cards
+→ render segmented control
+→ run section-specific use case(s)
+→ present section-specific view model
+→ render section-specific UI
+"""
 
+from collections.abc import Callable
 from streamlit.elements.lib.column_types import Column
-from typing import Any
 
 import logging
 import streamlit as st
+
+# --- DOMAIN
+
+from src.domain.entities.person.resident_entities import (
+    ResidentProfile,
+    ResidentInCaseOfNeedContact,
+)
 
 # --- APPLICATION
 
@@ -19,11 +37,6 @@ from src.application.use_cases.resident.resident_uc_dtos import (
 
 from src.gui.streamlit.components.widgets.table_searchable_renderer import (
     render_searchable_table,
-)
-
-from src.gui.streamlit.components.grids.grid_card_multi_renderer import (
-    # render_card_grid,
-    render_metric_card_grid,
 )
 
 from src.gui.streamlit.components.grids.grid_card_property_fields_button_renderer import (
@@ -52,8 +65,8 @@ from src.gui.streamlit.components.resident.priority_items_renderer import (
 from src.gui.streamlit.components.resident.providers_renderer import (
     render_resident_providers,
 )
-from src.gui.streamlit.components.resident.resident_renderer import (
-    render_resident_resident,
+from src.gui.streamlit.components.resident.resident_contact_renderer import (
+    render_resident_contact_info,
 )
 from src.gui.streamlit.components.resident.treatment_plan_renderer import (
     render_resident_treatment_plan,
@@ -80,35 +93,43 @@ from src.gui.streamlit.screens.resident.use_case_dispatcher_sensing import (
 
 from src.interface_adapters.view_models.common.table_view_model import TableViewModel
 
-from src.interface_adapters.view_models.resident.resident_main_page_view_model import (
-    ResidentMainPageTopViewModel,
+from src.interface_adapters.view_models.resident.segmented_controls_view_model import (
+    ResidentSectionEnum,
 )
 
-from src.interface_adapters.presenters.dashboard.demo_top_metrics_presenter import (
-    DemoResidentDashMetricsPresenter
+from src.interface_adapters.view_models.resident.resident_main_page_view_model import (
+    ResidentMainPageTopViewModel,
 )
 
 from src.interface_adapters.view_models.common.card_grid_view_model import (
     CardGridViewModel
 )
 
-from src.interface_adapters.presenters.resident.demo_record_dash.demo_presenter import (
-    DemoSelectedResidentCardGridPresenter
+from src.interface_adapters.view_models.sensing.resident_sensing_view_model import (
+    SensorSectionViewModel,
 )
 
-from src.interface_adapters.presenters.resident.demo_record_dash.demo_segmented_controls_presenter import (
+from src.interface_adapters.view_models.resident.resident_main_page_view_model import (
+    ResidentContactViewModel,
+)
+
+# from src.interface_adapters.presenters.resident.demo_record_dash.demo_presenter import (
+#     DemoSelectedResidentCardGridPresenter
+# )
+
+from src.interface_adapters.presenters.resident.resident_main_page_presenter import (
+    ResidentMainPagePresenter,
+)
+
+from src.interface_adapters.presenters.resident.segmented_controls_presenter import (
     ResidentSegmentedControlPresenter)
-
-from src.interface_adapters.view_models.resident.segmented_controls_view_model import (
-    ResidentSectionEnum,
-)
 
 from src.interface_adapters.presenters.resident.resident_sensing_section_presenter import (
     ResidentSensingSectionPresenter
 )
 
-from src.interface_adapters.view_models.sensing.resident_sensing_view_model import (
-    SensorSectionViewModel,
+from src.interface_adapters.presenters.resident.resident_contact_section_presenter import (
+    ResidentContactSectionPresenter,
 )
 
 # --- MAIN
@@ -130,10 +151,21 @@ _RENDERERS: dict[ResidentSectionEnum, Renderer] = {
     ResidentSectionEnum.PAYERS: render_resident_payers,
     ResidentSectionEnum.PRIORITY_ITEMS: render_resident_priority_items,
     ResidentSectionEnum.PROVIDERS: render_resident_providers,
-    ResidentSectionEnum.RESIDENT: render_resident_resident,
+    ResidentSectionEnum.CONTACT: render_resident_contact_info,
     ResidentSectionEnum.SENSING: render_resident_sensing,
     ResidentSectionEnum.TREATMENT_PLAN: render_resident_treatment_plan,
 }
+
+SectionUseCaseResult = (
+    SensingUseCaseResults
+    #    | ResidentContactUseCaseResults
+    #    | ProviderUseCaseResults
+)
+
+ResidentSectionViewModel = (
+        SensorSectionViewModel
+        | ResidentContactViewModel
+)
 
 
 def render_residents_page(
@@ -154,7 +186,7 @@ def render_residents_page(
         container.resident_main_page_presenter.present_searchable_table(
             records_result.resident_table_records))
 
-    presenter = container.resident_main_page_presenter
+    presenter: ResidentMainPagePresenter = container.resident_main_page_presenter
 
     logging.info("Main page presenter assigned")
 
@@ -166,88 +198,76 @@ def render_residents_page(
         table_vm=table_vm,
     )
 
-    if (
-            selected_resident_id is None
-            and records_result.resident_table_records
-    ):
-        selected_resident_id = (
-            records_result.resident_table_records[0].resident_id
-        )
+    selected_resident_id = _set_selected_resident(
+        selection=selected_resident_id,
+        records=records_result.resident_table_records,
+    )
 
-    logging.info("ID assigned %s", selected_resident_id)
+    _render_selected_resident_dash_cards(
+        resident_id=selected_resident_id,
+        presenter=presenter,
+    )
 
-    if selected_resident_id:
+    logging.info("Rendered dash cards")
 
-        _render_selected_resident_dash_cards(
+    selected_resident_profile: ResidentProfile = (
+        _get_selected_resident_profile(
             resident_id=selected_resident_id,
-        )
-
-        logging.info("Rendered dash cards")
-
-        st.divider()
-
-        selected_control: ResidentSectionEnum
-        col_content: Column
-        selected_control, col_content = (
-            _render_selected_resident_segmented_control_section())
-
-        logging.info("Rendered segmented control section")
-
-        if selected_control:
-
-            if selected_control == "sensing":
-
-                use_case_results: SensingUseCaseResults = run_use_case_dispatcher(
-                    domain_key=selected_control,
-                    app_container=container,
-                )
-
-                section_dash_vm: SensorSectionViewModel = (
-                    ResidentSensingSectionPresenter()
-                    .present_sensing_section(use_case_results.result_user_sensing_account)
-                )
-
-                # trends_vm: SensorTrendsViewModel = (ResidentSensingTrendsPresenter().present(use_case_results.result_sensor_events))
-
-                with col_content:
-                    with st.container(border=False):
-                        render_resident_sensing(
-                            resident_id=selected_resident_id,
-                            section_dash_vm=section_dash_vm,
-                            # section_trends_vm=trends_vm
-                        )
-
-            else:
-                _render_selected_control_details(
-                    col=col_content,
-                    resident_id=selected_resident_id,
-                    domain_name=selected_control,
-                )
-
-
-def _render_selected_resident_dash_cards(
-        resident_id: str,
-):
-    st.markdown(f"#### Resident {resident_id}")
-
-    card_grid_vm: CardGridViewModel = DemoSelectedResidentCardGridPresenter().present_cards_grid()
-
-    render_grid_card_properties_button(view_model=card_grid_vm)
-
-
-def _render_selected_resident_segmented_control_section(
-) -> tuple[ResidentSectionEnum, Column]:
-    st.markdown(f"#### Detail Records")
-
-    col_control, col_content = st.columns([1, 5])
-
-    selected_control: ResidentSectionEnum = (
-        render_vertical_segmented_control(
-            col=col_control,
-            view_model=ResidentSegmentedControlPresenter.present_segmented_controls(),
+            results=records_result,
         ))
 
-    return selected_control, col_content
+    selected_resident_need_contact: ResidentInCaseOfNeedContact = (
+        _get_selected_resident_in_case_of_need_contact(
+            resident_id=selected_resident_id,
+            results=records_result,
+        ))
+
+    st.divider()
+
+    # selected_control: ResidentSectionEnum
+    # col_content: Column
+    _render_selected_resident_segmented_control_section(
+        selected_resident_id=selected_resident_id,
+        container=container,
+        selected_resident_profile=selected_resident_profile,
+        selected_resident_need_contact=selected_resident_need_contact,
+    )
+
+    logging.info("Rendered segmented control segment content area")
+
+
+def _dispatch_renderer_handler(
+        domain_key: ResidentSectionEnum,
+        resident_id: str,
+) -> None:
+    # logger.info("Renderer dispatch requested: key=%r resident_id=%s", domain_key, resident_id)
+
+    handler = _RENDERERS.get(domain_key)
+
+    # logger.info("Renderer lookup: key=%r handler=%r", domain_key, handler)
+
+    if handler is None:
+        return
+
+    # logger.info("Calling renderer: %s", handler.__name__)
+
+    handler(resident_id)
+
+
+def run_use_case_dispatcher(
+        domain_key: ResidentSectionEnum,
+        resident_id: str,
+        app_container: AppContainer,
+) -> SectionUseCaseResult | None:
+    match domain_key:
+        case ResidentSectionEnum.SENSING:
+            return run_sensing_use_cases(
+                resident_id=resident_id,
+                app_container=app_container,
+            )
+
+        case _:
+            return None
 
 
 def _render_top_section(
@@ -279,16 +299,147 @@ def _render_table_section(
     return selected_resident_id
 
 
-def _dispatch_renderer(
-        domain_key: ResidentSectionEnum,
-        resident_id: str,
-) -> None:
-    handler = _RENDERERS.get(domain_key)
+def _set_selected_resident(
+        selection: str,
+        records,
+) -> str:
+    if selection is None and records:
+        selection = records[0].resident_id
+    return selection
 
-    if handler is None:
+
+def _render_selected_resident_dash_cards(
+        resident_id: str,
+        presenter: ResidentMainPagePresenter,
+):
+    st.markdown(f"#### Resident {resident_id}")
+
+    card_grid_vm: CardGridViewModel = (
+        presenter.present_selected_resident_dash_cards_demo())
+
+    render_grid_card_properties_button(view_model=card_grid_vm)
+
+
+def _render_selected_resident_segmented_control_section(
+        selected_resident_id: str,
+        container: AppContainer,
+        selected_resident_profile: ResidentProfile,
+        selected_resident_need_contact: ResidentInCaseOfNeedContact,
+) -> None:  # tuple[ResidentSectionEnum, Column]:
+    st.markdown(f"#### Detail Records")
+
+    # --- RENDER SEGMENTED CONTROLS VERTICAL TOOLBAR
+
+    col_control, col_content = st.columns([1, 5])
+
+    selected_control: ResidentSectionEnum = (
+        render_vertical_segmented_control(
+            col=col_control,
+            view_model=(ResidentSegmentedControlPresenter
+                        .present_segmented_controls()),
+        ))
+
+    logger.info(
+        "Segmented control selected: %r | type=%s", selected_control, type(selected_control).__name__)
+
+    if not selected_control:
+        selected_control = ResidentSectionEnum.CONTACT
+
+    logger.info("Resolved selected control: %r", selected_control)
+
+    # --- GET USE CASE RESULTS
+
+    """
+    sensing: SensingUseCaseResults
+    """
+
+    if selected_control != ResidentSectionEnum.CONTACT:
+        use_case_results: SectionUseCaseResult = run_use_case_dispatcher(
+            domain_key=selected_control,
+            resident_id=selected_resident_id,
+            app_container=container,
+        )
+
+        logger.info(
+            "Use case dispatcher result: control=%r result=%r",
+            selected_control,
+            use_case_results,
+        )
+
+    # --- GET VIEW MODEL
+
+    if selected_control != ResidentSectionEnum.CONTACT:
+        section_vm: ResidentSectionViewModel = (
+            _get_segmented_control_section_view_model(
+                selected_resident_id=selected_resident_id,
+                selected_control=selected_control,
+                use_case_results=use_case_results,
+                container=container,
+            ))
+    else:
+        section_vm: ResidentContactViewModel = ResidentContactSectionPresenter().present(
+            profile=selected_resident_profile,
+            need_case_contact=selected_resident_need_contact,
+        )
+
+    # logger.info("Section VM result: control=%r vm=%r", selected_control, section_vm)
+
+    # --- RENDER VIEW MODEL
+
+    if section_vm is not None:
+        _render_segmented_control_selection_vm(
+            selected_control=selected_control,
+            col_content=col_content,
+            selected_resident_id=selected_resident_id,
+            vm=section_vm,
+        )
         return
 
-    handler(resident_id)
+    _render_selected_control_details(
+        col=col_content,
+        resident_id=selected_resident_id,
+        domain_name=selected_control,
+    )
+
+
+def _render_segmented_control_selection_vm(
+        selected_control: ResidentSectionEnum,
+        col_content: Column,
+        selected_resident_id: str,
+        vm: ResidentSectionViewModel,
+) -> None:
+    with col_content:
+        match selected_control:
+
+            case ResidentSectionEnum.SENSING:
+                render_resident_sensing(
+                    resident_id=selected_resident_id,
+                    section_dash_vm=vm,
+                )
+
+            case ResidentSectionEnum.CONTACT:
+                render_resident_contact_info(
+                    resident_id=selected_resident_id,
+                    view_model=vm,
+                )
+
+
+def _get_segmented_control_section_view_model(
+        selected_control: ResidentSectionEnum,
+        use_case_results: SectionUseCaseResult,
+) -> ResidentSectionViewModel | None:
+    if selected_control == ResidentSectionEnum.SENSING:
+        if use_case_results is None:
+            return None
+
+        return (
+            ResidentSensingSectionPresenter()
+            .present_sensing_section(
+                use_case_results.result_user_sensing_account
+            )
+        )
+
+    return None
 
 
 def _render_selected_control_details(
@@ -302,16 +453,56 @@ def _render_selected_control_details(
         with st.container(border=True):
             st.markdown(f"#### {domain_label} • {resident_id}")
 
-            _dispatch_renderer(
+            _dispatch_renderer_handler(
                 domain_key=domain_name,
                 resident_id=resident_id,
             )
 
 
-def run_use_case_dispatcher(
-        domain_key: ResidentSectionEnum,
-        app_container: AppContainer,
-) -> Any:
-    match domain_key:
-        case "sensing":
-            return run_sensing_use_cases(app_container=app_container)
+def _present_contact_section(
+        resident_id: str,
+        results: GetAllResidentRecordsResultDTO,
+) -> ResidentContactViewModel | None:
+    profile = next(
+        (
+            profile
+            for profile in results.resident_profiles
+            if profile.resident_id == resident_id
+        ),
+        None,
+    )
+
+    need_contact = next(
+        (
+            contact
+            for contact in results.resident_need_case_contacts
+            if contact.resident_id == resident_id
+        ),
+        None,
+    )
+
+    if profile is None or need_contact is None:
+        return None
+
+    return ResidentContactSectionPresenter().present(
+        profile=profile,
+        need_case_contact=need_contact,
+    )
+
+
+def _get_selected_resident_profile(
+        resident_id: str,
+        results: GetAllResidentRecordsResultDTO,
+) -> ResidentProfile:
+    for profile in results.resident_profiles:
+        if profile.resident_id == resident_id:
+            return profile
+
+
+def _get_selected_resident_in_case_of_need_contact(
+        resident_id: str,
+        results: GetAllResidentRecordsResultDTO,
+) -> ResidentInCaseOfNeedContact:
+    for record in results.resident_need_case_contacts:
+        if record.resident_id == resident_id:
+            return record

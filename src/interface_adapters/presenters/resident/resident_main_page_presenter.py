@@ -1,12 +1,17 @@
 # /src/interface_adapters/presenters/resident/resident_main_page_presenter.py
 
+from src.domain.entities.person.resident_entities import (
+    ResidentProfile,
+    ResidentInCaseOfNeedContact,
+)
+
 from src.application.use_cases.resident.resident_uc_dtos import (
     ResidentSearchableRecordDTO,
 )
 
-from src.application.use_cases.resident.resident_uc_dtos import (
-    GetAllResidentRecordsRequestDTO
-)
+# from src.application.use_cases.resident.resident_uc_dtos import (
+#    GetAllResidentRecordsRequestDTO
+# )
 
 from src.interface_adapters.view_models.common.table_view_model import (
     TableViewModel,
@@ -16,20 +21,28 @@ from src.interface_adapters.view_models.common.card_view_models import (
     CardTitleTextButtonViewModel,
 )
 
-from src.interface_adapters.view_models.common.card_grid_view_model import (
-    CardGridViewModel
-)
+# from src.interface_adapters.view_models.common.card_grid_view_model import (
+#    CardGridViewModel
+# )
 
 from src.interface_adapters.presenters.resident.searchable_table_presenter import (
     ResidentRecordsSearchableTablePresenter,
 )
 
+from src.interface_adapters.presenters.resident.demo_record_dash.demo_presenter import (
+    DemoSelectedResidentCardGridPresenter
+)
+
+from src.interface_adapters.presenters.resident.resident_contact_section_presenter import (
+    ResidentContactSectionPresenter,
+)
+
 from src.interface_adapters.view_models.resident.resident_main_page_view_model import (
-    ResidentTabIdEnum,
+    # ResidentTabIdEnum,
     ResidentMainPageTopViewModel,
-    ResidentRecordCardGridViewModel,
-    ResidentTabViewModel,
-    ResidentRecordTabsViewModel,
+    # ResidentRecordCardGridViewModel,
+    # ResidentTabViewModel,
+    # ResidentRecordTabsViewModel,
 )
 
 
@@ -51,65 +64,22 @@ class ResidentMainPagePresenter:
             records=records
         )
 
-    def present_selected_record_card_grid(
-            self,
-    ) -> CardGridViewModel:
-        return CardGridViewModel(
-            cards=self._build_dashboard_cards(),
-            columns=3,
+    @staticmethod
+    def present_selected_resident_dash_cards_demo(
+    ):
+        return DemoSelectedResidentCardGridPresenter().present_cards_grid()
+
+    @staticmethod
+    def present_resident_contact_records(
+            resident_profile: ResidentProfile,
+            resident_need_case_contact: ResidentInCaseOfNeedContact,
+    ):
+        return ResidentContactSectionPresenter().present(
+            profile=resident_profile,
+            need_case_contact=resident_need_case_contact,
         )
 
     """
-    def present_selected_record_card_grid(
-            self,
-    ) -> ResidentRecordCardGridViewModel:
-        return ResidentRecordCardGridViewModel(
-            cards=self._build_dashboard_cards(),
-            columns=3,
-        
-        )
-    """
-
-    def present_selected_record_tabs_section(
-            self,
-    ) -> ResidentRecordTabsViewModel:
-        return ResidentRecordTabsViewModel(
-            tabs=(
-                ResidentTabViewModel(
-                    tab_id=ResidentTabIdEnum.PROFILE,
-                    label="Profile",
-                ),
-                ResidentTabViewModel(
-                    tab_id=ResidentTabIdEnum.CARE_PLAN,
-                    label="Care Plan",
-                ),
-                ResidentTabViewModel(
-                    tab_id=ResidentTabIdEnum.TREATMENT_PLAN,
-                    label="Treatment Plan",
-                ),
-                ResidentTabViewModel(
-                    tab_id=ResidentTabIdEnum.PROVIDER,
-                    label="Provider",
-                ),
-                ResidentTabViewModel(
-                    tab_id=ResidentTabIdEnum.SENSING,
-                    label="Sensing",
-                ),
-                ResidentTabViewModel(
-                    tab_id=ResidentTabIdEnum.COMMUNICATION,
-                    label="Communication",
-                ),
-                ResidentTabViewModel(
-                    tab_id=ResidentTabIdEnum.PAYER,
-                    label="Payer",
-                ),
-                ResidentTabViewModel(
-                    tab_id=ResidentTabIdEnum.BILLING,
-                    label="Billing",
-                ),
-            )
-        )
-
     @staticmethod
     def _build_dashboard_cards(
     ) -> tuple[CardTitleTextButtonViewModel, ...]:
@@ -151,3 +121,61 @@ class ResidentMainPagePresenter:
                 button_label="View analytics",
             ),
         )
+
+    def present_selected_record_card_grid(
+            self,
+    ) -> CardGridViewModel:
+        return CardGridViewModel(
+            cards=self._build_dashboard_cards(),
+            columns=3,
+        )
+
+    def present_selected_record_card_grid(
+            self,
+    ) -> ResidentRecordCardGridViewModel:
+        return ResidentRecordCardGridViewModel(
+            cards=self._build_dashboard_cards(),
+            columns=3,
+        
+        )
+
+    def present_selected_record_tabs_section(
+            self,
+    ) -> ResidentRecordTabsViewModel:
+        return ResidentRecordTabsViewModel(
+            tabs=(
+                ResidentTabViewModel(
+                    tab_id=ResidentTabIdEnum.PROFILE,
+                    label="Profile",
+                ),
+                ResidentTabViewModel(
+                    tab_id=ResidentTabIdEnum.CARE_PLAN,
+                    label="Care Plan",
+                ),
+                ResidentTabViewModel(
+                    tab_id=ResidentTabIdEnum.TREATMENT_PLAN,
+                    label="Treatment Plan",
+                ),
+                ResidentTabViewModel(
+                    tab_id=ResidentTabIdEnum.PROVIDER,
+                    label="Provider",
+                ),
+                ResidentTabViewModel(
+                    tab_id=ResidentTabIdEnum.SENSING,
+                    label="Sensing",
+                ),
+                ResidentTabViewModel(
+                    tab_id=ResidentTabIdEnum.COMMUNICATION,
+                    label="Communication",
+                ),
+                ResidentTabViewModel(
+                    tab_id=ResidentTabIdEnum.PAYER,
+                    label="Payer",
+                ),
+                ResidentTabViewModel(
+                    tab_id=ResidentTabIdEnum.BILLING,
+                    label="Billing",
+                ),
+            )
+        )
+    """

@@ -4,7 +4,7 @@ from typing import Protocol
 
 from src.domain.entities.person.resident_entities import (
     ResidentProfile,
-    ResidentContactInformation,
+    ResidentInCaseOfNeedContact,
 )
 
 
@@ -25,7 +25,7 @@ class ResidentContactInformationRepositoryPort(Protocol):
     def get_by_id(
             self,
             resident_id: str,
-    ) -> ResidentContactInformation:
+    ) -> ResidentInCaseOfNeedContact:
         ...
 
 

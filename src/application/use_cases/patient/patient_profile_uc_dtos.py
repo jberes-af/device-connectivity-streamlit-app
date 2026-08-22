@@ -3,13 +3,6 @@
 from dataclasses import dataclass
 from datetime import date
 
-from src.domain.entities.billing.payer_entities import PayerProfile
-
-from src.domain.entities.person.patient_entities import PatientPayer
-
-from dataclasses import dataclass
-from datetime import date, datetime
-
 from src.domain.enums.person.patient_enums import PatientProviderRoleEnum
 
 

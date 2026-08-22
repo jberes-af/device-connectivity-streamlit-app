@@ -3,7 +3,7 @@
 
 from src.domain.entities.person.resident_entities import (
     ResidentProfile,
-    ResidentContactInformation,
+    ResidentInCaseOfNeedContact,
 )
 from src.domain.entities.access.access_entities import (
     ResidentGatewayLink,
@@ -84,19 +84,20 @@ class GetAllResidentRecordsForUserUseCase:
             for r in resident_ids
         }
 
-        resident_contacts: dict[str, ResidentContactInformation] = {
+        need_case_contacts: dict[str, ResidentInCaseOfNeedContact] = {
             r: self._resident_contacts_repo.get_by_id(r)
             for r in resident_ids
         }
 
         # --- RESIDENT RECORDS FOR SEARCHABLE TABLE
 
-        results: list[ResidentSearchableRecordDTO] = []
+        profiles: list[ResidentProfile] = []
+        need_contacts: list[ResidentInCaseOfNeedContact] = []
+        table_records: list[ResidentSearchableRecordDTO] = []
         for r in resident_ids:
             profile: ResidentProfile = resident_profiles[r]
-            contact: ResidentContactInformation = resident_contacts[r]
-            results.append(
-
+            contact: ResidentInCaseOfNeedContact = need_case_contacts[r]
+            table_records.append(
                 ResidentSearchableRecordDTO(
                     resident_id=r,
                     full_name=profile.full_name,
@@ -105,7 +106,11 @@ class GetAllResidentRecordsForUserUseCase:
                     active_status=profile.active_status,
                 )
             )
+            profiles.append(profile)
+            need_contacts.append(contact)
 
         return GetAllResidentRecordsResultDTO(
-            resident_table_records=tuple(results),
+            resident_profiles=tuple(profiles),
+            resident_need_case_contacts=tuple(need_contacts),
+            resident_table_records=tuple(table_records),
         )

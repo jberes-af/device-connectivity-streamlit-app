@@ -43,6 +43,36 @@ class ResidentProfileRowMapper:
                 row.get(schema.DATE_OF_BIRTH),
                 field_name=schema.DATE_OF_BIRTH,
             ),
+
+            telephone=parse_optional_text(
+                row.get(schema.TELEPHONE),
+                field_name=schema.TELEPHONE,
+            ),
+            email=parse_optional_text(
+                row.get(schema.EMAIL),
+                field_name=schema.EMAIL,
+            ),
+            address_line_1=parse_optional_text(
+                row.get(schema.ADDRESS_LINE_1),
+                field_name=schema.ADDRESS_LINE_1,
+            ),
+            address_line_2=parse_optional_text(
+                row.get(schema.ADDRESS_LINE_2),
+                field_name=schema.ADDRESS_LINE_2,
+            ),
+            city=parse_optional_text(
+                row.get(schema.CITY),
+                field_name=schema.CITY,
+            ),
+            state=parse_optional_text(
+                row.get(schema.STATE),
+                field_name=schema.STATE,
+            ),
+            postal_code=parse_optional_text(
+                row.get(schema.POSTAL_CODE),
+                field_name=schema.POSTAL_CODE,
+            ),
+
             room_reference=parse_optional_text(
                 row.get(schema.ROOM_REFERENCE),
                 field_name=schema.ROOM_REFERENCE,
@@ -75,6 +105,27 @@ class ResidentProfileRowMapper:
 
             schema.DATE_OF_BIRTH:
                 resident_profile.date_of_birth,
+
+            schema.TELEPHONE:
+                resident_profile.telephone,
+
+            schema.EMAIL:
+                resident_profile.email,
+
+            schema.ADDRESS_LINE_1:
+                resident_profile.address_line_2,
+
+            schema.ADDRESS_LINE_2:
+                resident_profile.address_line_2,
+
+            schema.CITY:
+                resident_profile.city,
+
+            schema.STATE:
+                resident_profile.state,
+
+            schema.POSTAL_CODE:
+                resident_profile.postal_code,
 
             schema.ROOM_REFERENCE:
                 resident_profile.room_reference,

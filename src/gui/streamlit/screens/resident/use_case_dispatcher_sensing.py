@@ -25,6 +25,7 @@ class SensingUseCaseResults:
 
 
 def run_sensing_use_cases(
+        resident_id: str,
         app_container: AppContainer,
 ) -> SensingUseCaseResults:
     request_usa = UserSensingAccountRequestDTO(

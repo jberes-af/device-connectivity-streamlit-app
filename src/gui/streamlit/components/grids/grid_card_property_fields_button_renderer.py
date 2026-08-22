@@ -2,7 +2,7 @@
 
 import streamlit as st
 
-from src.gui.streamlit.components.cards.card_property_fields_button_renderer import (
+from src.gui.streamlit.components.cards.card_property_fields_button_renderer_vertical import (
     render_dashboard_card,
 )
 
@@ -17,7 +17,7 @@ def render_grid_card_properties_button(view_model: CardGridViewModel) -> None:
     for i, vm in enumerate(view_model.cards):
         with columns[i % len(columns)]:
             render_dashboard_card(
-                id=vm.id,
+                # id=vm.id,
                 title=vm.title,
                 # description=vm.description,
                 property_fields=vm.property_fields,
