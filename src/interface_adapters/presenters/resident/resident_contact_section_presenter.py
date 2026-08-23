@@ -30,9 +30,12 @@ class ResidentContactSectionPresenter:
             self,
             profile: ResidentProfile,
             need_case_contact: ResidentInCaseOfNeedContact,
+            icon: str,
     ) -> ResidentContactViewModel:
+
         return ResidentContactViewModel(
-            section_title=":material/contact_page: Contact Information",
+            # section_title=":material/contact_page: Contact Information",
+            section_title=f"{icon} Contact Information",
             resident_info_card_grid=self._present_resident_info_card_grid(
                 profile=profile,
             ),

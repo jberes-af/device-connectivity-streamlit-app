@@ -87,15 +87,9 @@ from src.gui.streamlit.screens.resident.use_case_dispatcher_sensing import (
     run_sensing_use_cases,
 )
 
-# --- INTERFACE ADAPTERS
-
-# from src.interface_adapters.view_models.patient.patient_overview_page_view_model import (    PatientOverviewPageViewModel,)
+# --- VIEW MODEL ADAPTERS
 
 from src.interface_adapters.view_models.common.table_view_model import TableViewModel
-
-from src.interface_adapters.view_models.resident.segmented_controls_view_model import (
-    ResidentSectionEnum,
-)
 
 from src.interface_adapters.view_models.resident.resident_main_page_view_model import (
     ResidentMainPageTopViewModel,
@@ -113,16 +107,16 @@ from src.interface_adapters.view_models.resident.resident_main_page_view_model i
     ResidentContactViewModel,
 )
 
-# from src.interface_adapters.presenters.resident.demo_record_dash.demo_presenter import (
-#     DemoSelectedResidentCardGridPresenter
-# )
+from src.interface_adapters.view_models.resident.segmented_controls_view_model import (
+    ResidentSectionEnum,
+    ResidentSegmentedControlViewModel,
+)
+
+# --- PRESENTER ADAPTERS
 
 from src.interface_adapters.presenters.resident.resident_main_page_presenter import (
     ResidentMainPagePresenter,
 )
-
-from src.interface_adapters.presenters.resident.segmented_controls_presenter import (
-    ResidentSegmentedControlPresenter)
 
 from src.interface_adapters.presenters.resident.resident_sensing_section_presenter import (
     ResidentSensingSectionPresenter
@@ -186,12 +180,12 @@ def render_residents_page(
         container.resident_main_page_presenter.present_searchable_table(
             records_result.resident_table_records))
 
-    presenter: ResidentMainPagePresenter = container.resident_main_page_presenter
+    presenter_main: ResidentMainPagePresenter = container.resident_main_page_presenter
 
     logging.info("Main page presenter assigned")
 
     _render_top_section(
-        header_vm=presenter.present_top_section(),
+        header_vm=presenter_main.present_top_section(),
     )
 
     selected_resident_id: str | None = _render_table_section(
@@ -205,7 +199,7 @@ def render_residents_page(
 
     _render_selected_resident_dash_cards(
         resident_id=selected_resident_id,
-        presenter=presenter,
+        presenter=presenter_main,
     )
 
     logging.info("Rendered dash cards")
@@ -231,6 +225,7 @@ def render_residents_page(
         container=container,
         selected_resident_profile=selected_resident_profile,
         selected_resident_need_contact=selected_resident_need_contact,
+        presenter_main=presenter_main,
     )
 
     logging.info("Rendered segmented control segment content area")
@@ -325,6 +320,8 @@ def _render_selected_resident_segmented_control_section(
         container: AppContainer,
         selected_resident_profile: ResidentProfile,
         selected_resident_need_contact: ResidentInCaseOfNeedContact,
+        presenter_main: ResidentMainPagePresenter,
+        # vm_segmented_controls: ResidentSegmentedControlViewModel,
 ) -> None:  # tuple[ResidentSectionEnum, Column]:
     st.markdown(f"#### Detail Records")
 
@@ -332,15 +329,19 @@ def _render_selected_resident_segmented_control_section(
 
     col_control, col_content = st.columns([1, 5])
 
+    vm_segmented_controls: ResidentSegmentedControlViewModel = (
+        presenter_main.present_selected_resident_segmented_controls_section()
+    )
+
     selected_control: ResidentSectionEnum = (
         render_vertical_segmented_control(
             col=col_control,
-            view_model=(ResidentSegmentedControlPresenter
-                        .present_segmented_controls()),
+            view_model=vm_segmented_controls,
         ))
 
     logger.info(
-        "Segmented control selected: %r | type=%s", selected_control, type(selected_control).__name__)
+        "Segmented control selected: %r | type=%s",
+        selected_control, type(selected_control).__name__)
 
     if not selected_control:
         selected_control = ResidentSectionEnum.CONTACT
@@ -360,11 +361,7 @@ def _render_selected_resident_segmented_control_section(
             app_container=container,
         )
 
-        logger.info(
-            "Use case dispatcher result: control=%r result=%r",
-            selected_control,
-            use_case_results,
-        )
+        # logger.info("Use case dispatcher result: control=%r result=%r", selected_control, use_case_results)
 
     # --- GET VIEW MODEL
 
@@ -377,10 +374,13 @@ def _render_selected_resident_segmented_control_section(
                 container=container,
             ))
     else:
-        section_vm: ResidentContactViewModel = ResidentContactSectionPresenter().present(
-            profile=selected_resident_profile,
-            need_case_contact=selected_resident_need_contact,
-        )
+
+        section_vm: ResidentContactViewModel = (
+            presenter_main.present_resident_contact_records(
+                resident_profile=selected_resident_profile,
+                resident_need_case_contact=selected_resident_need_contact,
+            ))
+
 
     # logger.info("Section VM result: control=%r vm=%r", selected_control, section_vm)
 
@@ -425,8 +425,10 @@ def _render_segmented_control_selection_vm(
 
 
 def _get_segmented_control_section_view_model(
+        selected_resident_id: str,
         selected_control: ResidentSectionEnum,
         use_case_results: SectionUseCaseResult,
+        container: AppContainer,
 ) -> ResidentSectionViewModel | None:
     if selected_control == ResidentSectionEnum.SENSING:
         if use_case_results is None:

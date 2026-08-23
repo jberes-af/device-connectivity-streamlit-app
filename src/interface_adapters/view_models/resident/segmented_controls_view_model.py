@@ -30,6 +30,21 @@ RESIDENT_SEGMENT_ORDER: tuple[ResidentSectionEnum, ...] = (
     ResidentSectionEnum.BILLING,
 )
 
+SECTION_ICONS: dict[ResidentSectionEnum, str] = {
+    ResidentSectionEnum.CONTACT: ":material/contact_page:",
+    ResidentSectionEnum.PRIORITY_ITEMS: ":material/priority_high:",
+    ResidentSectionEnum.APPOINTMENTS: ":material/calendar_month:",
+    ResidentSectionEnum.CARE_PLAN: ":material/assignment_add:",
+    ResidentSectionEnum.TREATMENT_PLAN: ":material/medical_services:",
+    ResidentSectionEnum.CLINICAL_DOCS: ":material/clinical_notes:",
+    ResidentSectionEnum.PROVIDERS: ":material/medical_services:",
+    ResidentSectionEnum.COMMUNICATIONS: ":material/communication:",
+    ResidentSectionEnum.PAYERS: ":material/savings:",
+    ResidentSectionEnum.SENSING: ":material/sensors:",
+    ResidentSectionEnum.BILLING: ":material/receipt_long:",
+}
+
+
 """
 
 class ResidentSectionEnum(StrEnum):
@@ -58,6 +73,7 @@ RESIDENT_SEGMENT_ORDER: tuple[ResidentSectionEnum, ...] = (
 class ResidentSegmentOptionViewModel:
     id: ResidentSectionEnum
     label: str
+    icon: str | None = None
 
 
 @dataclass(frozen=True)
@@ -66,3 +82,5 @@ class ResidentSegmentedControlViewModel:
     options: list[ResidentSegmentOptionViewModel]
     selected_id: ResidentSectionEnum | None = None
     key: str | None = None
+
+

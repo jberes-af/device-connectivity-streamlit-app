@@ -17,10 +17,6 @@ from src.interface_adapters.view_models.common.table_view_model import (
     TableViewModel,
 )
 
-from src.interface_adapters.view_models.common.card_view_models import (
-    CardTitleTextButtonViewModel,
-)
-
 # from src.interface_adapters.view_models.common.card_grid_view_model import (
 #    CardGridViewModel
 # )
@@ -37,12 +33,29 @@ from src.interface_adapters.presenters.resident.resident_contact_section_present
     ResidentContactSectionPresenter,
 )
 
+from src.interface_adapters.view_models.common.card_grid_view_model import (
+    CardGridViewModel,
+)
+
 from src.interface_adapters.view_models.resident.resident_main_page_view_model import (
     # ResidentTabIdEnum,
     ResidentMainPageTopViewModel,
     # ResidentRecordCardGridViewModel,
     # ResidentTabViewModel,
     # ResidentRecordTabsViewModel,
+)
+
+from src.interface_adapters.view_models.resident.segmented_controls_view_model import (
+    ResidentSectionEnum,
+    SECTION_ICONS,
+    ResidentSegmentedControlViewModel,
+)
+
+from src.interface_adapters.presenters.resident.segmented_controls_presenter import (
+    ResidentSegmentedControlPresenter)
+
+from src.interface_adapters.view_models.resident.resident_main_page_view_model import (
+    ResidentContactViewModel,
 )
 
 
@@ -66,17 +79,27 @@ class ResidentMainPagePresenter:
 
     @staticmethod
     def present_selected_resident_dash_cards_demo(
-    ):
-        return DemoSelectedResidentCardGridPresenter().present_cards_grid()
+    ) -> CardGridViewModel:
+        return (DemoSelectedResidentCardGridPresenter()
+                .present_cards_grid()
+                )
+
+    @staticmethod
+    def present_selected_resident_segmented_controls_section(
+    ) -> ResidentSegmentedControlViewModel:
+        return (
+            ResidentSegmentedControlPresenter()
+            .present_segmented_controls())
 
     @staticmethod
     def present_resident_contact_records(
             resident_profile: ResidentProfile,
             resident_need_case_contact: ResidentInCaseOfNeedContact,
-    ):
+    ) -> ResidentContactViewModel:
         return ResidentContactSectionPresenter().present(
             profile=resident_profile,
             need_case_contact=resident_need_case_contact,
+            icon=SECTION_ICONS.get(ResidentSectionEnum.CONTACT)
         )
 
     """

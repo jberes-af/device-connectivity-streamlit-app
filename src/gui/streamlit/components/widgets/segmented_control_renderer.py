@@ -9,17 +9,63 @@ from src.interface_adapters.view_models.resident.segmented_controls_view_model i
     ResidentSegmentedControlViewModel,
 )
 
+_CSS_VERTICAL_SEGMENT_CONTROL: str = """
+<style>
+
+/* =========================
+   ALL SEGMENT BUTTONS
+   ========================= */
+
+[class*="st-key-vertical_segment_"] button,
+[class*="st-key-vertical_segment_selected_"] button {
+    border: none !important;
+    box-shadow: none !important;
+    background-color: transparent !important;
+
+    justify-content: flex-start !important;
+    text-align: left !important;
+}
+
+
+[class*="st-key-vertical_segment_"] button > div,
+[class*="st-key-vertical_segment_selected_"] button > div {
+    width: 100%;
+    justify-content: flex-start !important;
+}
+
+/* =========================
+   SELECTED SEGMENT
+   ========================= */
+
+[class*="st-key-vertical_segment_selected_"] button {
+    background-color: #fbf1f3 !important;
+    font-weight: 600 !important;
+}
+
+
+/* =========================
+   HOVER
+   ========================= */
+
+[class*="st-key-vertical_segment_"] button:hover,
+[class*="st-key-vertical_segment_selected_"] button:hover {
+    border: none !important;
+    box-shadow: none !important;
+    background-color: #f5f5f5 !important;
+}
+
+</style>
+"""
+
 
 def render_segmented_control(
         view_model: ResidentSegmentedControlViewModel,
 ) -> ResidentSectionEnum | None:
-    # Actual values managed by Streamlit
-    options = [
+    options = tuple(
         option.id
         for option in view_model.options
-    ]
+    )
 
-    # Map enum -> display label
     labels = {
         option.id: option.label
         for option in view_model.options
@@ -41,18 +87,33 @@ def render_vertical_segmented_control(
         col: Any,
         view_model: ResidentSegmentedControlViewModel,
 ) -> ResidentSectionEnum | None:
+    st.markdown(
+        _CSS_VERTICAL_SEGMENT_CONTROL,
+        unsafe_allow_html=True,
+    )
+
     with col:
         selected = view_model.selected_id
 
         for option in view_model.options:
             is_selected = option.id == selected
 
+            button_label = (
+                f"{option.icon} {option.label}"
+                if option.icon
+                else option.label
+            )
+
             if st.button(
-                    option.label,
-                    key=f"{view_model.key}_{option.id.value}",
-                    type="primary" if is_selected else "secondary",
+                    label=button_label,
+                    key=(
+                            f"vertical_segment_"
+                            f"{view_model.key}_"
+                            f"{option.id.value}"
+                    ),
+                    type="secondary",
                     width="stretch",
             ):
                 selected = option.id
 
-        return selected
+    return selected
