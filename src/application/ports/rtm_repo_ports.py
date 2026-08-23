@@ -1,8 +1,11 @@
 # /src/application/ports/rtm_repo_ports.py
 
-from typing import Protocol
+from typing import Protocol, Sequence
 
-from src.domain.entities.person.patient_entities import RtmEnrollment
+from src.domain.entities.care.rtm_entities import (
+    RtmEnrollment,
+    RtmMedicalNecessity,
+)
 
 
 class RtmEnrollmentRepositoryPort(Protocol):
@@ -12,6 +15,24 @@ class RtmEnrollmentRepositoryPort(Protocol):
 
     def get_by_id(
             self,
-            patient_id: str,
+            rtm_enrollment_id: str,
     ) -> RtmEnrollment:
+        ...
+
+    def get_by_ids(
+            self,
+            rtm_enrollment_ids: Sequence[str],
+    ) -> tuple[RtmEnrollment, ...]:
+        ...
+
+
+class RtmNecessityRepositoryPort(Protocol):
+
+    def list_rtm_necessity_records(self) -> tuple[RtmMedicalNecessity, ...]:
+        ...
+
+    def get_by_id(
+            self,
+            rtm_necessity_id: str,
+    ) -> RtmMedicalNecessity:
         ...

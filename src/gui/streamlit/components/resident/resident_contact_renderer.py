@@ -16,7 +16,7 @@ from src.interface_adapters.view_models.common.card_view_models import (
 from src.interface_adapters.view_models.common.card_grid_view_model import (
     CardGridViewModel)
 
-from src.interface_adapters.view_models.resident.resident_main_page_view_model import (
+from src.interface_adapters.view_models.resident.resident_main_view_model import (
     ResidentContactViewModel,
 )
 
@@ -41,7 +41,7 @@ def render_resident_contact_info(
     )
     """
 
-    profile_grid: CardGridViewModel = view_model.resident_info_card_grid
+    profile_grid: CardGridViewModel = view_model.resident_profile_card_grid
     contact_grid: CardGridViewModel = view_model.in_case_of_need_card_grid
 
     # --- RENDER RESIDENT PROFILE INFORMATION

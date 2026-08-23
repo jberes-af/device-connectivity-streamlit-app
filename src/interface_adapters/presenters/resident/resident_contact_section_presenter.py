@@ -1,7 +1,5 @@
 # /src/interface_adapters/presenters/resident/resident_contact_section_presenter.py
 
-from datetime import date, datetime
-
 from src.domain.entities.person.resident_entities import (
     ResidentProfile,
     ResidentInCaseOfNeedContact,
@@ -19,10 +17,16 @@ from src.interface_adapters.view_models.common.card_grid_view_model import (
     CardGridViewModel,
 )
 
-from src.interface_adapters.view_models.resident.resident_main_page_view_model import (
+from src.interface_adapters.view_models.resident.resident_main_view_model import (
     ResidentContactViewModel,
 )
 
+from src.interface_adapters.presenters.utils_presenters import (
+    format_optional,
+    format_bool,
+    format_date,
+    format_state_postal,
+)
 
 class ResidentContactSectionPresenter:
 
@@ -36,7 +40,7 @@ class ResidentContactSectionPresenter:
         return ResidentContactViewModel(
             # section_title=":material/contact_page: Contact Information",
             section_title=f"{icon} Contact Information",
-            resident_info_card_grid=self._present_resident_info_card_grid(
+            resident_profile_card_grid=self._present_resident_info_card_grid(
                 profile=profile,
             ),
             in_case_of_need_card_grid=self._present_need_contact_card_grid(
@@ -85,7 +89,7 @@ class ResidentContactSectionPresenter:
                     ),
                     PropertyFieldViewModel(
                         label="Date of Birth",
-                        value=_format_date(profile.date_of_birth),
+                        value=format_date(profile.date_of_birth),
                     ),
                     PropertyFieldViewModel(
                         label="Resident ID",
@@ -93,30 +97,30 @@ class ResidentContactSectionPresenter:
                     ),
                     PropertyFieldViewModel(
                         label="Telephone",
-                        value=_format_optional(profile.telephone),
+                        value=format_optional(profile.telephone),
                     ),
                     PropertyFieldViewModel(
                         label="Email",
-                        value=_format_optional(profile.email),
+                        value=format_optional(profile.email),
                     ),
                     PropertyFieldViewModel(
                         label="Street",
-                        value=_format_optional(profile.address_line_1),
+                        value=format_optional(profile.address_line_1),
                     ),
                     PropertyFieldViewModel(
                         label="City",
-                        value=_format_optional(profile.city),
+                        value=format_optional(profile.city),
                     ),
                     PropertyFieldViewModel(
                         label="State • Zip",
-                        value=_format_state_postal(
+                        value=format_state_postal(
                             state=profile.state,
                             postal_code=profile.postal_code,
                         ),
                     ),
                     PropertyFieldViewModel(
                         label="Room",
-                        value=_format_optional(profile.room_reference),
+                        value=format_optional(profile.room_reference),
                     ),
                     PropertyFieldViewModel(
                         label="Tenant ID",
@@ -124,7 +128,7 @@ class ResidentContactSectionPresenter:
                     ),
                     PropertyFieldViewModel(
                         label="Status",
-                        value=_format_bool(profile.active_status),
+                        value=format_bool(profile.active_status),
                     ),
                 ),
             ),
@@ -141,31 +145,31 @@ class ResidentContactSectionPresenter:
                 property_fields=(
                     PropertyFieldViewModel(
                         label="Contact Name",
-                        value=_format_optional(
+                        value=format_optional(
                             need_case_contact.contact_name
                         ),
                     ),
                     PropertyFieldViewModel(
                         label="Telephone",
-                        value=_format_optional(
+                        value=format_optional(
                             need_case_contact.contact_telephone
                         ),
                     ),
                     PropertyFieldViewModel(
                         label="Email",
-                        value=_format_optional(
+                        value=format_optional(
                             need_case_contact.contact_email
                         ),
                     ),
                     PropertyFieldViewModel(
                         label="Address",
-                        value=_format_optional(
+                        value=format_optional(
                             need_case_contact.contact_address
                         ),
                     ),
                     PropertyFieldViewModel(
                         label="Relationship",
-                        value=_format_optional(
+                        value=format_optional(
                             need_case_contact.contact_relationship
                         ),
                     ),
@@ -174,35 +178,3 @@ class ResidentContactSectionPresenter:
         )
 
 
-def _format_optional(value: str | None) -> str:
-    return value or "—"
-
-
-def _format_bool(value: bool | None) -> str:
-    if value is None:
-        return "Unknown"
-    if value:
-        return "Active"
-    return "Inactive"
-
-
-def _format_date(
-        value: datetime | date | None,
-) -> str:
-    if value is None:
-        return "—"
-
-    return value.strftime("%b %d, %Y")
-
-
-def _format_state_postal(
-        state: str | None,
-        postal_code: str | None,
-) -> str:
-    parts = [
-        value
-        for value in (state, postal_code)
-        if value
-    ]
-
-    return " • ".join(parts) if parts else "—"

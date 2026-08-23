@@ -5,7 +5,7 @@ from src.application.use_cases.resident.resident_uc_dtos import (
     GetAllResidentRecordsRequestDTO
 )
 
-from src.interface_adapters.view_models.resident.resident_main_page_view_model import (
+from src.interface_adapters.view_models.resident.resident_main_view_model import (
     ResidentTabIdEnum,
     ResidentMainPageTopViewModel,
     ResidentRecordCardGridViewModel,

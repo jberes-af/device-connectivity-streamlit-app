@@ -17,10 +17,12 @@ class AppConfigLoader:
         "tables_access",
         "tables_billing",
         "tables_care_plan",
+        "tables_diagnosis"
         "tables_patient",
         "tables_payer",
         "tables_provider",
         "tables_resident",
+        "tables_rtm",
         "tables_tenant",
         "tables_treatment",
         "tables_user",

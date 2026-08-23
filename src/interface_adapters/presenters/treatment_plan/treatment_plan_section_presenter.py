@@ -5,25 +5,40 @@ from src.application.use_cases.resident.resident_uc_dtos import (
     GetAllResidentRecordsRequestDTO
 )
 
-from src.interface_adapters.view_models.resident.resident_main_page_view_model import (
-    ResidentTabIdEnum,
-    ResidentMainPageTopViewModel,
-    ResidentRecordCardGridViewModel,
-    ResidentTabViewModel,
-    ResidentRecordTabsViewModel,
+from src.interface_adapters.view_models.resident.resident_main_view_model import (
+    TreatmentTabIdEnum,
+    TREATMENT_SEGMENT_ORDER,
+    ResidentTreatmentViewModel,
 )
+
+from src.interface_adapters.view_models.common.card_view_models import (
+    CardPropertyFieldsViewModel,
+)
+
+from src.interface_adapters.view_models.common.property_field_view_model import (
+    PropertyFieldViewModel,
+)
+
+from src.interface_adapters.view_models.common.card_grid_view_model import (
+    CardGridViewModel,
+)
+
+from src.interface_adapters.view_models.common.tab_view_model import (
+    TabItemViewModel,
+    TabViewModel,
+)
+
+from src.interface_adapters.presenters.utils_presenters import (
+    format_optional,
+    format_bool,
+    format_date,
+    format_state_postal,
+)
+
 
 # from src.interface_adapters.view_models.common.table_view_model import (
 #     TableViewModel,
 # )
-
-from src.interface_adapters.view_models.common.card_view_models import (
-    CardTitleTextButtonViewModel,
-)
-
-from src.interface_adapters.view_models.common.card_grid_view_model import (
-    CardGridViewModel
-)
 
 # from src.interface_adapters.presenters.resident.searchable_table_presenter import (
 #     ResidentRecordsSearchableTablePresenter,
@@ -32,60 +47,88 @@ from src.interface_adapters.view_models.common.card_grid_view_model import (
 
 class TreatmentPlanSectionPresenter:
 
-    @staticmethod
-    def present_top_section(
-    ) -> ResidentMainPageTopViewModel:
-        return ResidentMainPageTopViewModel(
-            page_title=":material/groups: Residents",
-            page_subtitle="Resident census and records.",
+    def present(
+            self,
+            use_case_results: Any,
+            icon: str,
+
+    ) -> ResidentTreatmentViewModel:
+        treatment_detail_sections: TabViewModel = (
+            self._present_treatment_tabs_section()
         )
 
-    def present_selected_record_card_grid(
+        return ResidentTreatmentViewModel(
+            section_title=f"{icon} Treatments",
+            treatment_card_grid="Resident census and records.",
+            treatment_details_section_vm="Resident census and records.",
+        )
+
+    @staticmethod
+    def _present_treatment_tabs_section(
+    ) -> TabViewModel[str]:
+        tabs = tuple(
+            TabItemViewModel(
+                tab_id=segment.value,
+                label=segment.value.replace("_", " ").title(),
+                content=f"{segment.value} content",
+            )
+            for segment in TREATMENT_SEGMENT_ORDER
+        )
+
+        return TabViewModel(
+            tabs=tabs,
+        )
+
+    def _present_need_contact_card_grid(
             self,
+            need_case_contact: ResidentInCaseOfNeedContact,
     ) -> CardGridViewModel:
         return CardGridViewModel(
-            cards=self._build_cards(),
-            columns=3,
+            columns=1,
+            cards=self._build_need_contact_cards(
+                need_case_contact=need_case_contact,
+            ),
         )
 
     @staticmethod
-    def _build_cards(
-    ) -> tuple[CardTitleTextButtonViewModel, ...]:
+    def _build_need_contact_cards(
+            need_case_contact: ResidentInCaseOfNeedContact,
+    ) -> tuple[CardPropertyFieldsViewModel, ...]:
         return (
-            CardTitleTextButtonViewModel(
-                id="resident_profile",
-                title="Resident Profile",
-                card_text=(
-                    "View resident demographics, contact information, "
-                    "and administrative details."
+            CardPropertyFieldsViewModel(
+                title="In Case of Need Contact",
+                id="resident_need_contact",
+                property_fields=(
+                    PropertyFieldViewModel(
+                        label="Contact Name",
+                        value=_format_optional(
+                            need_case_contact.contact_name
+                        ),
+                    ),
+                    PropertyFieldViewModel(
+                        label="Telephone",
+                        value=_format_optional(
+                            need_case_contact.contact_telephone
+                        ),
+                    ),
+                    PropertyFieldViewModel(
+                        label="Email",
+                        value=_format_optional(
+                            need_case_contact.contact_email
+                        ),
+                    ),
+                    PropertyFieldViewModel(
+                        label="Address",
+                        value=_format_optional(
+                            need_case_contact.contact_address
+                        ),
+                    ),
+                    PropertyFieldViewModel(
+                        label="Relationship",
+                        value=_format_optional(
+                            need_case_contact.contact_relationship
+                        ),
+                    ),
                 ),
-                button_label="View profile",
-            ),
-            CardTitleTextButtonViewModel(
-                id="care_plan",
-                title="Care Plan",
-                card_text=(
-                    "View care goals, activities of daily living, "
-                    "priority items, and care instructions."
-                ),
-                button_label="View care plan",
-            ),
-            CardTitleTextButtonViewModel(
-                id="sensing",
-                title="Sensing",
-                card_text=(
-                    "View assigned sensors, activity events, "
-                    "movement, and monitoring information."
-                ),
-                button_label="View sensing",
-            ),
-            CardTitleTextButtonViewModel(
-                id="analytics",
-                title="Analytics",
-                card_text=(
-                    "View trends, comparisons, baselines, "
-                    "and resident activity insights."
-                ),
-                button_label="View analytics",
             ),
         )

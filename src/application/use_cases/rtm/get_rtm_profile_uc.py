@@ -1,8 +1,6 @@
 # /src/application/use_cases/rtm/get_rtm_profile_uc.py
 
-from src.domain.entities.person.patient_entities import (
-    RtmEnrollment,
-)
+from src.domain.entities.care.rtm_entities import RtmEnrollment
 
 from src.application.ports.rtm_repo_ports import RtmEnrollmentRepositoryPort
 

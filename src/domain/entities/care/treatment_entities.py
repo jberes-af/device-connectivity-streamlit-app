@@ -5,10 +5,8 @@ from datetime import date, datetime
 
 from src.domain.enums.care.treatment_enums import (
     InterventionStatus,
-    MeasurementPeriodStatus,
     TreatmentPlanStatus,
     TreatmentType,
-    TreatmentPlanEntityType,
 )
 
 

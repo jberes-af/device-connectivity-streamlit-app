@@ -91,7 +91,7 @@ from src.gui.streamlit.screens.resident.use_case_dispatcher_sensing import (
 
 from src.interface_adapters.view_models.common.table_view_model import TableViewModel
 
-from src.interface_adapters.view_models.resident.resident_main_page_view_model import (
+from src.interface_adapters.view_models.resident.resident_main_view_model import (
     ResidentMainPageTopViewModel,
 )
 
@@ -103,7 +103,7 @@ from src.interface_adapters.view_models.sensing.resident_sensing_view_model impo
     SensorSectionViewModel,
 )
 
-from src.interface_adapters.view_models.resident.resident_main_page_view_model import (
+from src.interface_adapters.view_models.resident.resident_main_view_model import (
     ResidentContactViewModel,
 )
 
@@ -118,7 +118,7 @@ from src.interface_adapters.presenters.resident.resident_main_page_presenter imp
     ResidentMainPagePresenter,
 )
 
-from src.interface_adapters.presenters.resident.resident_sensing_section_presenter import (
+from src.interface_adapters.presenters.sensing.resident_sensing_section_presenter import (
     ResidentSensingSectionPresenter
 )
 

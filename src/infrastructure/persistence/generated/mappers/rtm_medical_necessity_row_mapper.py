@@ -17,8 +17,8 @@ class RTMMedicalNecessityRowMapper:
 
         return RTMMedicalNecessity(
             medical_necessity_id=parse_required_text(
-                row.get(schema.MEDICAL_NECESSITY_ID),
-                field_name=schema.MEDICAL_NECESSITY_ID,
+                row.get(schema.RTM_NECESSITY_ID),
+                field_name=schema.RTM_NECESSITY_ID,
             ),
             patient_id=parse_required_text(
                 row.get(schema.PATIENT_ID),
@@ -111,8 +111,8 @@ class RTMMedicalNecessityRowMapper:
 
         return {
 
-            schema.MEDICAL_NECESSITY_ID:
-                r_tm_medical_necessity.medical_necessity_id,
+            schema.RTM_NECESSITY_ID:
+                r_tm_medical_necessity.rtm_necessity_id,
 
             schema.PATIENT_ID:
                 r_tm_medical_necessity.patient_id,

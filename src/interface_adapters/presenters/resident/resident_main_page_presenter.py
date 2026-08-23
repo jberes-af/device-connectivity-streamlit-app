@@ -37,7 +37,7 @@ from src.interface_adapters.view_models.common.card_grid_view_model import (
     CardGridViewModel,
 )
 
-from src.interface_adapters.view_models.resident.resident_main_page_view_model import (
+from src.interface_adapters.view_models.resident.resident_main_view_model import (
     # ResidentTabIdEnum,
     ResidentMainPageTopViewModel,
     # ResidentRecordCardGridViewModel,
@@ -54,7 +54,7 @@ from src.interface_adapters.view_models.resident.segmented_controls_view_model i
 from src.interface_adapters.presenters.resident.segmented_controls_presenter import (
     ResidentSegmentedControlPresenter)
 
-from src.interface_adapters.view_models.resident.resident_main_page_view_model import (
+from src.interface_adapters.view_models.resident.resident_main_view_model import (
     ResidentContactViewModel,
 )
 

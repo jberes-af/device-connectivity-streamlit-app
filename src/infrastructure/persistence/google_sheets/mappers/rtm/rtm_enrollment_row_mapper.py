@@ -6,7 +6,7 @@ from src.domain.enums.person.patient_enums import (
     ConsentStatusEnum,
 
 )
-from src.domain.entities.person.patient_entities import RtmEnrollment
+from src.domain.entities.care.rtm_entities import RtmEnrollment
 
 from src.infrastructure.persistence.common.types import RawRow
 

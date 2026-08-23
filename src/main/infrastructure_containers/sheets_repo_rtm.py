@@ -2,7 +2,10 @@
 
 from dataclasses import dataclass
 
-from src.application.ports.rtm_repo_ports import RtmEnrollmentRepositoryPort
+from src.application.ports.rtm_repo_ports import (
+    RtmEnrollmentRepositoryPort,
+    RtmNecessityRepositoryPort,
+)
 
 from src.infrastructure.config.app_config_models import (
     AppRuntimeConfig,
@@ -15,8 +18,16 @@ from src.infrastructure.persistence.google_sheets.mappers.rtm.rtm_enrollment_row
     RtmEnrollmentRowMapper,
 )
 
+from src.infrastructure.persistence.google_sheets.mappers.rtm.rtm_necessity_row_mapper import (
+    RtmNecessityRowMapper
+)
+
 from src.infrastructure.persistence.google_sheets.repos.rtm.rtm_enrollment_repository import (
-    GoogleSheetsRTMEnrollmentRepository,
+    GoogleSheetsRtmEnrollmentRepository,
+)
+
+from src.infrastructure.persistence.google_sheets.repos.rtm.rtm_necessity_repository import (
+    GoogleSheetsRtmNecessityRepository,
 )
 
 from src.main.infrastructure_containers.utils_sheets_composition_root import (
@@ -28,6 +39,7 @@ from src.main.infrastructure_containers.utils_sheets_composition_root import (
 @dataclass(frozen=True, slots=True)
 class GoogleSheetsRtmRepositories:
     rtm_enrollment_repository: RtmEnrollmentRepositoryPort
+    rtm_necessity_repository: RtmNecessityRepositoryPort
 
 
 def build_google_sheets_rtm_repositories(
@@ -45,12 +57,20 @@ def build_google_sheets_rtm_repositories(
     )
 
     rtm_enrollment_repository: RtmEnrollmentRepositoryPort = (
-        GoogleSheetsRTMEnrollmentRepository(
+        GoogleSheetsRtmEnrollmentRepository(
             query_service=query_service,
             catalog=catalog,
             mapper=RtmEnrollmentRowMapper(),
         ))
 
+    rtm_necessity_repo: RtmNecessityRepositoryPort = (
+        GoogleSheetsRtmNecessityRepository(
+            query_service=query_service,
+            catalog=catalog,
+            mapper=RtmNecessityRowMapper(),
+        ))
+
     return GoogleSheetsRtmRepositories(
         rtm_enrollment_repository=rtm_enrollment_repository,
+        rtm_necessity_repository=rtm_necessity_repo
     )

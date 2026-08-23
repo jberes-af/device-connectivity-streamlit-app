@@ -80,6 +80,14 @@ def load_spreadsheet_ids(
         "SHEETS_ID_CARE_PLAN"
     )
 
+    spreadsheet_name_diagnosis = secret_provider.get_required(
+        "SHEETS_NAME_DIAGNOSIS"
+    )
+
+    spreadsheet_id_diagnosis = secret_provider.get_required(
+        "SHEETS_ID_DIAGNOSIS"
+    )
+
     spreadsheet_name_patient = secret_provider.get_required(
         "SHEETS_NAME_PATIENT"
     )
@@ -148,6 +156,7 @@ def load_spreadsheet_ids(
         spreadsheet_name_access: spreadsheet_id_access,
         spreadsheet_name_billing: spreadsheet_id_billing,
         spreadsheet_name_care_plan: spreadsheet_id_care_plan,
+        spreadsheet_name_diagnosis: spreadsheet_id_diagnosis,
         spreadsheet_name_patient: spreadsheet_id_patient,
         spreadsheet_name_payer: spreadsheet_id_payer,
         spreadsheet_name_provider: spreadsheet_id_provider,

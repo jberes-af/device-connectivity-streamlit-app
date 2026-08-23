@@ -4,9 +4,7 @@ from src.application.ports.patient_repo_ports import (
     PatientDiagnosisRepositoryPort,
 )
 
-from src.domain.entities.person.patient_entities import (
-    PatientDiagnosis,
-)
+from src.domain.entities.person.patient_entities import PatientDiagnosis
 
 from src.infrastructure.persistence.google_sheets.base_repository import (
     GoogleSheetsRepository,

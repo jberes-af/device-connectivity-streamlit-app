@@ -1,31 +1,12 @@
 # /src/domain/entities/person/patient_entities.py
 
 from dataclasses import dataclass
-from datetime import date, datetime
+from datetime import date
 
 from src.domain.enums.person.patient_enums import (
-    ConsentMethodEnum,
-    ConsentStatusEnum,
-    EnrollmentStatusEnum,
     # MonitoringStatus,
     PatientProviderRoleEnum,
 )
-
-
-@dataclass(frozen=True)
-class Patient:
-    patient_id: str
-    first_name: str
-    middle_name: str | None
-    last_name: str
-    date_of_birth: date
-    telephone: str | None
-    email: str | None
-    address_line_1: str | None
-    address_line_2: str | None
-    city: str | None
-    state: str | None
-    postal_code: str | None
 
 
 @dataclass(frozen=True)
@@ -60,6 +41,22 @@ class PatientPayer:
     termination_date: date | None
 
 
+"""
+@dataclass(frozen=True)
+class Patient:
+    patient_id: str
+    first_name: str
+    middle_name: str | None
+    last_name: str
+    date_of_birth: date
+    telephone: str | None
+    email: str | None
+    address_line_1: str | None
+    address_line_2: str | None
+    city: str | None
+    state: str | None
+    postal_code: str | None
+    
 @dataclass(frozen=True)
 class PatientEmergencyContact:
     emergency_contact_id: str
@@ -67,21 +64,6 @@ class PatientEmergencyContact:
     name: str
     relationship: str
     telephone: str
-
-
-@dataclass(frozen=True)
-class RtmEnrollment:
-    enrollment_id: str
-    patient_id: str
-    enrollment_status: EnrollmentStatusEnum
-    enrollment_date: date
-    service_start_date: date
-    service_end_date: date | None
-    consent_status: ConsentStatusEnum
-    consent_obtained_at: datetime | None
-    consent_method: ConsentMethodEnum | None
-    consent_document_reference: str | None
-    discontinuation_reason: str | None
 
 
 @dataclass(frozen=True)
@@ -95,3 +77,4 @@ class PatientDeviceAssignment:
     setup_date: date | None
     patient_education_completed: bool
     patient_education_date: date | None
+"""

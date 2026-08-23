@@ -1,18 +1,20 @@
-# AUTO GENERATED
+# /src/infrastructure/persistence/google_sheets/mappers/treatment/therapeutic_goal_row_mapper.py
 
 from src.infrastructure.persistence.common.types import RawRow
 
-from src.infrastructure.persistence.google_sheets.schemas import TherapeuticGoalColumns
+from src.infrastructure.persistence.google_sheets.schemas.treatment.therapeutic_goal_columns import (
+    TherapeuticGoalColumns
+)
 
-from src.domain.entities.person.patient_entities import TherapeuticGoal
+from src.domain.entities.care.treatment_entities import TherapeuticGoal
 
 from src.infrastructure.persistence.common.utils_parsing import *
+
 
 class TherapeuticGoalRowMapper:
 
     @staticmethod
     def to_domain(row: RawRow) -> TherapeuticGoal:
-
         schema = TherapeuticGoalColumns
 
         return TherapeuticGoal(
@@ -24,24 +26,34 @@ class TherapeuticGoalRowMapper:
                 row.get(schema.TREATMENT_PLAN_ID),
                 field_name=schema.TREATMENT_PLAN_ID,
             ),
-            outcome_measure_id=parse_required_text(
-                row.get(schema.OUTCOME_MEASURE_ID),
-                field_name=schema.OUTCOME_MEASURE_ID,
-            ),
             description=parse_required_text(
                 row.get(schema.DESCRIPTION),
                 field_name=schema.DESCRIPTION,
-            ),
-            target_value=parse_optional_text(
-                row.get(schema.TARGET_VALUE),
-                field_name=schema.TARGET_VALUE,
             ),
             target_date=parse_optional_date(
                 row.get(schema.TARGET_DATE),
                 field_name=schema.TARGET_DATE,
             ),
-            success_criteria=parse_required_text(
-                row.get(schema.SUCCESS_CRITERIA),
-                field_name=schema.SUCCESS_CRITERIA,
-            ),
         )
+
+    @staticmethod
+    def to_row(
+            therapeutic_goal: TherapeuticGoal,
+    ) -> RawRow:
+        schema = TherapeuticGoalColumns
+
+        return {
+
+            schema.GOAL_ID:
+                therapeutic_goal.goal_id,
+
+            schema.TREATMENT_PLAN_ID:
+                therapeutic_goal.treatment_plan_id,
+
+            schema.DESCRIPTION:
+                therapeutic_goal.description,
+
+            schema.TARGET_DATE:
+                therapeutic_goal.target_date,
+
+        }

@@ -5,9 +5,9 @@ from typing import Protocol
 from src.domain.entities.person.patient_entities import (
     # Patient,
     # PatientDeviceAssignment,
-    PatientDiagnosis,
     PatientPayer,
     PatientProvider,
+    PatientDiagnosis,
 )
 
 

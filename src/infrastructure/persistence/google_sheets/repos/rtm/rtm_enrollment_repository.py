@@ -3,9 +3,7 @@
 
 from src.application.ports.rtm_repo_ports import RtmEnrollmentRepositoryPort
 
-from src.domain.entities.person.patient_entities import (
-    RtmEnrollment,
-)
+from src.domain.entities.care.rtm_entities import RtmEnrollment
 
 from src.infrastructure.persistence.google_sheets.base_repository import (
     GoogleSheetsRepository,
@@ -29,7 +27,7 @@ from src.infrastructure.persistence.google_sheets.schemas.rtm.rtm_enrollment_col
 )
 
 
-class GoogleSheetsRTMEnrollmentRepository(
+class GoogleSheetsRtmEnrollmentRepository(
     GoogleSheetsRepository,
     RtmEnrollmentRepositoryPort,
 ):

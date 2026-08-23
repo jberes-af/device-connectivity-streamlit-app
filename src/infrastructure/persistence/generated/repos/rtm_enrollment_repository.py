@@ -1,15 +1,17 @@
-# repository.py.tpl
+# /src/infrastructure/persistence/google_sheets/repos/RtmEnrollment.py
 
 
 # AUTO GENERATED
 
 from src.application.ports.rtm_enrollment_repository_port import (
-    RTMEnrollmentRepositoryPort,
+    RtmEnrollmentRepositoryPort,
 )
 
 from src.domain.entities.rtm_enrollment_entities import (
-    RTMEnrollment,
+    RtmEnrollment,
 )
+
+from src.infrastructure.persistence.common.types import RawRow
 
 from src.infrastructure.persistence.google_sheets.base_repository import (
     GoogleSheetsRepository,
@@ -23,23 +25,23 @@ from src.infrastructure.persistence.google_sheets.sheets_query_service import (
     GoogleSheetsQueryService,
 )
 
-from src.infrastructure.persistence.google_sheets.mappers import (
-    RTMEnrollmentRowMapper,
+from src.infrastructure.persistence.mappers.rtm_enrollment.rtm_enrollment_row_mapper import (
+    RtmEnrollmentRowMapper,
 )
 
 
-from src.infrastructure.persistence.google_sheets.schemas import (
-    RTMEnrollmentColumns,
+from src.infrastructure.persistence.schemas.rtm_enrollment.rtm_enrollment_columns import (
+    RtmEnrollmentColumns,
 )
 
 
-class GoogleSheetsRTMEnrollmentRepository(
+class GoogleSheetsRtmEnrollmentRepository(
     GoogleSheetsRepository,
-    RTMEnrollmentRepositoryPort,
+    RtmEnrollmentRepositoryPort,
 ):
 
     TABLE_NAME = "rtm_enrollment"
-    ID_COLUMN = RTMEnrollmentColumns.PATIENT_ID
+    ID_COLUMN = RtmEnrollmentColumns.ENTITY_ID
 
 
     def __init__(
@@ -47,7 +49,7 @@ class GoogleSheetsRTMEnrollmentRepository(
         *,
         query_service: GoogleSheetsQueryService,
         catalog: GoogleSheetCatalog,
-        mapper: RTMEnrollmentRowMapper,
+        mapper: RtmEnrollmentRowMapper,
     ) -> None:
 
         super().__init__(
@@ -57,10 +59,10 @@ class GoogleSheetsRTMEnrollmentRepository(
 
         self._mapper = mapper
 
-    def list_rtm_enrollments(self) -> tuple[RTMEnrollment, ...]:
+    def list_rtm_enrollments(self) -> tuple[RtmEnrollment, ...]:
 
         return tuple(
-            self._mapper.from_raw(row)
+            self._mapper.to_domain(row)
             for row in self._read_rows()
         )
 
@@ -68,11 +70,22 @@ class GoogleSheetsRTMEnrollmentRepository(
     def get_by_id(
             self,
             patient_id: str,
-    ) -> RTMEnrollment:
+    ) -> RtmEnrollment:
         raw_row = self._find_single_row(
             rows=self._read_rows(),
             column_name=self.ID_COLUMN,
             value=patient_id,
         )
 
-        return self._mapper.from_raw(raw_row)
+        return self._mapper.to_domain(raw_row)
+
+    def append_open_event(
+            self,
+            event: RtmEnrollment,
+    ) -> None:
+        raw_row: RawRow = self._mapper.to_row(event)
+
+        self._append_raw_row(
+            row=raw_row,
+            columns=RtmEnrollmentColumns.ORDER,
+        )

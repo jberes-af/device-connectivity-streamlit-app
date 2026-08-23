@@ -10,7 +10,7 @@
 """
 
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, date
 
 from src.domain.enums.care.rtm_enums import (
     ClinicalIndicationEnum,
@@ -23,10 +23,16 @@ from src.domain.enums.care.rtm_enums import (
     RtmMedicalNecessityStatus,
 )
 
+from src.domain.enums.person.patient_enums import (
+    EnrollmentStatusEnum,
+    ConsentStatusEnum,
+    ConsentMethodEnum
+)
+
 
 @dataclass(frozen=True, slots=True)
-class RTMMedicalNecessity:
-    medical_necessity_id: str
+class RtmMedicalNecessity:
+    rtm_necessity_id: str
     patient_id: str
     rtm_program_id: str
     treatment_plan_id: str
@@ -50,7 +56,7 @@ class RTMMedicalNecessity:
 
 
 @dataclass(frozen=True, slots=True)
-class RTMClinicalActivity:
+class RtmClinicalActivity:
     activity_id: str
     patient_id: str
     rtm_program_id: str
@@ -76,7 +82,7 @@ class ReviewedDataItem:
 
 
 @dataclass(frozen=True, slots=True)
-class RTMInteraction:
+class RtmInteraction:
     interaction_id: str
     activity_id: str
     participant_type: ParticipantType
@@ -86,3 +92,18 @@ class RTMInteraction:
     occurred_at: datetime
     duration_minutes: int
     summary: str
+
+
+@dataclass(frozen=True)
+class RtmEnrollment:
+    enrollment_id: str
+    patient_id: str
+    enrollment_status: EnrollmentStatusEnum
+    enrollment_date: date
+    service_start_date: date
+    service_end_date: date | None
+    consent_status: ConsentStatusEnum
+    consent_obtained_at: datetime | None
+    consent_method: ConsentMethodEnum | None
+    consent_document_reference: str | None
+    discontinuation_reason: str | None

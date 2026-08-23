@@ -1,8 +1,9 @@
-# /src/infrastructure/persistence/google/google_sheets/utils_parsing.py
+# /src/infrastructure/persistence/common/utils_parsing.py
 
 from datetime import date, datetime, time
 from enum import StrEnum
 from typing import Any, TypeVar
+
 
 TEnum = TypeVar("TEnum", bound=StrEnum)
 
@@ -45,17 +46,17 @@ def parse_required_int(
         value: Any,
         field_name: str,
 ) -> int:
-    number = parse_optional_int(
+    parsed = parse_optional_int(
         value,
         field_name,
     )
 
-    if number is None:
+    if parsed is None:
         raise ValueError(
             f"Missing required field: {field_name}"
         )
 
-    return number
+    return parsed
 
 
 def parse_optional_int(
@@ -75,11 +76,11 @@ def parse_optional_int(
     try:
         return int(normalized)
 
-    except ValueError as ex:
+    except ValueError as exc:
         raise ValueError(
             f"Invalid integer value for "
             f"{field_name}: {text!r}"
-        ) from ex
+        ) from exc
 
 
 def parse_required_date(
@@ -136,8 +137,8 @@ def parse_optional_date(
             continue
 
     raise ValueError(
-        f"Invalid date value for {field_name}: "
-        f"{text!r}"
+        f"Invalid date value for "
+        f"{field_name}: {text!r}"
     )
 
 
@@ -254,6 +255,23 @@ def parse_optional_bool(
     )
 
 
+def parse_required_datetime(
+        value: Any,
+        field_name: str,
+) -> datetime:
+    parsed = parse_optional_datetime(
+        value,
+        field_name,
+    )
+
+    if parsed is None:
+        raise ValueError(
+            f"Missing required field: {field_name}"
+        )
+
+    return parsed
+
+
 def parse_optional_datetime(
         value: Any,
         field_name: str,
@@ -270,18 +288,14 @@ def parse_optional_datetime(
         return None
 
     accepted_formats = (
-        # ISO-8601
         "%Y-%m-%dT%H:%M:%S",
         "%Y-%m-%dT%H:%M",
         "%Y-%m-%d %H:%M:%S",
         "%Y-%m-%d %H:%M",
-
-        # US formats
         "%m/%d/%Y %H:%M:%S",
         "%m/%d/%Y %H:%M",
         "%m/%d/%Y %I:%M %p",
         "%m/%d/%Y %I:%M:%S %p",
-
         "%m/%d/%y %H:%M:%S",
         "%m/%d/%y %H:%M",
         "%m/%d/%y %I:%M %p",
@@ -304,13 +318,16 @@ def parse_optional_datetime(
     )
 
 
-def parse_required_datetime(
-        value: Any,
+def parse_required_enum(
+        value: object,
+        *,
+        enum_type: type[TEnum],
         field_name: str,
-) -> datetime:
-    parsed = parse_optional_datetime(
+) -> TEnum:
+    parsed = parse_optional_enum(
         value,
-        field_name,
+        enum_type=enum_type,
+        field_name=field_name,
     )
 
     if parsed is None:
@@ -330,7 +347,7 @@ def parse_optional_enum(
     if value is None:
         return None
 
-    text = str(value).strip()
+    text = parse_text(value)
 
     if not text:
         return None
@@ -345,6 +362,87 @@ def parse_optional_enum(
         )
 
         raise ValueError(
-            f"{field_name} has invalid value {text!r}. "
-            f"Expected one of: {valid_values}."
+            f"{field_name} has invalid value "
+            f"{text!r}. Expected one of: "
+            f"{valid_values}."
         ) from exc
+
+
+def parse_optional_text_tuple(
+        value: Any,
+        field_name: str,
+        delimiter: str = ",",
+) -> tuple[str, ...]:
+    del field_name
+
+    if value is None:
+        return ()
+
+    text = parse_text(value)
+
+    if not text:
+        return ()
+
+    return tuple(
+        item.strip()
+        for item in text.split(delimiter)
+        if item.strip()
+    )
+
+
+def parse_optional_enum_tuple(
+        value: Any,
+        *,
+        enum_type: type[TEnum],
+        field_name: str,
+        delimiter: str = ",",
+) -> tuple[TEnum, ...]:
+    values = parse_optional_text_tuple(
+        value,
+        field_name=field_name,
+        delimiter=delimiter,
+    )
+
+    parsed: list[TEnum] = []
+
+    for item in values:
+        try:
+            parsed.append(
+                enum_type(item)
+            )
+
+        except ValueError as exc:
+            valid_values = ", ".join(
+                member.value
+                for member in enum_type
+            )
+
+            raise ValueError(
+                f"{field_name} has invalid value "
+                f"{item!r}. Expected one of: "
+                f"{valid_values}."
+            ) from exc
+
+    return tuple(parsed)
+
+
+def parse_required_enum_tuple(
+        value: Any,
+        *,
+        enum_type: type[TEnum],
+        field_name: str,
+        delimiter: str = ",",
+) -> tuple[TEnum, ...]:
+    parsed = parse_optional_enum_tuple(
+        value,
+        enum_type=enum_type,
+        field_name=field_name,
+        delimiter=delimiter,
+    )
+
+    if not parsed:
+        raise ValueError(
+            f"Missing required field: {field_name}"
+        )
+
+    return parsed

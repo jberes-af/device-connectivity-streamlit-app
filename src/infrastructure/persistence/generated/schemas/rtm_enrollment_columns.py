@@ -1,6 +1,6 @@
-# AUTO GENERATED
+# /src/infrastructure/persistence/schemas
 
-class RTMEnrollmentColumns:
+class RtmEnrollmentColumns:
     ENROLLMENT_ID: str = "enrollment_id"
     PATIENT_ID: str = "patient_id"
     ENROLLMENT_STATUS: str = "enrollment_status"
@@ -12,3 +12,16 @@ class RTMEnrollmentColumns:
     CONSENT_METHOD: str = "consent_method"
     CONSENT_DOCUMENT_REFERENCE: str = "consent_document_reference"
     DISCONTINUATION_REASON: str = "discontinuation_reason"
+    ORDER = (
+ENROLLMENT_ID,
+PATIENT_ID,
+ENROLLMENT_STATUS,
+ENROLLMENT_DATE,
+SERVICE_START_DATE,
+SERVICE_END_DATE,
+CONSENT_STATUS,
+CONSENT_OBTAINED_AT,
+CONSENT_METHOD,
+CONSENT_DOCUMENT_REFERENCE,
+DISCONTINUATION_REASON,
+)

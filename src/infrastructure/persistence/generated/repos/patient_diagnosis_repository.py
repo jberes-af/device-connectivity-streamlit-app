@@ -1,4 +1,4 @@
-# repository.py.tpl
+# /src/infrastructure/persistence/google_sheets/repos/PatientDiagnosis.py
 
 
 # AUTO GENERATED
@@ -10,6 +10,8 @@ from src.application.ports.patient_diagnosis_repository_port import (
 from src.domain.entities.patient_diagnosis_entities import (
     PatientDiagnosis,
 )
+
+from src.infrastructure.persistence.common.types import RawRow
 
 from src.infrastructure.persistence.google_sheets.base_repository import (
     GoogleSheetsRepository,
@@ -23,12 +25,12 @@ from src.infrastructure.persistence.google_sheets.sheets_query_service import (
     GoogleSheetsQueryService,
 )
 
-from src.infrastructure.persistence.google_sheets.mappers import (
+from src.infrastructure.persistence.mappers.patient_diagnosis.patient_diagnosis_row_mapper import (
     PatientDiagnosisRowMapper,
 )
 
 
-from src.infrastructure.persistence.google_sheets.schemas import (
+from src.infrastructure.persistence.schemas.patient_diagnosis.patient_diagnosis_columns import (
     PatientDiagnosisColumns,
 )
 
@@ -39,7 +41,7 @@ class GoogleSheetsPatientDiagnosisRepository(
 ):
 
     TABLE_NAME = "patient_diagnosis"
-    ID_COLUMN = PatientDiagnosisColumns.PATIENT_ID
+    ID_COLUMN = PatientDiagnosisColumns.ENTITY_ID
 
 
     def __init__(
@@ -60,7 +62,7 @@ class GoogleSheetsPatientDiagnosisRepository(
     def list_patient_diagnosises(self) -> tuple[PatientDiagnosis, ...]:
 
         return tuple(
-            self._mapper.from_raw(row)
+            self._mapper.to_domain(row)
             for row in self._read_rows()
         )
 
@@ -75,4 +77,15 @@ class GoogleSheetsPatientDiagnosisRepository(
             value=patient_id,
         )
 
-        return self._mapper.from_raw(raw_row)
+        return self._mapper.to_domain(raw_row)
+
+    def append_open_event(
+            self,
+            event: PatientDiagnosis,
+    ) -> None:
+        raw_row: RawRow = self._mapper.to_row(event)
+
+        self._append_raw_row(
+            row=raw_row,
+            columns=PatientDiagnosisColumns.ORDER,
+        )
