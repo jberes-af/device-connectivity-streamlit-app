@@ -1,5 +1,4 @@
-# /src/infrastructure/persistence/google_sheets/repos/TherapeuticGoal.py
-
+# /src/infrastructure/persistence/google_sheets/repos/treatment/therapeutic_goal_repository.py
 
 from typing import Sequence
 
@@ -55,7 +54,9 @@ class GoogleSheetsTherapeuticGoalRepository(
 
         self._mapper = mapper
 
-    def list_therapeutic_goals(self) -> tuple[TherapeuticGoal, ...]:
+    def list_therapeutic_goals(
+            self,
+    ) -> tuple[TherapeuticGoal, ...]:
         return tuple(
             self._mapper.to_domain(row)
             for row in self._read_rows()
@@ -77,10 +78,27 @@ class GoogleSheetsTherapeuticGoalRepository(
             self,
             goal_ids: Sequence[str],
     ) -> tuple[TherapeuticGoal, ...]:
-        raw_rows: list[RawRow] = self._find_rows_for_multiple_values(
+        raw_rows: list[RawRow] = (
+            self._find_rows_for_multiple_values(
+                rows=self._read_rows(),
+                column_name=self.ID_COLUMN,
+                values=goal_ids,
+            )
+        )
+
+        return tuple(
+            self._mapper.to_domain(row)
+            for row in raw_rows
+        )
+
+    def list_for_treatment_plan_id(
+            self,
+            treatment_plan_id: str,
+    ) -> tuple[TherapeuticGoal, ...]:
+        raw_rows: list[RawRow] = self._find_rows(
             rows=self._read_rows(),
-            column_name=self.ID_COLUMN,
-            values=goal_ids,
+            column_name=TherapeuticGoalColumns.TREATMENT_PLAN_ID,
+            value=treatment_plan_id,
         )
 
         return tuple(

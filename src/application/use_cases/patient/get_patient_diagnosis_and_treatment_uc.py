@@ -1,5 +1,7 @@
 # /src/application/use_cases/patient/get_patient_diagnosis_and_treatment_uc.py.py
 
+import logging
+
 from src.domain.entities.person.patient_entities import PatientDiagnosis
 
 from src.domain.entities.care.rtm_entities import RtmMedicalNecessity
@@ -46,6 +48,8 @@ from src.application.use_cases.patient.diagnosis_and_treatment_uc_dtos import (
     GetDiagnosesAndTreatmentRequestDTO,
     GetDiagnosisAndTreatmentResultDTO,
 )
+
+logger = logging.getLogger(__name__)
 
 
 class GetPatientDiagnosesAndTreatmentsUseCase:
@@ -160,12 +164,18 @@ class GetPatientDiagnosesAndTreatmentsUseCase:
                 )
             )
 
+            logger.info(
+                "use: diagnosis & treatment: goals row_count=%d",len(goals))
+
             interventions = (
                 self._treatment_intervention_service
                 .fetch_interventions_for_treatment_plan(
                     treatment_plan_id=plan.treatment_plan_id,
                 )
             )
+
+            logger.info(
+                "use: diagnosis & treatment: interventions row_count=%d",len(interventions))
 
             monitoring_parameters = (
                 self._treatment_monitoring_parameter_service
@@ -174,12 +184,18 @@ class GetPatientDiagnosesAndTreatmentsUseCase:
                 )
             )
 
+            logger.info(
+                "use: diagnosis & treatment: monitoring_parameters row_count=%d",len(monitoring_parameters))
+
             reviews = (
                 self._treatment_plan_review_service
                 .fetch_reviews_for_treatment_plan(
                     treatment_plan_id=plan.treatment_plan_id,
                 )
             )
+
+            logger.info(
+                "use: diagnosis & treatment: reviews row_count=%d",len(reviews))
 
             results.append(
                 TherapeuticPlanDTO(

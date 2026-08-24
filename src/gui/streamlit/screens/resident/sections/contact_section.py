@@ -1,5 +1,7 @@
 # /src/gui/streamlit/screens/resident/sections/contact_section.py
 
+import logging
+
 from src.domain.entities.person.resident_entities import (
     ResidentProfile,
     ResidentInCaseOfNeedContact,
@@ -13,6 +15,8 @@ from src.interface_adapters.presenters.person.resident.resident_main_page_presen
 
 from src.interface_adapters.view_models.resident.resident_main_view_model import (
     ResidentContactViewModel)
+
+logger = logging.getLogger(__name__)
 
 
 # use case is already run in resident_screen.py

@@ -2,6 +2,8 @@
 
 from typing import Sequence
 
+import logging
+
 from src.application.ports.treatment_repo_ports import (
     TreatmentPlanRepositoryPort,
 )
@@ -31,8 +33,6 @@ from src.infrastructure.persistence.google_sheets.mappers.treatment.treatment_pl
 from src.infrastructure.persistence.google_sheets.schemas.treatment.treatment_plan_columns import (
     TreatmentPlanColumns,
 )
-
-import logging
 
 logger = logging.getLogger(__name__)
 
