@@ -3,7 +3,7 @@
 
 import streamlit as st
 
-from src.interface_adapters.view_models.common.badge_view_model import (
+from src.interface_adapters.view_models.widgets.badge_view_model import (
     BadgeViewModel,
     BadgeStyle,
 )

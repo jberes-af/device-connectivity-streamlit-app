@@ -3,6 +3,8 @@
 from abc import ABC
 from typing import Sequence
 
+import logging
+
 from src.infrastructure.persistence.common.types import RawRow
 
 from src.infrastructure.persistence.google_sheets.google_sheet_catalog import (
@@ -12,6 +14,8 @@ from src.infrastructure.persistence.google_sheets.google_sheet_catalog import (
 from src.infrastructure.persistence.google_sheets.sheets_query_service import (
     GoogleSheetsQueryService,
 )
+
+logger = logging.getLogger(__name__)
 
 
 class GoogleSheetsRepository(ABC):
@@ -33,10 +37,29 @@ class GoogleSheetsRepository(ABC):
             self.TABLE_NAME,
         )
 
-        return self._query_service.read_values(
+        """
+        logger.info(
+            "SHEETS READ | table=%r | spreadsheet_id=%r | range=%r",
+            self.TABLE_NAME,
+            table.spreadsheet_id,
+            table.range_a1,
+        )
+        """
+
+        rows = self._query_service.read_values(
             spreadsheet_id=table.spreadsheet_id,
             range_a1=table.range_a1,
         )
+
+        """
+        logger.info(
+            "SHEETS RESULT | table=%r | row_count=%d",
+            self.TABLE_NAME,
+            len(rows),
+        )
+        """
+
+        return rows
 
     @staticmethod
     def _find_single_row(

@@ -10,16 +10,16 @@ from src.interface_adapters.view_models.patient.diagnosis_view_models import (
     DiagnosisDetailViewModel,
 )
 
-from src.interface_adapters.view_models.common.card_view_models import (
+from src.interface_adapters.view_models.widgets.card_view_models import (
     MetricCardViewModel,
     CardPropertyFieldsViewModel,
 )
 
-from src.interface_adapters.view_models.common.property_field_view_model import (
+from src.interface_adapters.view_models.widgets.property_field_view_model import (
     PropertyFieldViewModel,
 )
 
-from src.interface_adapters.view_models.common.card_grid_view_model import (
+from src.interface_adapters.view_models.widgets.card_grid_view_model import (
     CardGridViewModel,
 )
 

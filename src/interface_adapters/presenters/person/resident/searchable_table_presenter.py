@@ -4,7 +4,7 @@ from src.application.use_cases.resident.resident_uc_dtos import (
     ResidentSearchableRecordDTO,
 )
 
-from src.interface_adapters.view_models.common.table_view_model import (
+from src.interface_adapters.view_models.widgets.table_view_model import (
     TableCellViewModel,
     TableRowViewModel,
     TableViewModel,

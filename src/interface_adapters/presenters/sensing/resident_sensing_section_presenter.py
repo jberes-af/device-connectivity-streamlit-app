@@ -4,11 +4,11 @@ from src.application.use_cases.sensing.device_profiles.user_sensing_account_uc_d
     UserSensingAccountResultDTO,
 )
 
-from src.interface_adapters.view_models.common.card_grid_view_model import (
+from src.interface_adapters.view_models.widgets.card_grid_view_model import (
     CardGridViewModel
 )
 
-from src.interface_adapters.view_models.common.tab_view_model import (
+from src.interface_adapters.view_models.widgets.tab_view_model import (
     TabItemViewModel,
     TabViewModel,
 )
@@ -20,7 +20,7 @@ from src.interface_adapters.view_models.sensing.resident_sensing_view_model impo
     SensorSectionViewModel,
 )
 
-from src.interface_adapters.view_models.common.card_view_models import (
+from src.interface_adapters.view_models.widgets.card_view_models import (
     CardAttributeNameCountListViewModel,
 )
 
@@ -62,7 +62,7 @@ class ResidentSensingSectionPresenter:
 
     @staticmethod
     def _present_sensing_tabs_section(
-    ) -> TabViewModel[str]:
+    ) -> TabViewModel:
         tabs = tuple(
             TabItemViewModel(
                 tab_id=segment.value,

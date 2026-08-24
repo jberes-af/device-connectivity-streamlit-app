@@ -3,7 +3,7 @@
 import pandas as pd
 import streamlit as st
 
-from src.interface_adapters.view_models.common.table_view_model import (
+from src.interface_adapters.view_models.widgets.table_view_model import (
     TableViewModel,
 )
 

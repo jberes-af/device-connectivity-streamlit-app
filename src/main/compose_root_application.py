@@ -33,7 +33,8 @@ from src.application.services.care.get_rtm_service import (
 
 from src.application.services.care.get_treatment_service import (
     FetchTreatmentPlanService,
-    FetchTherapeuticGoalService,
+    FetchTherapeuticGoalService, FetchTreatmentMonitoringParameterService, FetchTreatmentInterventionService,
+    FetchTreatmentPlanReviewService,
 )
 
 # --- APPLICATION USE CASES
@@ -76,7 +77,7 @@ from src.main.compose_root_infrastructure import InfrastructureContainer
 
 # from src.interface_adapters.presenters.patient.patient_overview_presenter import (    PatientOverviewPresenter,)
 
-from src.interface_adapters.presenters.person.resident import (
+from src.interface_adapters.presenters.person.resident.resident_main_page_presenter import (
     ResidentMainPagePresenter,
 )
 
@@ -140,24 +141,36 @@ def build_application_container(
         provider_repository=provider_repos.provider_repository,
     )
 
-    fetch_diagnosis_definition_service: FetchDiagnosisDefinitionService(
+    fetch_diagnosis_definition_service = FetchDiagnosisDefinitionService(
         diagnosis_definition_repository=diagnosis_repos.diagnosis_definition_repository,
     )
 
-    fetch_patient_diagnosis_service: FetchPatientDiagnosisService(
+    fetch_patient_diagnosis_service = FetchPatientDiagnosisService(
         patient_diagnosis_repository=patient_repos.patient_diagnosis_repository,
     )
 
-    fetch_treatment_plan_service: FetchTreatmentPlanService(
+    fetch_treatment_plan_service = FetchTreatmentPlanService(
         treatment_plan_repository=treatment_repos.treatment_plan_repository,
     )
 
-    fetch_therapeutic_goal_service: FetchTherapeuticGoalService(
+    fetch_therapeutic_goal_service = FetchTherapeuticGoalService(
         therapeutic_goal_repository=treatment_repos.therapeutic_goal_repository,
     )
 
-    fetch_rtm_necessity_service: FetchRtmNecessityService(
+    fetch_rtm_necessity_service = FetchRtmNecessityService(
         rtm_necessity_repository=rtm_repos.rtm_necessity_repository,
+    )
+
+    fetch_treatment_intervention_service = FetchTreatmentInterventionService(
+        treatment_intervention_repository=treatment_repos.treatment_intervention_repository,
+    )
+
+    fetch_treatment_monitoring_parameter_service = FetchTreatmentMonitoringParameterService(
+        treatment_monitoring_parameter_repository=treatment_repos.treatment_monitoring_parameter_repository,
+    )
+
+    fetch_treatment_plan_review_service = FetchTreatmentPlanReviewService(
+        treatment_plan_review_repository=treatment_repos.treatment_plan_review_repository,
     )
 
     # --- ACCESS RECORDS
@@ -184,9 +197,12 @@ def build_application_container(
     get_diagnosis_and_treatment = GetPatientDiagnosesAndTreatmentsUseCase(
         fetch_diagnosis_definition_service=fetch_diagnosis_definition_service,
         fetch_patient_diagnosis_service=fetch_patient_diagnosis_service,
-        fetch_treatment_plan_service= fetch_treatment_plan_service,
+        fetch_treatment_plan_service=fetch_treatment_plan_service,
         fetch_therapeutic_goal_service=fetch_therapeutic_goal_service,
         fetch_rtm_necessity_service=fetch_rtm_necessity_service,
+        fetch_treatment_intervention_service=fetch_treatment_intervention_service,
+        fetch_treatment_monitoring_parameter_service=fetch_treatment_monitoring_parameter_service,
+        fetch_treatment_plan_review_service=fetch_treatment_plan_review_service,
     )
 
     # --- RESIDENT / PATIENT PAYER RECORDS

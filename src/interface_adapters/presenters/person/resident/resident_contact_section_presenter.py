@@ -5,15 +5,15 @@ from src.domain.entities.person.resident_entities import (
     ResidentInCaseOfNeedContact,
 )
 
-from src.interface_adapters.view_models.common.card_view_models import (
+from src.interface_adapters.view_models.widgets.card_view_models import (
     CardPropertyFieldsViewModel,
 )
 
-from src.interface_adapters.view_models.common.property_field_view_model import (
+from src.interface_adapters.view_models.widgets.property_field_view_model import (
     PropertyFieldViewModel,
 )
 
-from src.interface_adapters.view_models.common.card_grid_view_model import (
+from src.interface_adapters.view_models.widgets.card_grid_view_model import (
     CardGridViewModel,
 )
 
@@ -81,11 +81,11 @@ class ResidentContactSectionPresenter:
                 property_fields=(
                     PropertyFieldViewModel(
                         label="Resident Name",
-                        value=profile.full_name,
+                        value=profile.full_name
                     ),
                     PropertyFieldViewModel(
                         label="Preferred Name",
-                        value=profile.preferred_name,
+                        value=profile.preferred_name
                     ),
                     PropertyFieldViewModel(
                         label="Date of Birth",

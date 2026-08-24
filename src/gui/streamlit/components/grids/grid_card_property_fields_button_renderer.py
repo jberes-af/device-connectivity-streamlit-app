@@ -6,7 +6,7 @@ from src.gui.streamlit.components.cards.card_property_fields_button_renderer_ver
     render_dashboard_card,
 )
 
-from src.interface_adapters.view_models.common.card_grid_view_model import (
+from src.interface_adapters.view_models.widgets.card_grid_view_model import (
     CardGridViewModel
 )
 

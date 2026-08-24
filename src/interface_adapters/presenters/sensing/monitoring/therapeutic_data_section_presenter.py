@@ -13,15 +13,15 @@ from src.interface_adapters.view_models.resident.resident_main_view_model import
     ResidentRecordTabsViewModel,
 )
 
-# from src.interface_adapters.view_models.common.table_view_model import (
+# from src.interface_adapters.view_models.widgets.table_view_model import (
 #     TableViewModel,
 # )
 
-from src.interface_adapters.view_models.common.card_view_models import (
+from src.interface_adapters.view_models.widgets.card_view_models import (
     CardTitleTextButtonViewModel,
 )
 
-from src.interface_adapters.view_models.common.card_grid_view_model import (
+from src.interface_adapters.view_models.widgets.card_grid_view_model import (
     CardGridViewModel
 )
 

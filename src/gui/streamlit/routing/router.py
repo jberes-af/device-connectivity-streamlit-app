@@ -11,7 +11,7 @@ from src.application.use_cases.access.access_scope_uc_dtos import (
 from src.gui.streamlit.routing.route_types import Route
 from src.gui.streamlit.routing.routes import ROUTES
 
-from src.gui.streamlit.screens.access_scope_screen import (
+from src.gui.streamlit.screens.access.access_scope_screen import (
     render_account_and_access_page,
 )
 

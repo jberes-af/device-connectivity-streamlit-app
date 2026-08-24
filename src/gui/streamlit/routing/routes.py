@@ -2,19 +2,19 @@
 
 from src.gui.streamlit.routing.route_types import Route
 
-from src.gui.streamlit.screens.administration_screen import (
+from src.gui.streamlit.screens.admin.administration_screen import (
     render_administration_page,
 )
 
-from src.gui.streamlit.screens.billing_screen import render_billing_page
+from src.gui.streamlit.screens.billing.billing_screen import render_billing_page
 
-from src.gui.streamlit.screens.dashboard_screen import render_dashboard_page
+from src.gui.streamlit.screens.dashboard.dashboard_screen import render_dashboard_page
 
 from src.gui.streamlit.screens.resident.resident_screen import render_residents_page
 
-from src.gui.streamlit.screens.reports_screen import render_reports_page
+from src.gui.streamlit.screens.reports.reports_screen import render_reports_page
 
-from src.gui.streamlit.screens.schedule_screen import render_schedule_page
+from src.gui.streamlit.screens.schedule.schedule_screen import render_schedule_page
 
 ROUTES: tuple[Route, ...] = (
     Route(

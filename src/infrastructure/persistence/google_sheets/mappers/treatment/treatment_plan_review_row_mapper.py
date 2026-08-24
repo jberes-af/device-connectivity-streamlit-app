@@ -1,10 +1,12 @@
-# /src/infrastructure/persistence/mappers
+# /src/infrastructure/persistence/google_sheets/mappers
 
 from src.infrastructure.persistence.common.types import RawRow
 
-from src.infrastructure.persistence.schemas.treatment_plan_review_columns import TreatmentPlanReviewColumns
+from src.infrastructure.persistence.google_sheets.schemas.treatment.treatment_plan_review_columns import (
+    TreatmentPlanReviewColumns
+)
 
-from src.domain.entities.entities import TreatmentPlanReview
+from src.domain.entities.care.treatment_entities import TreatmentPlanReview
 
 from src.infrastructure.persistence.common.utils_parsing import *
 
@@ -46,10 +48,9 @@ class TreatmentPlanReviewRowMapper:
             ),
         )
 
-
     @staticmethod
     def to_row(
-        treatment_plan_review: TreatmentPlanReview,
+            treatment_plan_review: TreatmentPlanReview,
     ) -> RawRow:
         schema = TreatmentPlanReviewColumns
 

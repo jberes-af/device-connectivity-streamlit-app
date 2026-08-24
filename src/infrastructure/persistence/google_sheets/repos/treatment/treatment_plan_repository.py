@@ -32,6 +32,10 @@ from src.infrastructure.persistence.google_sheets.schemas.treatment.treatment_pl
     TreatmentPlanColumns,
 )
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 class GoogleSheetsTreatmentPlanRepository(
     GoogleSheetsRepository,
@@ -96,6 +100,23 @@ class GoogleSheetsTreatmentPlanRepository(
             column_name=TreatmentPlanColumns.PATIENT_ID,
             value=patient_id,
         )
+
+        """
+        logger.info(
+            "TREATMENT PLAN QUERY | patient_id=%r",
+            patient_id,
+        )
+
+        logger.info(
+            "TREATMENT PLAN RAW ROWS | %r",
+            raw_rows,
+        )
+
+        logger.info(
+            "TREATMENT PLAN PATIENT_ID COLUMN | %r",
+            TreatmentPlanColumns.PATIENT_ID,
+        )
+        """
 
         return tuple(
             self._mapper.to_domain(row)

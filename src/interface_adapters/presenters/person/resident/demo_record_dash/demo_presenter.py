@@ -6,13 +6,13 @@ from src.interface_adapters.presenters.person.resident.demo_record_dash.demo_use
     run_use_case,
     UseCaseResult)
 
-from src.interface_adapters.view_models.common.card_view_models import (
+from src.interface_adapters.view_models.widgets.card_view_models import (
     CardPropertyFieldsButtonViewModel)
 
-from src.interface_adapters.view_models.common.card_grid_view_model import (
+from src.interface_adapters.view_models.widgets.card_grid_view_model import (
     CardGridViewModel)
 
-from src.interface_adapters.view_models.common.property_field_view_model import (
+from src.interface_adapters.view_models.widgets.property_field_view_model import (
     PropertyFieldViewModel)
 
 

@@ -9,18 +9,18 @@ from src.interface_adapters.view_models.patient.patient_overview_page_view_model
     PatientOverviewPageViewModel,
 )
 
-from src.interface_adapters.view_models.common.card_view_models import (
+from src.interface_adapters.view_models.widgets.card_view_models import (
     CardPropertyFieldsViewModel,
 )
 # from src.interface_adapters.view_models.widgets.metric_view_model import MetricViewModel
-from src.interface_adapters.view_models.common.badge_view_model import (
+from src.interface_adapters.view_models.widgets.badge_view_model import (
     BadgeViewModel,
     BadgeStyle,
 )
-from src.interface_adapters.view_models.common.property_field_view_model import (
+from src.interface_adapters.view_models.widgets.property_field_view_model import (
     PropertyFieldViewModel,
 )
-from src.interface_adapters.view_models.common.property_grid_view_model import (
+from src.interface_adapters.view_models.widgets.property_grid_view_model import (
     PropertyGridViewModel,
 )
 

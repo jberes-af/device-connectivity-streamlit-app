@@ -13,11 +13,11 @@ from src.application.use_cases.resident.resident_uc_dtos import (
 #    GetAllResidentRecordsRequestDTO
 # )
 
-from src.interface_adapters.view_models.common.table_view_model import (
+from src.interface_adapters.view_models.widgets.table_view_model import (
     TableViewModel,
 )
 
-# from src.interface_adapters.view_models.common.card_grid_view_model import (
+# from src.interface_adapters.view_models.widgets.card_grid_view_model import (
 #    CardGridViewModel
 # )
 
@@ -33,7 +33,7 @@ from src.interface_adapters.presenters.person.resident.resident_contact_section_
     ResidentContactSectionPresenter,
 )
 
-from src.interface_adapters.view_models.common.card_grid_view_model import (
+from src.interface_adapters.view_models.widgets.card_grid_view_model import (
     CardGridViewModel,
 )
 

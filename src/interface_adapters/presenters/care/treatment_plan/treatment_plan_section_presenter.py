@@ -11,19 +11,19 @@ from src.interface_adapters.view_models.resident.resident_main_view_model import
     ResidentTreatmentViewModel,
 )
 
-from src.interface_adapters.view_models.common.card_view_models import (
+from src.interface_adapters.view_models.widgets.card_view_models import (
     CardPropertyFieldsViewModel,
 )
 
-from src.interface_adapters.view_models.common.property_field_view_model import (
+from src.interface_adapters.view_models.widgets.property_field_view_model import (
     PropertyFieldViewModel,
 )
 
-from src.interface_adapters.view_models.common.card_grid_view_model import (
+from src.interface_adapters.view_models.widgets.card_grid_view_model import (
     CardGridViewModel,
 )
 
-from src.interface_adapters.view_models.common.tab_view_model import (
+from src.interface_adapters.view_models.widgets.tab_view_model import (
     TabItemViewModel,
     TabViewModel,
 )
@@ -36,7 +36,7 @@ from src.interface_adapters.presenters.utils_presenters import (
 )
 
 
-# from src.interface_adapters.view_models.common.table_view_model import (
+# from src.interface_adapters.view_models.widgets.table_view_model import (
 #     TableViewModel,
 # )
 

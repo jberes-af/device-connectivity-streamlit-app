@@ -29,7 +29,7 @@ def format_date(
         empty_value: str | None = None,
 ) -> str:
     if value is None and empty_value is None:
-        return "---"
+        "—"
 
     return value.strftime("%b %d, %Y")
 

@@ -2,7 +2,7 @@
 
 from dataclasses import dataclass
 
-from src.interface_adapters.view_models.common.card_view_models import (
+from src.interface_adapters.view_models.widgets.card_view_models import (
     CardPropertyFieldsViewModel,
 )
 

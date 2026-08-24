@@ -8,7 +8,7 @@ from src.application.use_cases.access.access_scope_uc_dtos import (
     AccessScopeResultDTO,
 )
 
-from src.gui.streamlit.screens.access_scope_screen import (
+from src.gui.streamlit.screens.access import (
     render_account_and_access_page,
 )
 

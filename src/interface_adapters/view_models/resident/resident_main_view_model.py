@@ -3,10 +3,10 @@
 from dataclasses import dataclass
 from enum import StrEnum
 
-from src.interface_adapters.view_models.common.card_grid_view_model import (
+from src.interface_adapters.view_models.widgets.card_grid_view_model import (
     CardGridViewModel)
 
-from src.interface_adapters.view_models.common.tab_view_model import (
+from src.interface_adapters.view_models.widgets.tab_view_model import (
     TabViewModel,
 )
 

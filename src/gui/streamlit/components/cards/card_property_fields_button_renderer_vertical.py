@@ -4,7 +4,7 @@ from html import escape
 
 import streamlit as st
 
-from src.interface_adapters.view_models.common.property_field_view_model import (
+from src.interface_adapters.view_models.widgets.property_field_view_model import (
     PropertyFieldViewModel,
 )
 

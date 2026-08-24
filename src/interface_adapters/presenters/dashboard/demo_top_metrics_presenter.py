@@ -1,8 +1,8 @@
 # /src/interface_adapters/presenters/person/demo_top_metrics_presenter.py
 
-from src.interface_adapters.view_models.common.card_view_models import MetricCardViewModel
+from src.interface_adapters.view_models.widgets.card_view_models import MetricCardViewModel
 
-from src.interface_adapters.view_models.common.card_grid_view_model import (
+from src.interface_adapters.view_models.widgets.card_grid_view_model import (
     CardGridViewModel,
 )
 
