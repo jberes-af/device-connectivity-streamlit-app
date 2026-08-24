@@ -20,7 +20,7 @@ from src.domain.enums.care.rtm_enums import (
     RtmActivityType,
     RtmClinicalUseEnum,
     RtmMonitoringReasonEnum,
-    RtmMedicalNecessityStatus,
+    RtmNecessityStatus,
 )
 
 from src.domain.enums.person.patient_enums import (
@@ -50,7 +50,7 @@ class RtmMedicalNecessity:
     attestation_version: str
     effective_from: datetime
     effective_to: datetime | None
-    status: RtmMedicalNecessityStatus
+    status: RtmNecessityStatus
     last_reviewed_at: datetime | None = None
     last_reviewed_by_provider_id: str | None = None
 

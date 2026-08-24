@@ -1,4 +1,4 @@
-# /src/infrastructure/persistence/schemas
+# /src/infrastructure/persistence/google_sheets/schemas/treatment/treatment_intervention_columns.py
 
 class TreatmentInterventionColumns:
     INTERVENTION_ID: str = "intervention_id"
@@ -9,11 +9,11 @@ class TreatmentInterventionColumns:
     END_DATE: str = "end_date"
     STATUS: str = "status"
     ORDER = (
-INTERVENTION_ID,
-TREATMENT_PLAN_ID,
-TREATMENT_TYPE,
-DESCRIPTION,
-START_DATE,
-END_DATE,
-STATUS,
-)
+        INTERVENTION_ID,
+        TREATMENT_PLAN_ID,
+        TREATMENT_TYPE,
+        DESCRIPTION,
+        START_DATE,
+        END_DATE,
+        STATUS,
+    )

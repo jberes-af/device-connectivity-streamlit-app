@@ -1,10 +1,12 @@
-# /src/infrastructure/persistence/mappers
+# /src/infrastructure/persistence/google_sheets/mappers/treatment/treatment_monitoring_parameter_row_mapper.py
 
 from src.infrastructure.persistence.common.types import RawRow
 
-from src.infrastructure.persistence.schemas.treatment_monitoring_parameter_columns import TreatmentMonitoringParameterColumns
+from src.infrastructure.persistence.google_sheets.schemas.treatment.treatment_monitoring_parameter_columns import (
+    TreatmentMonitoringParameterColumns
+)
 
-from src.domain.entities.entities import TreatmentMonitoringParameter
+from src.domain.entities.care.treatment_entities import TreatmentMonitoringParameter
 
 from src.infrastructure.persistence.common.utils_parsing import *
 
@@ -46,10 +48,9 @@ class TreatmentMonitoringParameterRowMapper:
             ),
         )
 
-
     @staticmethod
     def to_row(
-        treatment_monitoring_parameter: TreatmentMonitoringParameter,
+            treatment_monitoring_parameter: TreatmentMonitoringParameter,
     ) -> RawRow:
         schema = TreatmentMonitoringParameterColumns
 

@@ -1,4 +1,4 @@
-# /src/infrastructure/persistence/schemas/resident/resident_profile_columns.py
+# /src/infrastructure/persistence/schemas/person/resident_profile_columns.py
 
 class ResidentProfileColumns:
     RESIDENT_ID: str = "resident_id"

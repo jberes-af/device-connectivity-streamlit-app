@@ -1,4 +1,4 @@
-# /src/gui/streamlit/components/resident/resident_contact_renderer.py
+# /src/gui/streamlit/components/person/resident_contact_renderer.py
 
 from streamlit.elements.lib.column_types import Column
 

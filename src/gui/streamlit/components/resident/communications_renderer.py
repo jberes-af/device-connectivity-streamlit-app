@@ -1,4 +1,4 @@
-# /src/gui/streamlit/components/resident/communications_renderer.py
+# /src/gui/streamlit/components/person/communications_renderer.py
 
 import streamlit as st
 

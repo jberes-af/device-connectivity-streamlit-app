@@ -3,10 +3,10 @@
 """
 Page Flow:
 render_residents_page()
-→ load resident records
+→ load person records
 → present + render searchable table
-→ resolve selected resident
-→ render selected resident summary cards
+→ resolve selected person
+→ render selected person summary cards
 → render segmented control
 → run section-specific use case(s)
 → present section-specific view model
@@ -87,6 +87,12 @@ from src.gui.streamlit.screens.resident.use_case_dispatcher_sensing import (
     run_sensing_use_cases,
 )
 
+from src.gui.streamlit.screens.resident.use_case_diagnosis_and_treatment import (
+    DiagnosisAndTreatmentUseCaseResults,
+    run_diagnosis_and_treatment_use_case,
+
+)
+
 # --- VIEW MODEL ADAPTERS
 
 from src.interface_adapters.view_models.common.table_view_model import TableViewModel
@@ -114,7 +120,7 @@ from src.interface_adapters.view_models.resident.segmented_controls_view_model i
 
 # --- PRESENTER ADAPTERS
 
-from src.interface_adapters.presenters.resident.resident_main_page_presenter import (
+from src.interface_adapters.presenters.person.resident import (
     ResidentMainPagePresenter,
 )
 
@@ -122,7 +128,7 @@ from src.interface_adapters.presenters.sensing.resident_sensing_section_presente
     ResidentSensingSectionPresenter
 )
 
-from src.interface_adapters.presenters.resident.resident_contact_section_presenter import (
+from src.interface_adapters.presenters.person.resident.resident_contact_section_presenter import (
     ResidentContactSectionPresenter,
 )
 
@@ -151,9 +157,8 @@ _RENDERERS: dict[ResidentSectionEnum, Renderer] = {
 }
 
 SectionUseCaseResult = (
-    SensingUseCaseResults
-    #    | ResidentContactUseCaseResults
-    #    | ProviderUseCaseResults
+        SensingUseCaseResults
+        | DiagnosisAndTreatmentUseCaseResults
 )
 
 ResidentSectionViewModel = (
@@ -259,6 +264,12 @@ def run_use_case_dispatcher(
             return run_sensing_use_cases(
                 resident_id=resident_id,
                 app_container=app_container,
+            )
+
+        case ResidentSectionEnum.TREATMENT_PLAN:
+            return run_diagnosis_and_treatment_use_case(
+                resident_id=resident_id,
+                use_case=app_container.get_patient_diagnosis_and_treatment_use_case,
             )
 
         case _:
@@ -380,7 +391,6 @@ def _render_selected_resident_segmented_control_section(
                 resident_profile=selected_resident_profile,
                 resident_need_case_contact=selected_resident_need_contact,
             ))
-
 
     # logger.info("Section VM result: control=%r vm=%r", selected_control, section_vm)
 

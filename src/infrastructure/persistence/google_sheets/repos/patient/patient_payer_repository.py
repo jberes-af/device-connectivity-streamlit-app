@@ -36,7 +36,7 @@ class GoogleSheetsPatientPayerRepository(
     PatientPayerRepositoryPort,
 ):
     TABLE_NAME = "patient_payer"
-    ID_COLUMN = PatientPayerColumns.PATIENT_ID
+    ID_COLUMN = PatientPayerColumns.PATIENT_PAYER_ID
 
     def __init__(
             self,
@@ -58,13 +58,13 @@ class GoogleSheetsPatientPayerRepository(
             for row in self._read_rows()
         )
 
-    def get_all_payers_for_patient_id(
+    def list_payers_for_patient_id(
             self,
             patient_id: str,
     ) -> tuple[PatientPayer, ...]:
         raw_rows: list[RawRow] = self._find_rows(
             rows=self._read_rows(),
-            column_name=self.ID_COLUMN,
+            column_name="patient_id",
             value=patient_id,
         )
 
@@ -75,12 +75,12 @@ class GoogleSheetsPatientPayerRepository(
 
     def get_by_id(
             self,
-            patient_id: str,
+            patient_payer_id: str,
     ) -> PatientPayer:
         raw_row = self._find_single_row(
             rows=self._read_rows(),
             column_name=self.ID_COLUMN,
-            value=patient_id,
+            value=patient_payer_id,
         )
 
         return self._mapper.to_domain(raw_row)

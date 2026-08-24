@@ -36,3 +36,15 @@ class RtmNecessityRepositoryPort(Protocol):
             rtm_necessity_id: str,
     ) -> RtmMedicalNecessity:
         ...
+
+    def get_by_ids(
+            self,
+            rtm_necessity_ids: Sequence[str],
+    ) -> tuple[RtmMedicalNecessity, ...]:
+        ...
+
+    def list_rtm_necessity_records_patient_id(
+            self,
+            patient_id: str,
+    ) -> tuple[RtmMedicalNecessity, ...]:
+        ...

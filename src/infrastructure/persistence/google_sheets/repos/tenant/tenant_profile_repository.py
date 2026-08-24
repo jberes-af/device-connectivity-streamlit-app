@@ -1,6 +1,5 @@
 # /src/infrastructure/persistence/google_sheets/repos/tenant/tenant_profile_repository.py
 
-
 from src.application.ports.tenant_repo_ports import (
     TenantProfileRepositoryPort,
 )
@@ -63,7 +62,7 @@ class GoogleSheetsTenantProfileRepository(
             self,
             tenant_id: str,
     ) -> TenantProfile:
-        raw_row = self._find_single_row(
+        raw_row: RawRow = self._find_single_row(
             rows=self._read_rows(),
             column_name=self.ID_COLUMN,
             value=tenant_id,
@@ -71,6 +70,7 @@ class GoogleSheetsTenantProfileRepository(
 
         return self._mapper.to_domain(raw_row)
 
+    """
     def append_open_event(
             self,
             event: TenantProfile,
@@ -81,3 +81,4 @@ class GoogleSheetsTenantProfileRepository(
             row=raw_row,
             columns=TenantProfileColumns.ORDER,
         )
+    """

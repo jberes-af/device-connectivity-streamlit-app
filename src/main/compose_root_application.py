@@ -15,8 +15,25 @@ from src.application.services.get_payer_profile_service import (
     FetchPayerProfileService,
 )
 
-from src.application.services.get_provider_profile_service import (
+from src.application.services.person.get_provider_profile_service import (
     FetchProviderProfileService,
+)
+
+from src.application.services.care.get_diagnosis_definition_service import (
+    FetchDiagnosisDefinitionService
+)
+
+from src.application.services.person.get_patient_diagnosis_service import (
+    FetchPatientDiagnosisService
+)
+
+from src.application.services.care.get_rtm_service import (
+    FetchRtmNecessityService,
+)
+
+from src.application.services.care.get_treatment_service import (
+    FetchTreatmentPlanService,
+    FetchTherapeuticGoalService,
 )
 
 # --- APPLICATION USE CASES
@@ -37,6 +54,10 @@ from src.application.use_cases.patient.get_patient_provider_profile_uc import (
     GetPatientProviderProfileUseCase,
 )
 
+from src.application.use_cases.patient.get_patient_diagnosis_and_treatment_uc import (
+    GetPatientDiagnosesAndTreatmentsUseCase,
+)
+
 from src.application.use_cases.sensing.device_profiles.get_user_sensing_account_uc import (
     GetUserSensingAccountUseCase,
 )
@@ -55,7 +76,7 @@ from src.main.compose_root_infrastructure import InfrastructureContainer
 
 # from src.interface_adapters.presenters.patient.patient_overview_presenter import (    PatientOverviewPresenter,)
 
-from src.interface_adapters.presenters.resident.resident_main_page_presenter import (
+from src.interface_adapters.presenters.person.resident import (
     ResidentMainPagePresenter,
 )
 
@@ -76,13 +97,17 @@ class AppContainer:
     get_resident_records_for_user_use_case: GetAllResidentRecordsForUserUseCase
     resident_main_page_presenter: ResidentMainPagePresenter
 
+    get_patient_diagnosis_and_treatment_use_case: GetPatientDiagnosesAndTreatmentsUseCase
+    # presenter
+
     get_patient_payer_profile_use_case: GetPatientPayerProfileUseCase
+    # presenter
+
+    get_patient_provider_profile_use_case: GetPatientProviderProfileUseCase
+    # presenter
 
     get_user_sensing_account_use_case: GetUserSensingAccountUseCase
     build_sensor_event_timeline_use_case: BuildSensorEventsUseCase
-
-    get_patient_payer_profile_use_case: GetPatientPayerProfileUseCase
-    get_patient_provider_profile_use_case: GetPatientProviderProfileUseCase
 
     # get_patient_overview_use_case: GetPatientOverviewUseCase
     # patient_overview_presenter: PatientOverviewPresenter
@@ -95,15 +120,15 @@ def build_application_container(
     # --- ASSIGN REPOSITORIES
 
     access_repos = infrastructure.access_repository
-
-    resident_repos = infrastructure.resident_repository
-    tenant_repos = infrastructure.tenant_repository
-
+    diagnosis_repos = infrastructure.diagnosis_repository
     patient_repos = infrastructure.patient_repository
     payer_repos = infrastructure.payer_repository
     provider_repos = infrastructure.provider_repository
-
+    resident_repos = infrastructure.resident_repository
+    rtm_repos = infrastructure.rtm_repository
     sensing_repos = infrastructure.sensing_repositories
+    tenant_repos = infrastructure.tenant_repository
+    treatment_repos = infrastructure.treatment_repository
 
     # --- SERVICES
 
@@ -113,6 +138,26 @@ def build_application_container(
 
     fetch_provider_profile_service = FetchProviderProfileService(
         provider_repository=provider_repos.provider_repository,
+    )
+
+    fetch_diagnosis_definition_service: FetchDiagnosisDefinitionService(
+        diagnosis_definition_repository=diagnosis_repos.diagnosis_definition_repository,
+    )
+
+    fetch_patient_diagnosis_service: FetchPatientDiagnosisService(
+        patient_diagnosis_repository=patient_repos.patient_diagnosis_repository,
+    )
+
+    fetch_treatment_plan_service: FetchTreatmentPlanService(
+        treatment_plan_repository=treatment_repos.treatment_plan_repository,
+    )
+
+    fetch_therapeutic_goal_service: FetchTherapeuticGoalService(
+        therapeutic_goal_repository=treatment_repos.therapeutic_goal_repository,
+    )
+
+    fetch_rtm_necessity_service: FetchRtmNecessityService(
+        rtm_necessity_repository=rtm_repos.rtm_necessity_repository,
     )
 
     # --- ACCESS RECORDS
@@ -132,6 +177,16 @@ def build_application_container(
         user_resident_access_repository=access_repos.user_resident_access_repository,  # IS THIS NEEDED?????
         resident_profile_repository=resident_repos.resident_profile_repository,
         resident_contacts_repository=resident_repos.resident_contact_info_repository,
+    )
+
+    # --- RESIDENT / PATIENT DIAGNOSES & TREATMENT RECORDS
+
+    get_diagnosis_and_treatment = GetPatientDiagnosesAndTreatmentsUseCase(
+        fetch_diagnosis_definition_service=fetch_diagnosis_definition_service,
+        fetch_patient_diagnosis_service=fetch_patient_diagnosis_service,
+        fetch_treatment_plan_service= fetch_treatment_plan_service,
+        fetch_therapeutic_goal_service=fetch_therapeutic_goal_service,
+        fetch_rtm_necessity_service=fetch_rtm_necessity_service,
     )
 
     # --- RESIDENT / PATIENT PAYER RECORDS
@@ -172,11 +227,14 @@ def build_application_container(
         get_resident_records_for_user_use_case=get_resident_records_for_user,
         resident_main_page_presenter=ResidentMainPagePresenter(),
 
-        get_user_sensing_account_use_case=get_user_sensing_account,
-        build_sensor_event_timeline_use_case=build_sensor_events,
+        get_patient_diagnosis_and_treatment_use_case=get_diagnosis_and_treatment,
 
         get_patient_payer_profile_use_case=get_patient_payer_profile,
         get_patient_provider_profile_use_case=get_patient_provider_profile,
+
+        get_user_sensing_account_use_case=get_user_sensing_account,
+        build_sensor_event_timeline_use_case=build_sensor_events,
+
     )
 
 

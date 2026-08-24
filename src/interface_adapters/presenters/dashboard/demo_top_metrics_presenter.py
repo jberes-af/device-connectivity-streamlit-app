@@ -1,4 +1,4 @@
-# /src/interface_adapters/presenters/resident/demo_top_metrics_presenter.py
+# /src/interface_adapters/presenters/person/demo_top_metrics_presenter.py
 
 from src.interface_adapters.view_models.common.card_view_models import MetricCardViewModel
 

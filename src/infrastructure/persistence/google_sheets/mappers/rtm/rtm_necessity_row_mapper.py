@@ -7,7 +7,7 @@ from src.domain.entities.care.rtm_entities import (
 from src.domain.enums.care.rtm_enums import (
     ClinicalIndicationEnum,
     RtmClinicalUseEnum,
-    RtmMedicalNecessityStatus,
+    RtmNecessityStatus,
     RtmMonitoringReasonEnum,
 )
 
@@ -117,7 +117,7 @@ class RtmNecessityRowMapper:
             ),
             status=parse_required_enum(
                 row.get(schema.STATUS),
-                enum_type=RtmMedicalNecessityStatus,
+                enum_type=RtmNecessityStatus,
                 field_name=schema.STATUS,
             ),
             last_reviewed_at=parse_optional_datetime(

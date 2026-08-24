@@ -1,204 +1,290 @@
 # /src/application/use_cases/patient/get_patient_diagnosis_and_treatment_uc.py.py
 
-from src.domain.entities.person.patient_entities import (
-    Patient,
-    PatientProvider,
-    PatientPayer, PatientDiagnosis,
-)
-from src.domain.entities.care.rtm_entities import RtmEnrollment
+from src.domain.entities.person.patient_entities import PatientDiagnosis
 
-from src.application.ports.patient_repo_ports import (
-    PatientRepositoryPort,
-    PatientDiagnosisRepositoryPort,
-    PatientProviderRepositoryPort,
-    PatientPayerRepositoryPort,
-)
-from src.application.ports.rtm_repo_ports import RtmEnrollmentRepositoryPort
+from src.domain.entities.care.rtm_entities import RtmMedicalNecessity
 
-from src.application.ports.provider_repo_ports import (
-    ProviderRepositoryPort,
+from src.domain.entities.care.diagnosis_entities import DiagnosisDefinition
+
+from src.domain.entities.care.treatment_entities import (
+    TreatmentPlan,
+    TherapeuticGoal,
+    TreatmentMonitoringParameter,
+    TreatmentIntervention,
 )
 
-from src.application.ports.payer_repo_ports import (
-    PayerRepositoryPort,
+from src.application.services.care.get_diagnosis_definition_service import (
+    FetchDiagnosisDefinitionService
 )
 
-from src.application.use_cases.patient.patient_uc_dtos import (
-    PatientOverviewDevDTO,
-    PatientAdministrationDTO,
-    RTMEnrollmentSummaryDTO,
-    PatientSearchableRecordDTO,
+from src.application.services.person.get_patient_diagnosis_service import (
+    FetchPatientDiagnosisService
+)
 
-    GetPatientOverviewRequestDTO,
-    GetPatientOverviewResultDTO,
+from src.application.services.care.get_rtm_service import (
+    FetchRtmNecessityService,
+)
+
+from src.application.services.care.get_treatment_service import (
+    FetchTreatmentPlanService,
+    FetchTherapeuticGoalService,
+    FetchTreatmentInterventionService,
+    FetchTreatmentMonitoringParameterService,
+    FetchTreatmentPlanReviewService,
+)
+
+from src.application.use_cases.patient.diagnosis_and_treatment_uc_dtos import (
+    DiagnosisDTO,
+    RtmNecessityDTO,
+    TherapeuticGoalDTO,
+    TherapeuticPlanDTO,
+    TreatmentPlanDTO,
+    TreatmentInterventionDTO,
+    TreatmentMonitoringParameterDTO,
+    TreatmentPlanReviewDTO,
+
+    GetDiagnosesAndTreatmentRequestDTO,
+    GetDiagnosisAndTreatmentResultDTO,
 )
 
 
-class GetPatientTreatmentOverviewUseCase:
+class GetPatientDiagnosesAndTreatmentsUseCase:
 
     def __init__(
             self,
             *,
-            diagnosis_profile_repository: PatientProviderRepositoryPort,
-            patient_diagnosis_repository: PatientDiagnosisRepositoryPort,
-            rtm_necessity_repository: RtmEnrollmentRepositoryPort,
-            treatment_repository: ProviderRepositoryPort,
-    ):
-        self._diagnosis_profile_repo = diagnosis_profile_repository
-        self._patient_diagnosis_repository = patient_diagnosis_repository
-        self._rtm_necessity_repo = rtm_necessity_repository
-        self._treatment_repo = treatment_repository
+            fetch_diagnosis_definition_service: FetchDiagnosisDefinitionService,
+            fetch_patient_diagnosis_service: FetchPatientDiagnosisService,
+            fetch_treatment_plan_service: FetchTreatmentPlanService,
+            fetch_therapeutic_goal_service: FetchTherapeuticGoalService,
+            fetch_rtm_necessity_service: FetchRtmNecessityService,
+            fetch_treatment_intervention_service: FetchTreatmentInterventionService,
+            fetch_treatment_monitoring_parameter_service:
+            FetchTreatmentMonitoringParameterService,
+            fetch_treatment_plan_review_service: FetchTreatmentPlanReviewService,
+    ) -> None:
+        self._diagnosis_definition_service = fetch_diagnosis_definition_service
+        self._patient_diagnosis_service = fetch_patient_diagnosis_service
+        self._treatment_plan_service = fetch_treatment_plan_service
+        self._therapeutic_goal_service = fetch_therapeutic_goal_service
+        self._necessity_service = fetch_rtm_necessity_service
+        self._treatment_intervention_service = (
+            fetch_treatment_intervention_service
+        )
+        self._treatment_monitoring_parameter_service = (
+            fetch_treatment_monitoring_parameter_service
+        )
+        self._treatment_plan_review_service = (
+            fetch_treatment_plan_review_service
+        )
 
     def execute(
             self,
-            request: GetPatientTreatmentOverviewRequestDTO,
-    ) -> GetPatientTreatmentOverviewResultDTO:
-        # --- PATIENT RECORD FOR SELECTED PATIENT ID
-
+            request: GetDiagnosesAndTreatmentRequestDTO,
+    ) -> GetDiagnosisAndTreatmentResultDTO:
         patient_id = request.patient_id
-        patient_record: Patient = self._patient_repo.get_by_id(
-            payer_id=patient_id,
+
+        diagnoses: tuple[DiagnosisDTO, ...] = (
+            self._build_diagnoses(patient_id=patient_id)
         )
 
-        patient_diagnosis: PatientDiagnosis = self._patient_diagnosis_repository.get_by_id(
+        treatment_plans: tuple[TherapeuticPlanDTO, ...] = (
+            self._build_treatment_plans(patient_id=patient_id)
+        )
+
+        rtm_necessity_records: tuple[RtmNecessityDTO, ...] = (
+            self._build_rtm_necessity_records(patient_id=patient_id)
+        )
+
+        return GetDiagnosisAndTreatmentResultDTO(
             patient_id=patient_id,
+            diagnoses=diagnoses,
+            treatment_plans=treatment_plans,
+            rtm_necessity_records=rtm_necessity_records,
         )
 
-        patient_provider: PatientProvider = self._patient_provider_repository.get_by_id(
-            patient_id=patient_id,
-        )
-
-        patient_payer: PatientPayer = self._patient_payer_repository.get_by_id(
-            patient_id=patient_id,
-        )
-
-        rtm_enrollment: RtmEnrollment = self._enrollment_repository.get_by_id(
-            patient_id=patient_id,
-        )
-
-        patient_admin: PatientAdministrationDTO = (
-            self._build_patient_admin_object(
-                patient_id=patient_id,
-                patient=patient_record,
-                diagnosis=patient_diagnosis,
-                provider=patient_provider,
-                payer=patient_payer,
-            ))
-
-        enrollment_summary: RTMEnrollmentSummaryDTO = (
-            self._build_rtm_enrollment_summary(
-                rtm_enrollment=rtm_enrollment,
-            ))
-
-        # --- PATIENT RECORDS FOR SEARCHABLE TABLE
-
-        all_patient_records: tuple[PatientSearchableRecordDTO, ...] = (
-            self._build_patient_table())
-
-        return GetPatientOverviewResultDTO(
-            overview=PatientOverviewDevDTO(
-                administration=patient_admin,
-                enrollment_summary=enrollment_summary,
-                most_recent_provider_review_summary=None,
-                most_recent_communication_summary=None,
-            ),
-            patient_table_records=all_patient_records,
-        )
-
-    @staticmethod
-    def _build_patient_admin_object(
+    def _build_diagnoses(
+            self,
             patient_id: str,
-            patient: Patient,
-            diagnosis: PatientDiagnosis,
-            provider: PatientProvider,
-            payer: PatientPayer,
-    ) -> PatientAdministrationDTO:
+    ) -> tuple[DiagnosisDTO, ...]:
+        patient_diagnoses: tuple[PatientDiagnosis, ...] = (
+            self._patient_diagnosis_service
+            .fetch_diagnosis_profiles_for_patient(patient_id)
+        )
 
-        if patient.middle_name:
-            full_name: str = (
-                f'{patient.first_name} {patient.middle_name}. {patient.last_name}'
+        diagnosis_ids: tuple[str, ...] = tuple(
+            [diagnosis.diagnosis_id for diagnosis in patient_diagnoses]
+        )
+
+        diagnoses_definitions: tuple[DiagnosisDefinition, ...] = (
+            self._diagnosis_definition_service
+            .fetch_diagnosis_profiles(diagnosis_ids=diagnosis_ids)
+        )
+
+        diagnosis_id_mapping = {
+            record.diagnosis_id: record
+            for record in diagnoses_definitions
+        }
+
+        return tuple([
+            DiagnosisDTO(
+                patient_diagnosis_id=pd.patient_diagnosis_id,
+                diagnosis_id=pd.diagnosis_id,
+                diagnosis_name=diagnosis_id_mapping[pd.diagnosis_id].diagnosis_name,
+                diagnosis_description=(
+                    diagnosis_id_mapping[pd.diagnosis_id].diagnosis_description),
+                diagnosed_date=pd.diagnosed_date,
+                resolved_date=pd.resolved_date,
+                is_primary=pd.is_primary,
             )
-        else:
-            full_name: str = f'{patient.first_name} {patient.last_name}'
-
-        return PatientAdministrationDTO(
-            patient_id=patient_id,
-            full_name=full_name,
-            date_of_birth=patient.date_of_birth,
-            primary_diagnosis=diagnosis.diagnosis_id,
-            treating_provider=provider.provider_id,
-            primary_payer=payer.payer_id,
-            telephone=patient.telephone,
-            email=patient.email,
+            for pd in patient_diagnoses
+        ]
         )
 
-    @staticmethod
-    def _build_rtm_enrollment_summary(
-            rtm_enrollment: RtmEnrollment
-
-    ) -> RTMEnrollmentSummaryDTO:
-        return RTMEnrollmentSummaryDTO(
-            enrollment_status=rtm_enrollment.enrollment_status,
-            assigned_device=None,
-            consent_status=rtm_enrollment.consent_status,
+    def _build_treatment_plans(
+            self,
+            patient_id: str,
+    ) -> tuple[TherapeuticPlanDTO, ...]:
+        treatment_plans: tuple[TreatmentPlan, ...] = (
+            self._treatment_plan_service
+            .fetch_treatment_plans_for_patient(patient_id)
         )
 
-    def _build_patient_table(self) -> tuple[PatientSearchableRecordDTO, ...]:
+        results: list[TherapeuticPlanDTO] = []
 
-        records: tuple[Patient, ...] = self._patient_repo.list_patients()
+        for plan in treatment_plans:
+            goals = (
+                self._therapeutic_goal_service
+                .fetch_goals_for_treatment_plan(
+                    treatment_plan_id=plan.treatment_plan_id,
+                )
+            )
 
-        providers: dict[str, str] = {
-            r.provider_id: f"{r.first_name} {r.last_name} ({r.provider_id})"
-            for r in self._provider_repository.list_providers()
-        }
+            interventions = (
+                self._treatment_intervention_service
+                .fetch_interventions_for_treatment_plan(
+                    treatment_plan_id=plan.treatment_plan_id,
+                )
+            )
 
-        payers: dict[str, str] = {
-            r.payer_id: f"{r.payer_name} ({r.payer_type})"
-            for r in self._payer_repository.list_payers()
-        }
+            monitoring_parameters = (
+                self._treatment_monitoring_parameter_service
+                .fetch_monitoring_parameters_for_treatment_plan(
+                    treatment_plan_id=plan.treatment_plan_id,
+                )
+            )
 
-        patient_providers: dict[str, str] = {
-            r.provider_id: r.patient_id
-            for r in self._patient_provider_repository.list_patient_providers()
-        }
+            reviews = (
+                self._treatment_plan_review_service
+                .fetch_reviews_for_treatment_plan(
+                    treatment_plan_id=plan.treatment_plan_id,
+                )
+            )
 
-        patient_payers: dict[str, str] = {
-            r.payer_id: r.patient_id
-            for r in self._patient_payer_repository.list_patient_payers()
-        }
+            results.append(
+                TherapeuticPlanDTO(
+                    treatment_plan=TreatmentPlanDTO(
+                        treatment_plan_id=plan.treatment_plan_id,
+                        rtm_program_id=plan.rtm_program_id,
+                        patient_id=plan.patient_id,
+                        treating_provider_id=plan.treating_provider_id,
+                        start_date=plan.start_date,
+                        expected_end_date=plan.expected_end_date,
+                        status=plan.status,
+                        created_at=plan.created_at,
+                        updated_at=plan.updated_at,
+                    ),
 
-        results: [PatientSearchableRecordDTO] = []
+                    goals=tuple(
+                        # Whatever your goal DTO is named
+                        TherapeuticGoalDTO(
+                            goal_id=goal.goal_id,
+                            treatment_plan_id=goal.treatment_plan_id,
+                            description=goal.description,
+                            target_date=goal.target_date,
+                        )
+                        for goal in goals
+                    ),
 
-        for record in records:
-            patient_id = record.patient_id
+                    interventions=tuple(
+                        TreatmentInterventionDTO(
+                            intervention_id=item.intervention_id,
+                            treatment_plan_id=item.treatment_plan_id,
+                            treatment_type=item.treatment_type,
+                            description=item.description,
+                            start_date=item.start_date,
+                            end_date=item.end_date,
+                            status=item.status,
+                        )
+                        for item in interventions
+                    ),
 
-            payer_ids = [
-                v for k, v in patient_payers.items()
-                if v == patient_id
-            ]
+                    monitoring_parameters=tuple(
+                        TreatmentMonitoringParameterDTO(
+                            monitoring_parameter_id=item.monitoring_parameter_id,
+                            treatment_plan_id=item.treatment_plan_id,
+                            goal_id=item.goal_id,
+                            measure_definition_id=item.measure_definition_id,
+                            baseline_value=item.baseline_value,
+                            target_value=item.target_value,
+                            unit=item.unit,
+                        )
+                        for item in monitoring_parameters
+                    ),
 
-            provider_ids = [
-                v for k, v in patient_providers.items()
-                if v == patient_id
-            ]
-
-            treating_provider_id: str = provider_ids[0]
-            treating_provider_name = providers.get(treating_provider_id, "---")
-            treating_provider = (
-                f"{treating_provider_name}, multiple"
-                if len(provider_ids) > 1 else treating_provider_name)
-
-            full_name: str = f"{record.first_name} {record.last_name}"
-            results.append(PatientSearchableRecordDTO(
-                patient_id=record.patient_id,
-                full_name=full_name,
-                date_of_birth=record.date_of_birth,
-                city=record.city,
-                state=record.state,
-                telephone=record.telephone,
-                email=record.email,
-                treating_provider=treating_provider,
-                primary_payer=None,
-            ))
+                    reviews=tuple(
+                        TreatmentPlanReviewDTO(
+                            review_id=item.review_id,
+                            treatment_plan_id=item.treatment_plan_id,
+                            provider_id=item.provider_id,
+                            reviewed_at=item.reviewed_at,
+                            clinical_findings=item.clinical_findings,
+                            treatment_decision=item.treatment_decision,
+                            next_review_date=item.next_review_date,
+                        )
+                        for item in reviews
+                    ),
+                )
+            )
 
         return tuple(results)
+
+    def _build_rtm_necessity_records(
+            self,
+            patient_id: str,
+    ) -> tuple[RtmNecessityDTO, ...]:
+        records: tuple[RtmMedicalNecessity, ...] = (
+            self._necessity_service
+            .fetch_rtm_necessity_records_for_patient(
+                patient_id=patient_id,
+            )
+        )
+
+        return tuple(
+            RtmNecessityDTO(
+                rtm_necessity_id=record.rtm_necessity_id,
+                patient_id=record.patient_id,
+                rtm_program_id=record.rtm_program_id,
+                treatment_plan_id=record.treatment_plan_id,
+                primary_diagnosis_code=record.primary_diagnosis_code,
+                secondary_diagnosis_codes=record.secondary_diagnosis_codes,
+                clinical_indications=record.clinical_indications,
+                clinical_indication_notes=record.clinical_indication_notes,
+                monitoring_reasons=record.monitoring_reasons,
+                monitoring_rationale=record.monitoring_rationale,
+                expected_clinical_benefit=record.expected_clinical_benefit,
+                intended_clinical_uses=record.intended_clinical_uses,
+                determined_by_provider_id=record.determined_by_provider_id,
+                determined_at=record.determined_at,
+                is_attested=record.is_attested,
+                attestation_version=record.attestation_version,
+                effective_from=record.effective_from,
+                effective_to=record.effective_to,
+                status=record.status,
+                last_reviewed_at=record.last_reviewed_at,
+                last_reviewed_by_provider_id=(
+                    record.last_reviewed_by_provider_id
+                ),
+            )
+            for record in records
+        )

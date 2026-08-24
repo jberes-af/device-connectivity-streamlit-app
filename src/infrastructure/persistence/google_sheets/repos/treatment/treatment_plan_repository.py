@@ -86,3 +86,18 @@ class GoogleSheetsTreatmentPlanRepository(
             self._mapper.to_domain(row)
             for row in raw_rows
         )
+
+    def list_for_patient_id(
+            self,
+            patient_id: str,
+    ) -> tuple[TreatmentPlan, ...]:
+        raw_rows: list[RawRow] = self._find_rows(
+            rows=self._read_rows(),
+            column_name=TreatmentPlanColumns.PATIENT_ID,
+            value=patient_id,
+        )
+
+        return tuple(
+            self._mapper.to_domain(row)
+            for row in raw_rows
+        )

@@ -1,4 +1,4 @@
-# /src/gui/streamlit/screens/resident/use_case_dispatcher_sensing.py
+# /src/gui/streamlit/screens/person/use_case_dispatcher_sensing.py
 
 from dataclasses import dataclass
 from datetime import date, timedelta

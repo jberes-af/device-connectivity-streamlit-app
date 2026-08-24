@@ -1,5 +1,7 @@
 # /src/infrastructure/persistence/google_sheets/repos/treatment/rtm_necessity.py
 
+from typing import Sequence
+
 from src.domain.entities.care.rtm_entities import RtmMedicalNecessity
 
 from src.application.ports.rtm_repo_ports import RtmNecessityRepositoryPort
@@ -56,12 +58,42 @@ class GoogleSheetsRtmNecessityRepository(
 
     def get_by_id(
             self,
-            patient_id: str,
+            rtm_necessity_id: str,
     ) -> RtmMedicalNecessity:
         raw_row: RawRow = self._find_single_row(
             rows=self._read_rows(),
             column_name=self.ID_COLUMN,
-            value=patient_id,
+            value=rtm_necessity_id,
         )
 
         return self._mapper.to_domain(raw_row)
+
+    def get_by_ids(
+            self,
+            rtm_necessity_ids: Sequence[str],
+    ) -> tuple[RtmMedicalNecessity, ...]:
+        raw_rows: list[RawRow] = self._find_rows_for_multiple_values(
+            rows=self._read_rows(),
+            column_name=self.ID_COLUMN,
+            values=rtm_necessity_ids,
+        )
+
+        return tuple(
+            self._mapper.to_domain(row)
+            for row in raw_rows
+        )
+
+    def list_rtm_necessity_records_patient_id(
+            self,
+            patient_id: str,
+    ) -> tuple[RtmMedicalNecessity, ...]:
+        raw_rows: list[RawRow] = self._find_rows(
+            rows=self._read_rows(),
+            column_name="patient_id",
+            value=patient_id,
+        )
+
+        return tuple(
+            self._mapper.to_domain(row)
+            for row in raw_rows
+        )

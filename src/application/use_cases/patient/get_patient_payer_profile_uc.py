@@ -48,7 +48,7 @@ class GetPatientPayerProfileUseCase:
         """
 
         patient_payers: tuple[PatientPayer, ...] = (
-            self._patient_payer_repo.get_all_payers_for_patient_id(
+            self._patient_payer_repo.list_payers_for_patient_id(
                 patient_id=patient_id,
             )
         )

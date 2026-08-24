@@ -1,4 +1,4 @@
-# /src/infrastructure/persistence/mappers/resident/resident_need_case_contact_row_mapper.py
+# /src/infrastructure/persistence/mappers/person/resident_need_case_contact_row_mapper.py
 
 from src.infrastructure.persistence.common.types import RawRow
 

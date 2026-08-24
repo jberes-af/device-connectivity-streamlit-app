@@ -1,10 +1,8 @@
 # /src/application/ports/patient_repo_ports.py
 
-from typing import Protocol
+from typing import Protocol, Sequence
 
 from src.domain.entities.person.patient_entities import (
-    # Patient,
-    # PatientDeviceAssignment,
     PatientPayer,
     PatientProvider,
     PatientDiagnosis,
@@ -18,8 +16,20 @@ class PatientDiagnosisRepositoryPort(Protocol):
 
     def get_by_id(
             self,
-            patient_id: str,
+            patient_diagnosis_id: str,
     ) -> PatientDiagnosis:
+        ...
+
+    def get_by_ids(
+            self,
+            patient_diagnosis_ids: Sequence[str],
+    ) -> tuple[PatientDiagnosis, ...]:
+        ...
+
+    def list_diagnoses_for_patient_id(
+            self,
+            patient_id: str,
+    ) -> tuple[PatientDiagnosis, ...]:
         ...
 
 
@@ -28,7 +38,7 @@ class PatientProviderRepositoryPort(Protocol):
     def list_patient_providers(self) -> tuple[PatientProvider, ...]:
         ...
 
-    def get_all_providers_for_patient_id(
+    def list_providers_for_patient_id(
             self,
             patient_id: str,
     ) -> tuple[PatientProvider, ...]:
@@ -36,7 +46,7 @@ class PatientProviderRepositoryPort(Protocol):
 
     def get_by_id(
             self,
-            patient_id: str,
+            patient_provider_id: str,
     ) -> PatientProvider:
         ...
 
@@ -46,7 +56,7 @@ class PatientPayerRepositoryPort(Protocol):
     def list_patient_payers(self) -> tuple[PatientPayer, ...]:
         ...
 
-    def get_all_payers_for_patient_id(
+    def list_payers_for_patient_id(
             self,
             patient_id: str,
     ) -> tuple[PatientPayer, ...]:
@@ -54,7 +64,7 @@ class PatientPayerRepositoryPort(Protocol):
 
     def get_by_id(
             self,
-            patient_id: str,
+            patient_payer_id: str,
     ) -> PatientPayer:
         ...
 

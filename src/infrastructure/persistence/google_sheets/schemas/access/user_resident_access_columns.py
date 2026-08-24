@@ -1,4 +1,4 @@
-# /src/infrastructure/persistence/schemas/resident/user_resident_access_columns.py
+# /src/infrastructure/persistence/schemas/person/user_resident_access_columns.py
 
 class UserResidentAccessColumns:
     USER_ID: str = "user_id"

@@ -1,10 +1,16 @@
-# /src/infrastructure/persistence/mappers
+# /src/infrastructure/persistence/google_sheets/mappers/treatment/treatment_intervention_row_mapper.py
+
+from src.domain.enums.care.treatment_enums import (
+    TreatmentType,
+    InterventionStatus,
+)
+from src.domain.entities.care.treatment_entities import TreatmentIntervention
 
 from src.infrastructure.persistence.common.types import RawRow
 
-from src.infrastructure.persistence.schemas.treatment_intervention_columns import TreatmentInterventionColumns
-
-from src.domain.entities.entities import TreatmentIntervention
+from src.infrastructure.persistence.google_sheets.schemas.treatment.treatment_intervention_columns import (
+    TreatmentInterventionColumns
+)
 
 from src.infrastructure.persistence.common.utils_parsing import *
 
@@ -24,8 +30,9 @@ class TreatmentInterventionRowMapper:
                 row.get(schema.TREATMENT_PLAN_ID),
                 field_name=schema.TREATMENT_PLAN_ID,
             ),
-            treatment_type=parse_optional_text(
+            treatment_type=parse_optional_enum(
                 row.get(schema.TREATMENT_TYPE),
+                enum_type=TreatmentType,
                 field_name=schema.TREATMENT_TYPE,
             ),
             description=parse_required_text(
@@ -40,16 +47,16 @@ class TreatmentInterventionRowMapper:
                 row.get(schema.END_DATE),
                 field_name=schema.END_DATE,
             ),
-            status=parse_optional_text(
+            status=parse_optional_enum(
                 row.get(schema.STATUS),
+                enum_type=InterventionStatus,
                 field_name=schema.STATUS,
             ),
         )
 
-
     @staticmethod
     def to_row(
-        treatment_intervention: TreatmentIntervention,
+            treatment_intervention: TreatmentIntervention,
     ) -> RawRow:
         schema = TreatmentInterventionColumns
 

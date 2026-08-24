@@ -34,7 +34,7 @@ class RtmClinicalUseEnum(StrEnum):
     OTHER = "other"
 
 
-class RtmMedicalNecessityStatus(StrEnum):
+class RtmNecessityStatus(StrEnum):
     DRAFT = "draft"
     ACTIVE = "active"
     SUPERSEDED = "superseded"

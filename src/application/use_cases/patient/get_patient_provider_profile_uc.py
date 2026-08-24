@@ -8,7 +8,7 @@ from src.application.ports.patient_repo_ports import (
     PatientProviderRepositoryPort,
 )
 
-from src.application.services.get_provider_profile_service import (
+from src.application.services.person.get_provider_profile_service import (
     FetchProviderProfileService,
 )
 
@@ -36,7 +36,7 @@ class GetPatientProviderProfileUseCase:
     ) -> GetPatientProviderProfileResultDTO:
         patient_providers: tuple[PatientProvider, ...] = (
             self._patient_provider_repo
-            .get_all_providers_for_patient_id(
+            .list_providers_for_patient_id(
                 patient_id=request.patient_id,
             )
         )

@@ -1,4 +1,4 @@
-# /src/application/use_cases/resident/get_all_resident_records_for_user_uc.py
+# /src/application/use_cases/person/get_all_resident_records_for_user_uc.py
 
 
 from src.domain.entities.person.resident_entities import (

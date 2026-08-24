@@ -1,4 +1,4 @@
-# /src/gui/streamlit/components/resident/clinical_docs_renderer.py
+# /src/gui/streamlit/components/person/clinical_docs_renderer.py
 
 import streamlit as st
 

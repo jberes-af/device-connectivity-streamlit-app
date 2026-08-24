@@ -1,18 +1,10 @@
 # /src/application/use_cases/provider/get_provider_profile_uc.py
 
-from src.application.services.get_provider_profile_service import (
+from src.application.services.person.get_provider_profile_service import (
     FetchProviderProfileService
 )
 
 from src.domain.entities.care.provider_entities import ProviderProfile
-
-from src.domain.entities.person.patient_entities import (
-    PatientProvider,
-)
-
-from src.application.ports.patient_repo_ports import (
-    PatientProviderRepositoryPort,
-)
 
 from src.application.ports.provider_repo_ports import (
     ProviderRepositoryPort,

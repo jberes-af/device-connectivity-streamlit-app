@@ -1,4 +1,4 @@
-# /src/interface_adapters/view_models/resident/segmented_controls_view_model.py
+# /src/interface_adapters/view_models/person/segmented_controls_view_model.py
 
 from dataclasses import dataclass
 from enum import StrEnum

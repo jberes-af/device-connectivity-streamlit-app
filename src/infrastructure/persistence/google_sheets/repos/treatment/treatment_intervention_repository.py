@@ -1,13 +1,13 @@
-# /src/infrastructure/persistence/google_sheets/repos/TreatmentIntervention.py
+# /src/infrastructure/persistence/google_sheets/repos/treatment/treatment_intervention_repository.py
 
 
-# AUTO GENERATED
+from typing import Sequence
 
-from src.application.ports.treatment_intervention_repository_port import (
+from src.application.ports.treatment_repo_ports import (
     TreatmentInterventionRepositoryPort,
 )
 
-from src.domain.entities.treatment_intervention_entities import (
+from src.domain.entities.care.treatment_entities import (
     TreatmentIntervention,
 )
 
@@ -25,12 +25,11 @@ from src.infrastructure.persistence.google_sheets.sheets_query_service import (
     GoogleSheetsQueryService,
 )
 
-from src.infrastructure.persistence.mappers.treatment_intervention.treatment_intervention_row_mapper import (
+from src.infrastructure.persistence.google_sheets.mappers.treatment.treatment_intervention_row_mapper import (
     TreatmentInterventionRowMapper,
 )
 
-
-from src.infrastructure.persistence.schemas.treatment_intervention.treatment_intervention_columns import (
+from src.infrastructure.persistence.google_sheets.schemas.treatment.treatment_intervention_columns import (
     TreatmentInterventionColumns,
 )
 
@@ -39,19 +38,16 @@ class GoogleSheetsTreatmentInterventionRepository(
     GoogleSheetsRepository,
     TreatmentInterventionRepositoryPort,
 ):
-
     TABLE_NAME = "treatment_intervention"
-    ID_COLUMN = TreatmentInterventionColumns.ENTITY_ID
-
+    ID_COLUMN = TreatmentInterventionColumns.INTERVENTION_ID
 
     def __init__(
-        self,
-        *,
-        query_service: GoogleSheetsQueryService,
-        catalog: GoogleSheetCatalog,
-        mapper: TreatmentInterventionRowMapper,
+            self,
+            *,
+            query_service: GoogleSheetsQueryService,
+            catalog: GoogleSheetCatalog,
+            mapper: TreatmentInterventionRowMapper,
     ) -> None:
-
         super().__init__(
             query_service=query_service,
             catalog=catalog,
@@ -59,33 +55,52 @@ class GoogleSheetsTreatmentInterventionRepository(
 
         self._mapper = mapper
 
-    def list_treatment_interventions(self) -> tuple[TreatmentIntervention, ...]:
-
+    def list_treatment_interventions(
+            self,
+    ) -> tuple[TreatmentIntervention, ...]:
         return tuple(
             self._mapper.to_domain(row)
             for row in self._read_rows()
         )
 
+    def list_for_treatment_plan_id(
+            self,
+            treatment_plan_id: str,
+    ) -> tuple[TreatmentIntervention, ...]:
+        raw_rows: list[RawRow] = self._find_rows(
+            rows=self._read_rows(),
+            column_name=TreatmentInterventionColumns.TREATMENT_PLAN_ID,
+            value=treatment_plan_id,
+        )
+
+        return tuple(
+            self._mapper.to_domain(row)
+            for row in raw_rows
+        )
 
     def get_by_id(
             self,
-            patient_id: str,
+            treatment_intervention_id: str,
     ) -> TreatmentIntervention:
-        raw_row = self._find_single_row(
+        raw_row: RawRow = self._find_single_row(
             rows=self._read_rows(),
             column_name=self.ID_COLUMN,
-            value=patient_id,
+            value=treatment_intervention_id,
         )
 
         return self._mapper.to_domain(raw_row)
 
-    def append_open_event(
+    def get_by_ids(
             self,
-            event: TreatmentIntervention,
-    ) -> None:
-        raw_row: RawRow = self._mapper.to_row(event)
+            treatment_intervention_ids: Sequence[str],
+    ) -> tuple[TreatmentIntervention, ...]:
+        raw_rows: list[RawRow] = self._find_rows_for_multiple_values(
+            rows=self._read_rows(),
+            column_name=self.ID_COLUMN,
+            values=treatment_intervention_ids,
+        )
 
-        self._append_raw_row(
-            row=raw_row,
-            columns=TreatmentInterventionColumns.ORDER,
+        return tuple(
+            self._mapper.to_domain(row)
+            for row in raw_rows
         )

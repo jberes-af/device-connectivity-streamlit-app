@@ -1,4 +1,4 @@
-# /src/infrastructure/persistence/google_sheets/repos/resident/resident_gateway_link.py
+# /src/infrastructure/persistence/google_sheets/repos/person/resident_gateway_link.py
 
 from src.application.ports.access_repo_ports import ResidentGatewayLinkRepositoryPort
 

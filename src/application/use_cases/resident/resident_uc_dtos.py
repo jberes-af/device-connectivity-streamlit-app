@@ -1,4 +1,4 @@
-# /src/application/use_cases/resident/resident_uc_dtos.py
+# /src/application/use_cases/person/resident_uc_dtos.py
 
 from src.domain.enums.person.tenant_enums import UserRoleEnum
 
