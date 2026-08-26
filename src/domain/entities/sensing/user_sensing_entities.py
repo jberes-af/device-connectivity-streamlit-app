@@ -1,4 +1,4 @@
-# /src/domain/entities/person/user_sensing_entities.py
+# /src/domain/entities/contact/user_sensing_entities.py
 
 from dataclasses import dataclass
 from typing import Mapping

@@ -1,4 +1,4 @@
-# /src/domain/entities/person/tenant_enums.py
+# /src/domain/entities/contact/tenant_enums.py
 
 from enum import StrEnum
 

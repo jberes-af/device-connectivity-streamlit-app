@@ -34,11 +34,11 @@ class TreatmentMonitoringParameterRowMapper:
                 row.get(schema.MEASURE_DEFINITION_ID),
                 field_name=schema.MEASURE_DEFINITION_ID,
             ),
-            baseline_value=parse_optional_text(
+            baseline_value=parse_optional_float(
                 row.get(schema.BASELINE_VALUE),
                 field_name=schema.BASELINE_VALUE,
             ),
-            target_value=parse_optional_text(
+            target_value=parse_optional_float(
                 row.get(schema.TARGET_VALUE),
                 field_name=schema.TARGET_VALUE,
             ),

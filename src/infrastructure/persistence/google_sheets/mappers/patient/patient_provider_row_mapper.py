@@ -1,4 +1,4 @@
-# /src/infrastructure/persistence/google_sheets/mappers/patient/patient_provide_row_mapper.py
+# /src/infrastructure/persistence/google_sheets/mappers/treatment/patient_provide_row_mapper.py
 
 from src.domain.enums.person.patient_enums import PatientProviderRoleEnum
 from src.domain.entities.person.patient_entities import PatientProvider

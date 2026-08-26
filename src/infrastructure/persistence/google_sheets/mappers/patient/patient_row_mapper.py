@@ -1,4 +1,4 @@
-# /src/infrastructure/persistence/google_sheets/mappers/patient/patient_row_mapper.py
+# /src/infrastructure/persistence/google_sheets/mappers/treatment/patient_row_mapper.py
 
 from src.infrastructure.persistence.common.types import RawRow
 

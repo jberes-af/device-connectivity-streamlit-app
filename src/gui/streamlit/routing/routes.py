@@ -10,7 +10,7 @@ from src.gui.streamlit.screens.billing.billing_screen import render_billing_page
 
 from src.gui.streamlit.screens.dashboard.dashboard_screen import render_dashboard_page
 
-from src.gui.streamlit.screens.resident.resident_screen import render_residents_page
+from src.gui.streamlit.screens.residents.resident_screen import render_residents_page
 
 from src.gui.streamlit.screens.reports.reports_screen import render_reports_page
 

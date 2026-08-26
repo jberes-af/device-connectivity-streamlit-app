@@ -178,7 +178,7 @@ def build_infrastructure_container(
         ))
 
     # billing repos TBD
-    # care plan
+    # treatment plan
     # treatment
 
     # --- ASSIGN PRESENTERS

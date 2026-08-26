@@ -1,4 +1,4 @@
-# src/domain/lookups/care/adl_lookups.py
+# src/domain/lookups/treatment/adl_lookups.py
 
 from collections.abc import Mapping
 from typing import Final
@@ -143,8 +143,8 @@ ADL_SCORE_DEFINITIONS: Final[
     AdlCategoryEnum.TRANSFERRING: {
         0: "Transfers safely alone",
         2: "Staff on standby for safety",
-        3: "One-person assist",
-        4: "Two-person assist",
+        3: "One-contact assist",
+        4: "Two-contact assist",
         5: "Full mechanical lift",
         8: "Activity did not occur",
     },

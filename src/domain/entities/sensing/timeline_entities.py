@@ -18,7 +18,7 @@ class TimelineQueryDTO:
     sensor
     group
     ids: tuple[str, ...]
-    person
+    contact
     ids: tuple[str, ...]
 
 

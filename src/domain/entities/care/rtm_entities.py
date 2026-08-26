@@ -1,7 +1,7 @@
-# /src/domain/care/rtm_entities.py
+# /src/domain/treatment/rtm_entities.py
 
 """
-1. What condition does the patient have?
+1. What condition does the treatment have?
 2. What clinical problem/indication exists?
 3. Why is remote monitoring needed?
 4. What should be monitored?

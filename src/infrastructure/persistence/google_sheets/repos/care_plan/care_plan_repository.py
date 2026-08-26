@@ -40,7 +40,7 @@ class GoogleSheetsCarePlanRepository(
     CarePlanRepositoryPort,
 ):
 
-    TABLE_NAME = "care"
+    TABLE_NAME = "treatment"
     ID_COLUMN = CarePlanColumns.ENTITY_ID
 
 

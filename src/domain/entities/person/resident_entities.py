@@ -1,4 +1,4 @@
-# /src/domain/entities/person/resident_entities.py
+# /src/domain/entities/contact/resident_entities.py
 
 from dataclasses import dataclass
 from datetime import date

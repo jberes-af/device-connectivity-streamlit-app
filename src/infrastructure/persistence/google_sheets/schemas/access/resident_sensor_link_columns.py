@@ -1,4 +1,4 @@
-# /src/infrastructure/persistence/schemas/person/resident_sensor_link_columns.py
+# /src/infrastructure/persistence/schemas/contact/resident_sensor_link_columns.py
 
 class ResidentSensorLinkColumns:
     RESIDENT_ID: str = "resident_id"

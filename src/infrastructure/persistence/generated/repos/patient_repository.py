@@ -38,7 +38,7 @@ class GoogleSheetsPatientRepository(
     PatientRepositoryPort,
 ):
 
-    TABLE_NAME = "patient"
+    TABLE_NAME = "treatment"
     ID_COLUMN = PatientColumns.PATIENT_ID
 
 

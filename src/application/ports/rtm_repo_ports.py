@@ -25,6 +25,12 @@ class RtmEnrollmentRepositoryPort(Protocol):
     ) -> tuple[RtmEnrollment, ...]:
         ...
 
+    def list_rtm_enrollment_patient_id(
+            self,
+            patient_id: str,
+    ) -> tuple[RtmEnrollment, ...]:
+        ...
+
 
 class RtmNecessityRepositoryPort(Protocol):
 

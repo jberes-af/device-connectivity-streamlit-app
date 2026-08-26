@@ -25,7 +25,7 @@ def render_account_and_access_page(
         access_scope: AccessScopeResultDTO,
 ) -> None:
     st.title("🚧 :material/account_circle: Account & Access")
-    # st.write("Organization and patient monitoring overview.")
+    # st.write("Organization and treatment monitoring overview.")
 
     st.caption("User Role")
 

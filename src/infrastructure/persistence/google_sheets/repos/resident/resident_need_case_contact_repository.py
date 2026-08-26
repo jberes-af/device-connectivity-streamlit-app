@@ -1,4 +1,4 @@
-# /src/infrastructure/persistence/google_sheets/repos/person/resident_contact_information.py
+# /src/infrastructure/persistence/google_sheets/repos/contact/resident_contact_information.py
 
 
 from src.application.ports.resident_repo_ports import (

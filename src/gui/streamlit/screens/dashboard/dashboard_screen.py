@@ -43,7 +43,7 @@ def _render_top_section(
         metrics_grid_vm: CardGridViewModel,
 ) -> None:
     st.title("🚧 :material/dashboard: Dashboard")
-    st.write("Organization and patient monitoring overview.")
+    st.write("Organization and treatment monitoring overview.")
     st.write("")
     # st.title(header_vm.page_title)
     # st.write(header_vm.page_subtitle)

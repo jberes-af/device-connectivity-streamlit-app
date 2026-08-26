@@ -26,11 +26,10 @@ class CommunicationType(StrEnum):
     CARE_COORDINATION = "care_coordination"
 
 
-
 class ParticipantRole(StrEnum):
     PROVIDER = "provider"
     CLINICAL_STAFF = "clinical_staff"
-    PATIENT = "patient"
+    PATIENT = "treatment"
     CAREGIVER = "caregiver"
     THERAPIST = "therapist"
     OTHER = "other"
@@ -50,9 +49,6 @@ class CommunicationTopic(StrEnum):
     OTHER = "other"
 
 
-
-
-
 class MonitoringDataType(StrEnum):
     ACTIVITY_TREND = "activity_trend"
     MOBILITY = "mobility"
@@ -63,8 +59,6 @@ class MonitoringDataType(StrEnum):
     NIGHTTIME_ACTIVITY = "nighttime_activity"
     ROUTINE_ADHERENCE = "routine_adherence"
     OTHER = "other"
-
-
 
 
 class CommunicationDecisionType(StrEnum):
@@ -78,5 +72,3 @@ class CommunicationDecisionType(StrEnum):
     DISCONTINUE_RTM = "discontinue_rtm"
     NO_CHANGE = "no_change"
     OTHER = "other"
-
-

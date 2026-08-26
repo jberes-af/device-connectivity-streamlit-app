@@ -1,4 +1,4 @@
-# /src/interface_adapters/presenters/person/demo_top_metrics_presenter.py
+# /src/interface_adapters/presenters/contact/demo_top_metrics_presenter.py
 
 from src.interface_adapters.view_models.widgets.card_view_models import MetricCardViewModel
 
@@ -24,13 +24,13 @@ class DemoResidentDashMetricsPresenter:
                     label="Care Plan Assessment",
                     value="91%",
                     delta="-1.6%",
-                    help_text="Current care plan compliance.",
+                    help_text="Current treatment plan compliance.",
                 ),
                 MetricCardViewModel(
                     label="Care Exceptions",
                     value="2",
                     delta=None,
-                    help_text="Count of missed, delayed, or declined care delivery.",
+                    help_text="Count of missed, delayed, or declined treatment delivery.",
                 ),
             ),
         )

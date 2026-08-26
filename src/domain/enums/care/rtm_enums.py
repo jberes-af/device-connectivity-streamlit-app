@@ -53,7 +53,7 @@ class RtmActivityType(StrEnum):
 
 
 class ParticipantType(StrEnum):
-    PATIENT = "patient"
+    PATIENT = "treatment"
     CAREGIVER = "caregiver"
     OTHER = "other"
 
@@ -73,3 +73,25 @@ class DataReviewedType(StrEnum):
     CAREGIVER_REPORTED = "caregiver_reported"
     TREATMENT_PLAN = "treatment_plan"
     OTHER = "other"
+
+
+class EnrollmentStatusEnum(StrEnum):
+    PENDING = "pending"
+    ACTIVE = "active"
+    SUSPENDED = "suspended"
+    DISCONTINUED = "discontinued"
+    COMPLETED = "completed"
+
+
+class ConsentStatusEnum(StrEnum):
+    NOT_OBTAINED = "not_obtained"
+    PENDING = "pending"
+    OBTAINED = "obtained"
+    DECLINED = "declined"
+    WITHDRAWN = "withdrawn"
+
+
+class ConsentMethodEnum(StrEnum):
+    WRITTEN = "written"
+    VERBAL = "verbal"
+    ELECTRONIC = "electronic"

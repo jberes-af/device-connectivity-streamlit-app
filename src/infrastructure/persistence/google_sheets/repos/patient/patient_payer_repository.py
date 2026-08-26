@@ -1,5 +1,7 @@
 # /src/infrastructure/persistence/google_sheets/repos/patient/patient_payer_repository.py# repository.py.tpl
 
+from typing import Sequence
+
 from src.application.ports.patient_repo_ports import (
     PatientPayerRepositoryPort,
 )
@@ -58,13 +60,13 @@ class GoogleSheetsPatientPayerRepository(
             for row in self._read_rows()
         )
 
-    def list_payers_for_patient_id(
+    def list_patient_payers_for_patient_id(
             self,
             patient_id: str,
     ) -> tuple[PatientPayer, ...]:
         raw_rows: list[RawRow] = self._find_rows(
             rows=self._read_rows(),
-            column_name="patient_id",
+            column_name=PatientPayerColumns.PATIENT_ID,
             value=patient_id,
         )
 
@@ -84,3 +86,10 @@ class GoogleSheetsPatientPayerRepository(
         )
 
         return self._mapper.to_domain(raw_row)
+
+
+    def get_by_ids(
+            self,
+            patient_payer_ids: Sequence[str],
+    ) -> tuple[PatientPayer, ...]:
+        ...

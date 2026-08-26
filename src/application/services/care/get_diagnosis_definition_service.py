@@ -1,4 +1,4 @@
-# /src/application/services/care/get_diagnosis_service.py
+# /src/application/services/treatment/get_diagnosis_service.py
 
 from typing import Sequence
 

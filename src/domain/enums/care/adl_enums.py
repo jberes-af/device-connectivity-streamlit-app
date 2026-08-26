@@ -1,4 +1,4 @@
-# src/domain/enums/care/adl_enums.py
+# src/domain/enums/treatment/adl_enums.py
 
 from enum import StrEnum
 
@@ -142,8 +142,8 @@ AdlScoreDefinitionsToiletingLookup = {
 AdlScoreDefinitionsTransferringLookup = {
     "0": "Transfers safely along",
     "2": "Staff on standby for safety",
-    "3": "One-person assist",
-    "4": "Two-person assist",
+    "3": "One-contact assist",
+    "4": "Two-contact assist",
     "5": "Full mechanical lift",
     "8": "Activity did not occur",
 }

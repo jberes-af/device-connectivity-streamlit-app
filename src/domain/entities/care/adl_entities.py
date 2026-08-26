@@ -1,4 +1,4 @@
-# src/domain/entities/care/adl_entities.py
+# src/domain/entities/treatment/adl_entities.py
 
 """
 

@@ -51,7 +51,7 @@ class ContentOrigin(StrEnum):
 
 
 class SourceRecordType(StrEnum):
-    PATIENT = "patient"
+    PATIENT = "treatment"
     RTM_ENROLLMENT = "rtm_enrollment"
     TREATMENT_PLAN = "treatment_plan"
     THERAPEUTIC_GOAL = "therapeutic_goal"

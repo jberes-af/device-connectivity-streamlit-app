@@ -1,4 +1,4 @@
-# /src/infrastructure/persistence/google_sheets/repos/person/resident_sensor_link.py
+# /src/infrastructure/persistence/google_sheets/repos/contact/resident_sensor_link.py
 
 from src.application.ports.access_repo_ports import ResidentSensorLinkRepositoryPort
 

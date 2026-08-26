@@ -13,16 +13,16 @@ def render_badge(
         badge: BadgeViewModel,
 ) -> None:
     if badge.style == BadgeStyle.SUCCESS:
-        st.success(badge.text)
+        st.success(badge.label)
 
     elif badge.style == BadgeStyle.WARNING:
-        st.warning(badge.text)
+        st.warning(badge.label)
 
     elif badge.style == BadgeStyle.ERROR:
-        st.error(badge.text)
+        st.error(badge.label)
 
     elif badge.style == BadgeStyle.INFO:
-        st.info(badge.text)
+        st.info(badge.label)
 
     else:
-        st.write(badge.text)
+        st.write(badge.label)

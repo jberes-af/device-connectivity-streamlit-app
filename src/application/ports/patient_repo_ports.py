@@ -56,16 +56,22 @@ class PatientPayerRepositoryPort(Protocol):
     def list_patient_payers(self) -> tuple[PatientPayer, ...]:
         ...
 
-    def list_payers_for_patient_id(
-            self,
-            patient_id: str,
-    ) -> tuple[PatientPayer, ...]:
-        ...
-
     def get_by_id(
             self,
             patient_payer_id: str,
     ) -> PatientPayer:
+        ...
+
+    def get_by_ids(
+            self,
+            patient_payer_ids: Sequence[str],
+    ) -> tuple[PatientPayer, ...]:
+        ...
+
+    def list_patient_payers_for_patient_id(
+            self,
+            patient_id: str,
+    ) -> tuple[PatientPayer, ...]:
         ...
 
 

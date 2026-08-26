@@ -1,4 +1,4 @@
-# /src/infrastructure/persistence/google_sheets/repos/patient/patient_device_assignment_repository.py
+# /src/infrastructure/persistence/google_sheets/repos/treatment/patient_device_assignment_repository.py
 
 from src.application.ports.patient_repo_ports import (
     PatientDeviceAssignmentRepositoryPort,

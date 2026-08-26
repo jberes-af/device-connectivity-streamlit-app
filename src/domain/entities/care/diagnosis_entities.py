@@ -1,4 +1,4 @@
-# /src/domain/care/diagnosis_entities.py
+# /src/domain/treatment/diagnosis_entities.py
 
 from dataclasses import dataclass
 

@@ -1,4 +1,4 @@
-# /src/infrastructure/persistence/schemas/person/resident_gateway_link_columns.py
+# /src/infrastructure/persistence/schemas/contact/resident_gateway_link_columns.py
 
 class ResidentGatewayLinkColumns:
     RESIDENT_ID: str = "resident_id"

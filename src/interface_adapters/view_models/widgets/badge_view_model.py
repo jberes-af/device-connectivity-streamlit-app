@@ -14,5 +14,5 @@ class BadgeStyle(StrEnum):
 
 @dataclass(frozen=True)
 class BadgeViewModel:
-    text: str
+    label: str
     style: BadgeStyle = BadgeStyle.NEUTRAL

@@ -1,4 +1,4 @@
-# /src/infrastructure/persistence/google_sheets/repos/person/user_resident_access.py
+# /src/infrastructure/persistence/google_sheets/repos/contact/user_resident_access.py
 
 from src.application.ports.access_repo_ports import UserResidentAccessRepositoryPort
 

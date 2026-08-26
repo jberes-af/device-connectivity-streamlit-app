@@ -1,4 +1,4 @@
-# /src/infrastructure/persistence/google_sheets/repos/patient/patient_diagnosis_repository.py
+# /src/infrastructure/persistence/google_sheets/repos/treatment/patient_diagnosis_repository.py
 
 from typing import Sequence
 

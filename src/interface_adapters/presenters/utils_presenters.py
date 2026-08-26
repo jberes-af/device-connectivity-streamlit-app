@@ -1,10 +1,10 @@
-# utils_presenters
+# /src/interface_adapters/presenters/utils_presenters
+
 from datetime import datetime, date
+from enum import Enum
 
 
-def format_optional(value: str | None) -> str:
-    return value or "—"
-
+# --- BOOLEAN
 
 def format_bool(value: bool | None) -> str:
     if value is None:
@@ -14,37 +14,33 @@ def format_bool(value: bool | None) -> str:
     return "Inactive"
 
 
-def format_date2(
-        value: datetime | date | None,
-) -> str:
-    if value is None:
-        return "—"
-
-    return value.strftime("%b %d, %Y")
-
+# --- DATE & TIME
 
 def format_date(
         value: datetime | date | None,
         *,
-        empty_value: str | None = None,
+        empty_value: str = "—",
 ) -> str:
-    if value is None and empty_value is None:
-        "—"
+    if value is None:
+        return empty_value
 
     return value.strftime("%b %d, %Y")
 
 
-def format_state_postal(
-        state: str | None,
-        postal_code: str | None,
+def format_date_range(
+        *,
+        start_date: date,
+        end_date: date | None,
 ) -> str:
-    parts = [
-        value
-        for value in (state, postal_code)
-        if value
-    ]
+    start = format_date(start_date)
 
-    return " • ".join(parts) if parts else "—"
+    if end_date is None:
+        return f"{start} – Present"
+
+    return (
+        f"{start} – "
+        f"{format_date(end_date)}"
+    )
 
 
 def format_datetime(
@@ -54,7 +50,6 @@ def format_datetime(
 
 
 def format_optional_datetime(
-        cls,
         value: datetime | None,
         *,
         empty_value: str = "—",
@@ -62,27 +57,19 @@ def format_optional_datetime(
     if value is None:
         return empty_value
 
-    return cls._format_datetime(value)
+    return format_datetime(value)
 
 
-def format_values(
-        values: tuple[str, ...],
-) -> str:
-    if not values:
-        return "—"
-
-    return ", ".join(values)
-
+# --- ENUM
 
 def format_enum_values(
-        cls,
         values: tuple,
 ) -> str:
     if not values:
         return "—"
 
     return ", ".join(
-        cls._format_enum(value)
+        format_enum(value)
         for value in values
     )
 
@@ -101,3 +88,50 @@ def format_enum(
         .replace("_", " ")
         .title()
     )
+
+
+# --- NUMBERS
+
+
+# --- TEXT
+
+def format_optional(value: str | None) -> str:
+    return value or "—"
+
+
+def format_values(
+        values: tuple[str, ...],
+) -> str:
+    if not values:
+        return "—"
+
+    return ", ".join(values)
+
+
+def format_state_postal(
+        state: str | None,
+        postal_code: str | None,
+) -> str:
+    parts = [
+        value
+        for value in (state, postal_code)
+        if value
+    ]
+
+    return " • ".join(parts) if parts else "—"
+
+
+def format_measurement_value(
+        *,
+        value: float | None,
+        unit: str | None,
+) -> str:
+    if value is None:
+        return "—"
+
+    value_display = f"{value:g}"
+
+    if not unit:
+        return value_display
+
+    return f"{value_display} {unit}"

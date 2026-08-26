@@ -28,7 +28,6 @@ from src.infrastructure.persistence.google_sheets.schemas.rtm.rtm_necessity_colu
     RtmNecessityColumns,
 )
 
-
 import logging
 
 logger = logging.getLogger(__name__)
@@ -94,10 +93,10 @@ class GoogleSheetsRtmNecessityRepository(
     ) -> tuple[RtmMedicalNecessity, ...]:
         raw_rows: list[RawRow] = self._find_rows(
             rows=self._read_rows(),
-            column_name="patient_id",
+            column_name=RtmNecessityColumns.PATIENT_ID,
             value=patient_id,
         )
-
+        """
         logger.info(
             "RTM QUERY | patient_id=%r",
             patient_id,
@@ -107,7 +106,6 @@ class GoogleSheetsRtmNecessityRepository(
             "RTM RAW ROWS | %r",
             raw_rows,
         )
-
         raw_rows: list[RawRow] = self._find_rows(
             rows=raw_rows,
             column_name="patient_id",
@@ -119,6 +117,8 @@ class GoogleSheetsRtmNecessityRepository(
             len(raw_rows),
             raw_rows,
         )
+        """
+
         return tuple(
             self._mapper.to_domain(row)
             for row in raw_rows

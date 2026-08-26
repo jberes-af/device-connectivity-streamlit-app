@@ -4,7 +4,6 @@ from datetime import date, datetime, time
 from enum import StrEnum
 from typing import Any, TypeVar
 
-
 TEnum = TypeVar("TEnum", bound=StrEnum)
 
 
@@ -83,6 +82,73 @@ def parse_optional_int(
         ) from exc
 
 
+def parse_optional_date(
+        value: Any,
+        field_name: str,
+) -> date | None:
+    if value is None:
+        return None
+
+    # Already a Python datetime.
+    # datetime must be checked before date because
+    # datetime is a subclass of date.
+    if isinstance(value, datetime):
+        return value.date()
+
+    # Already a Python date.
+    if isinstance(value, date):
+        return value
+
+    text = parse_text(value)
+
+    if not text:
+        return None
+
+    # --- DATE FORMATS
+
+    accepted_date_formats = (
+        "%Y-%m-%d",
+        "%m/%d/%Y",
+        "%m/%d/%y",
+        "%d-%m-%Y",
+        "%d-%m-%y",
+    )
+
+    for date_format in accepted_date_formats:
+        try:
+            return datetime.strptime(
+                text,
+                date_format,
+            ).date()
+
+        except ValueError:
+            continue
+
+    # --- DATETIME FORMATS
+
+    accepted_datetime_formats = (
+        "%Y-%m-%dT%H:%M:%S",
+        "%Y-%m-%dT%H:%M",
+        "%Y-%m-%d %H:%M:%S",
+        "%Y-%m-%d %H:%M",
+    )
+
+    for datetime_format in accepted_datetime_formats:
+        try:
+            return datetime.strptime(
+                text,
+                datetime_format,
+            ).date()
+
+        except ValueError:
+            continue
+
+    raise ValueError(
+        f"Invalid date value for "
+        f"{field_name}: {text!r}"
+    )
+
+
 def parse_required_date(
         value: Any,
         field_name: str,
@@ -98,48 +164,6 @@ def parse_required_date(
         )
 
     return parsed
-
-
-def parse_optional_date(
-        value: Any,
-        field_name: str,
-) -> date | None:
-    if value is None:
-        return None
-
-    if isinstance(value, datetime):
-        return value.date()
-
-    if isinstance(value, date):
-        return value
-
-    text = parse_text(value)
-
-    if not text:
-        return None
-
-    accepted_formats = (
-        "%Y-%m-%d",
-        "%m/%d/%Y",
-        "%m/%d/%y",
-        "%d-%m-%Y",
-        "%d-%m-%y",
-    )
-
-    for date_format in accepted_formats:
-        try:
-            return datetime.strptime(
-                text,
-                date_format,
-            ).date()
-
-        except ValueError:
-            continue
-
-    raise ValueError(
-        f"Invalid date value for "
-        f"{field_name}: {text!r}"
-    )
 
 
 def parse_required_time(
@@ -166,6 +190,9 @@ def parse_optional_time(
     if value is None:
         return None
 
+    if isinstance(value, datetime):
+        return value.time()
+
     if isinstance(value, time):
         return value
 
@@ -174,18 +201,35 @@ def parse_optional_time(
     if not text:
         return None
 
-    accepted_formats = (
+    accepted_time_formats = (
         "%H:%M:%S",
         "%H:%M",
         "%I:%M %p",
         "%I:%M:%S %p",
     )
 
-    for time_format in accepted_formats:
+    for time_format in accepted_time_formats:
         try:
             return datetime.strptime(
                 text,
                 time_format,
+            ).time()
+
+        except ValueError:
+            continue
+
+    accepted_datetime_formats = (
+        "%Y-%m-%dT%H:%M:%S",
+        "%Y-%m-%dT%H:%M",
+        "%Y-%m-%d %H:%M:%S",
+        "%Y-%m-%d %H:%M",
+    )
+
+    for datetime_format in accepted_datetime_formats:
+        try:
+            return datetime.strptime(
+                text,
+                datetime_format,
             ).time()
 
         except ValueError:
@@ -446,3 +490,27 @@ def parse_required_enum_tuple(
         )
 
     return parsed
+
+
+def parse_optional_float(
+        value: Any,
+        field_name: str,
+) -> float | None:
+    if value is None:
+        return None
+
+    text = parse_text(value)
+
+    if not text:
+        return None
+
+    normalized = text.replace(",", "")
+
+    try:
+        return float(normalized)
+
+    except ValueError as exc:
+        raise ValueError(
+            f"Invalid integer value for "
+            f"{field_name}: {text!r}"
+        ) from exc
