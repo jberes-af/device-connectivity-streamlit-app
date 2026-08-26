@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from enum import StrEnum
 
 
-class BadgeStyle(StrEnum):
+class BadgeVariant(StrEnum):
     SUCCESS = "success"
     WARNING = "warning"
     ERROR = "error"
@@ -15,4 +15,4 @@ class BadgeStyle(StrEnum):
 @dataclass(frozen=True)
 class BadgeViewModel:
     label: str
-    style: BadgeStyle = BadgeStyle.NEUTRAL
+    variant: BadgeVariant = BadgeVariant.NEUTRAL

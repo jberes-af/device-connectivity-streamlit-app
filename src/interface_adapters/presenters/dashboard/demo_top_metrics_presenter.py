@@ -32,5 +32,24 @@ class DemoResidentDashMetricsPresenter:
                     delta=None,
                     help_text="Count of missed, delayed, or declined treatment delivery.",
                 ),
+                MetricCardViewModel(
+                    label="Appointments Today",
+                    value="2",
+                    delta=None,
+                    help_text="Count of missed, delayed, or declined treatment delivery.",
+                ),
+                MetricCardViewModel(
+                    label="Device Issues",
+                    value="1",
+                    delta=None,
+                    help_text="Count of missed, delayed, or declined treatment delivery.",
+                ),
+                MetricCardViewModel(
+                    label="Pending RTM Enrollments",
+                    value="2",
+                    delta=None,
+                    help_text="Count of missed, delayed, or declined treatment delivery.",
+                ),
+
             ),
         )

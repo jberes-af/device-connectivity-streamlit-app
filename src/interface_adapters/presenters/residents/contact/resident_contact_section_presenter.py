@@ -1,5 +1,7 @@
 # /src/interface_adapters/presenters/contact/resident_contact_section_presenter.py
 
+import logging
+
 from src.domain.entities.person.resident_entities import (
     ResidentProfile,
     ResidentInCaseOfNeedContact,
@@ -28,6 +30,9 @@ from src.interface_adapters.presenters.utils_presenters import (
     format_state_postal,
 )
 
+logger = logging.getLogger(__name__)
+
+
 class ResidentContactSectionPresenter:
 
     def present(
@@ -36,6 +41,8 @@ class ResidentContactSectionPresenter:
             need_case_contact: ResidentInCaseOfNeedContact,
             icon: str,
     ) -> ResidentContactViewModel:
+        logging.info("resident profile %s", profile)
+        logging.info("need case contact %s", need_case_contact)
 
         return ResidentContactViewModel(
             # section_title=":material/contact_page: Contact Information",
@@ -176,5 +183,3 @@ class ResidentContactSectionPresenter:
                 ),
             ),
         )
-
-

@@ -1,5 +1,6 @@
 # /src/application/use_cases/contact/get_all_resident_records_for_user_uc.py
 
+import logging
 
 from src.domain.entities.person.resident_entities import (
     ResidentProfile,
@@ -30,6 +31,8 @@ from src.application.use_cases.residents.main.resident_uc_dtos import (
     GetAllResidentRecordsRequestDTO,
     GetAllResidentRecordsResultDTO,
 )
+
+logger = logging.getLogger(__name__)
 
 
 class GetAllResidentRecordsForUserUseCase:
@@ -100,6 +103,8 @@ class GetAllResidentRecordsForUserUseCase:
             )
             profiles.append(profile)
             need_contacts.append(contact)
+
+        logging.info("use profiles %s", profiles)
 
         return GetAllResidentRecordsResultDTO(
             resident_profiles=tuple(profiles),

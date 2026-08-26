@@ -1,9 +1,11 @@
-# /src/application/use_cases/main
-# /resident_uc_dtos.py
+# /src/application/use_cases/main/resident_uc_dtos.py
 
 from src.domain.enums.person.tenant_enums import UserRoleEnum
 
-from src.domain.entities.access.access_entities import ResidentGatewayLink, ResidentSensorLink
+from src.domain.entities.access.access_entities import (
+    ResidentGatewayLink,
+    ResidentSensorLink
+)
 
 from src.domain.entities.person.resident_entities import (
     ResidentProfile,
@@ -12,6 +14,65 @@ from src.domain.entities.person.resident_entities import (
 
 from dataclasses import dataclass
 from datetime import date
+
+
+@dataclass(frozen=True)
+class ResidentProfileDTO:
+    resident_id: str
+    resident_profile: ResidentProfile
+
+
+@dataclass(frozen=True)
+class ResidentSearchableRecordDTO:
+    resident_id: str
+    full_name: str
+    date_of_birth: date
+    contact_name: str | None
+    active_status: bool | None
+    # telephone: str | None
+    # email: str | None
+    # treating_provider: str | None
+    # primary_payer: str | None
+
+
+# --- DEV OBJECTS
+
+@dataclass(frozen=True)
+class ResidentOverviewDevDTO:
+    resident_profile: ResidentProfile
+    # enrollment_summary: RTMEnrollmentSummaryDTO
+    sensor_links: tuple[ResidentSensorLink, ...]
+    gateway_links: tuple[ResidentGatewayLink, ...]
+
+
+# --- USE CASES
+
+@dataclass(frozen=True)
+class GetAllResidentRecordsRequestDTO:
+    user_id: str
+    user_tenant_id: str
+    user_role: UserRoleEnum
+
+
+@dataclass(frozen=True)
+class GetAllResidentRecordsResultDTO:
+    # summary: ResidentOverviewDevDTO | None
+    resident_profiles: tuple[ResidentProfile, ...]
+    resident_need_case_contacts: tuple[ResidentInCaseOfNeedContact, ...]
+    resident_table_records: tuple[ResidentSearchableRecordDTO, ...]
+
+
+"""
+@dataclass(frozen=True)
+class GetResidentOverviewRequestDTO:
+    resident_id: str
+
+
+@dataclass(frozen=True)
+class GetResidentOverviewResultDTO:
+    overview: PatientOverviewDevDTO
+    patient_table_records: tuple[PatientSearchableRecordDTO, ...]
+"""
 
 """
 @dataclass(frozen=True)
@@ -78,63 +139,4 @@ class PatientOverviewDTO:
     administration: PatientAdministrationDTO
     enrollment_summary: RTMEnrollmentSummaryDTO
     current_summary: CurrentClinicalSummaryDTO
-"""
-
-
-@dataclass(frozen=True)
-class ResidentProfileDTO:
-    resident_id: str
-    resident_profile: ResidentProfile
-
-
-@dataclass(frozen=True)
-class ResidentSearchableRecordDTO:
-    resident_id: str
-    full_name: str
-    date_of_birth: date
-    contact_name: str | None
-    active_status: bool | None
-    # telephone: str | None
-    # email: str | None
-    # treating_provider: str | None
-    # primary_payer: str | None
-
-
-# --- DEV OBJECTS
-
-@dataclass(frozen=True)
-class ResidentOverviewDevDTO:
-    resident_profile: ResidentProfile
-    # enrollment_summary: RTMEnrollmentSummaryDTO
-    sensor_links: tuple[ResidentSensorLink, ...]
-    gateway_links: tuple[ResidentGatewayLink, ...]
-
-
-# --- USE CASES
-
-@dataclass(frozen=True)
-class GetAllResidentRecordsRequestDTO:
-    user_id: str
-    user_tenant_id: str
-    user_role: UserRoleEnum
-
-
-@dataclass(frozen=True)
-class GetAllResidentRecordsResultDTO:
-    # summary: ResidentOverviewDevDTO | None
-    resident_profiles: tuple[ResidentProfile, ...]
-    resident_need_case_contacts: tuple[ResidentInCaseOfNeedContact, ...]
-    resident_table_records: tuple[ResidentSearchableRecordDTO, ...]
-
-
-"""
-@dataclass(frozen=True)
-class GetResidentOverviewRequestDTO:
-    resident_id: str
-
-
-@dataclass(frozen=True)
-class GetResidentOverviewResultDTO:
-    overview: PatientOverviewDevDTO
-    patient_table_records: tuple[PatientSearchableRecordDTO, ...]
 """

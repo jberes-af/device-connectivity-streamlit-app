@@ -20,6 +20,10 @@ from src.application.use_cases.residents.provider.patient_provider_uc_dtos impor
     PatientProviderProfileDTO,
 )
 
+from src.application.use_cases.residents.payer.patient_payer_and_rtm_enrollment_uc_dtos import (
+    GetPatientPayersAndRtmEnrollmentResultDTO,
+)
+
 # --- VIEW MODELS
 
 
@@ -75,8 +79,8 @@ from src.interface_adapters.presenters.residents.provider.patient_provider_secti
     PatientProviderSectionPresenter
 )
 
-from src.interface_adapters.presenters.residents.payer.patient_payer_section_presenter import (
-    PatientPayerSectionPresenter,
+from src.interface_adapters.presenters.residents.payer.payer_and_rtm_enrollment_section_presenter import (
+    PatientPayerAndRtmEnrollmentSectionPresenter,
 )
 
 
@@ -143,10 +147,10 @@ class ResidentMainPagePresenter:
 
     @staticmethod
     def present_payers_and_rtm_enrollment_section(
-            result: tuple[PatientProviderProfileDTO, ...],
+            result: GetPatientPayersAndRtmEnrollmentResultDTO,
     ) -> ResidentPayerAndRtmEnrollmentSectionViewModel:
-        return PatientPayerSectionPresenter().present(
-            provider_profiles=result,
+        return PatientPayerAndRtmEnrollmentSectionPresenter().present(
+            result=result,
             icon=SECTION_ICONS.get(ResidentSectionEnum.PAYERS)
         )
 

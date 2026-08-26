@@ -8,7 +8,7 @@ from src.gui.streamlit.screens.admin.administration_screen import (
 
 from src.gui.streamlit.screens.billing.billing_screen import render_billing_page
 
-from src.gui.streamlit.screens.dashboard.dashboard_screen import render_dashboard_page
+from src.gui.streamlit.screens.dashboard.main_dashboard_view import render_dashboard_page
 
 from src.gui.streamlit.screens.residents.resident_screen import render_residents_page
 

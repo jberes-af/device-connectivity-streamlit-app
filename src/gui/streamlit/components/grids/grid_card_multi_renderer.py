@@ -1,4 +1,4 @@
-# /src/gui/streamlit/components/grid_card_multi_renderer.py
+# /src/gui/streamlit/components/grids/grid_card_multi_renderer.py
 
 import streamlit as st
 

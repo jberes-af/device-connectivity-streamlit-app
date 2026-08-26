@@ -1,71 +1,63 @@
-# priority_item_entities.py
+# /src/domin/entities/priority_item_entities.py
 
+from dataclasses import dataclass
+from datetime import datetime
 
-class PriorityItemLevelEnum(StrEnum):
-    LOW = "Low"
-    MEDIUM = "Medium"
-    HIGH = "High"
-
-
-
-
-
-
-#### PI-02: Priority Item Status Enum
-
-
-
-
-class PriorityItemStatusEnum(StrEnum):
-    OPEN = "Open"
-    RESOLVED = "Resolved"
-    CLOSED = "Closed"
-
-
-
-
-
-
-#### PI-03: Priority Item Note DTO
-
-
+from src.domain.enums.priority_item_enums import (
+    PriorityItemLevelEnum,
+    PriorityItemStatusEnum,
+)
 
 
 @dataclass(frozen=True)
-class PriorityItemNoteDTO:
+class PriorityItemNote:
     note_id: str
     tenant_id: str
     user_id: str
-    created_at_iso: str
+    created_at: datetime
     note: str
 
 
-
-
-
-
-#### PI-04: Priority Item Record DTO
-
-
+@dataclass(frozen=True)
+class PriorityItemRecommendation:
+    recommendation_id: str
+    tenant_id: str
+    user_id: str
+    created_at: datetime
+    recommendation: str
 
 
 @dataclass(frozen=True)
-class PriorityItemRecordDTO:
+class PriorityItemRecord:
     item_id: str
     tenant_id: str
     resident_id: str
+
     item_description: str
     reason_for_priority: str
+
     priority_level: PriorityItemLevelEnum
-    assigned_to: str
     status: PriorityItemStatusEnum
-    created_at_iso: str
+
+    assigned_to_user_id: str | None
+
+    created_at: datetime
     created_by_user_id: str
-    resolved_at_iso: str | None = None
-    closed_at_iso: str | None = None
+
+    due_at: datetime | None = None
+
+    acknowledged_at: datetime | None = None
+    acknowledged_by_user_id: str | None = None
+
+    resolved_at: datetime | None = None
+    resolved_by_user_id: str | None = None
+    resolution_summary: str | None = None
+
+    closed_at: datetime | None = None
+    closed_by_user_id: str | None = None
+
+    source_type: str | None = None
+    source_id: str | None = None
+
     item_notes: tuple[PriorityItemNote, ...] = ()
-    recommendation_notes: tuple[PriorityItemNote, ...] = ()
-
-
-
-
+    recommendations: tuple[PriorityItemRecommendation, ...] = ()

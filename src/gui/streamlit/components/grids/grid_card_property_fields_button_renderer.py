@@ -1,4 +1,4 @@
-# /src/gui/streamlit/components/widgets/grid_card_property_fields_button_renderer.py
+# /src/gui/streamlit/components/grids/grid_card_property_fields_button_renderer.py
 
 import streamlit as st
 

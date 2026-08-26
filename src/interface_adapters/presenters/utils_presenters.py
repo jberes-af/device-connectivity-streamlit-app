@@ -24,7 +24,7 @@ def format_date(
     if value is None:
         return empty_value
 
-    return value.strftime("%b %d, %Y")
+    return value.strftime("%b %d, %Y").replace(" 0", " ")
 
 
 def format_date_range(
@@ -44,9 +44,19 @@ def format_date_range(
 
 
 def format_datetime(
-        value: datetime,
+        value: datetime | None,
+        *,
+        empty_value: str = "—",
 ) -> str:
-    return value.strftime("%b %d, %Y %I:%M %p")
+    if value is None:
+        return empty_value
+
+    return (
+        value
+        .strftime("%b %d, %Y %I:%M %p")
+        .replace(" 0", " ")
+    )
+
 
 
 def format_optional_datetime(
@@ -59,6 +69,37 @@ def format_optional_datetime(
 
     return format_datetime(value)
 
+
+def format_change_since_yesterday(
+        value: int,
+) -> str:
+    if value == 0:
+        return "No change since yesterday"
+
+    return f"{value:+d} since yesterday"
+
+
+def format_elapsed_time(
+        occurred_at: datetime | None,
+) -> str | None:
+    if occurred_at is None:
+        return None
+
+    # Ideally use an injected clock rather than datetime.now()
+    elapsed = datetime.now(tz=occurred_at.tzinfo) - occurred_at
+
+    total_minutes = int(elapsed.total_seconds() // 60)
+
+    if total_minutes < 60:
+        return f"{total_minutes}m"
+
+    total_hours = total_minutes // 60
+
+    if total_hours < 24:
+        return f"{total_hours}h"
+
+    total_days = total_hours // 24
+    return f"{total_days}d"
 
 # --- ENUM
 
@@ -135,3 +176,29 @@ def format_measurement_value(
         return value_display
 
     return f"{value_display} {unit}"
+
+
+def format_percentage(
+        value: float,
+) -> str:
+    return f"{value:.0%}"
+
+
+def format_percentage_delta(
+        value: float | None,
+) -> str | None:
+    if value is None:
+        return None
+
+    return f"{value:+.1%}"
+
+
+def format_signed_delta(
+        value: int | None,
+) -> str | None:
+    if value is None:
+        return None
+
+    return f"{value:+d}"
+
+

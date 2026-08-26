@@ -5,23 +5,23 @@ import streamlit as st
 
 from src.interface_adapters.view_models.widgets.badge_view_model import (
     BadgeViewModel,
-    BadgeStyle,
+    BadgeVariant,
 )
 
 
 def render_badge(
         badge: BadgeViewModel,
 ) -> None:
-    if badge.style == BadgeStyle.SUCCESS:
+    if badge.variant == BadgeVariant.SUCCESS:
         st.success(badge.label)
 
-    elif badge.style == BadgeStyle.WARNING:
+    elif badge.variant == BadgeVariant.WARNING:
         st.warning(badge.label)
 
-    elif badge.style == BadgeStyle.ERROR:
+    elif badge.variant == BadgeVariant.ERROR:
         st.error(badge.label)
 
-    elif badge.style == BadgeStyle.INFO:
+    elif badge.variant == BadgeVariant.INFO:
         st.info(badge.label)
 
     else:

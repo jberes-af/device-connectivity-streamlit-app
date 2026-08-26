@@ -8,12 +8,15 @@ from src.application.context import (
     UserContext,
     # SessionContext,
 )
-from src.application.services.payer.get_patient_payer_service import FetchPatientPayerProfileService
 
 # --- APPLICATION SERVICES
 
 from src.application.services.payer.get_payer_profile_service import (
     FetchPayerProfileService,
+)
+
+from src.application.services.payer.get_patient_payer_service import (
+    FetchPatientPayerProfileService
 )
 
 from src.application.services.person.get_provider_profile_service import (
@@ -45,6 +48,9 @@ from src.application.services.care.get_treatment_service import (
 
 from src.application.use_cases.access.get_access_scope_uc import (
     GetUserAccessScopeUseCase,
+)
+from src.application.use_cases.dashboard.build_main_dashboard_use_case import (
+    BuildMainDashboardUseCase
 )
 
 from src.application.use_cases.residents.main.get_all_resident_records_for_user_uc import (
@@ -87,7 +93,9 @@ from src.main.compose_root_infrastructure import InfrastructureContainer
 
 # --- INTERFACE ADAPTERS
 
-# from src.interface_adapters.presenters.treatment.patient_overview_presenter import (    PatientOverviewPresenter,)
+from src.interface_adapters.presenters.dashboard.dashboard_main_presenter import (
+    DashboardMainPagePresenter
+)
 
 from src.interface_adapters.presenters.residents.main_page.residents_page_presenter import (
     ResidentMainPagePresenter,
@@ -102,14 +110,21 @@ from src.interface_adapters.presenters.residents.treatment.treatment_section_tab
 
 # from src.main.compo_root_m365 import build_m365_graph_mail_service
 
-# import logging
-
 
 @dataclass(frozen=True, slots=True)
 class AppContainer:
+    # --- ACCESS
+
     user_context: UserContext
 
     get_user_access_scope_use_case: GetUserAccessScopeUseCase
+
+    # --- DASHBOARD
+
+    build_main_dashboard_use_case: BuildMainDashboardUseCase
+    main_dashboard_presenter: DashboardMainPagePresenter
+
+    # --- RESIDENT
 
     get_resident_records_for_user_use_case: GetAllResidentRecordsForUserUseCase
     resident_main_page_presenter: ResidentMainPagePresenter
@@ -208,6 +223,11 @@ def build_application_container(
         tenant_profile_repository=tenant_repos.tenant_profile_repository
     )
 
+    # MAIN DASHBOARD
+
+    build_main_dashboard = BuildMainDashboardUseCase()  # DEMO!!
+    main_dashboard_presenter = DashboardMainPagePresenter()
+
     # --- RESIDENT RECORDS
 
     get_resident_records_for_user = GetAllResidentRecordsForUserUseCase(
@@ -272,6 +292,9 @@ def build_application_container(
         user_context=user_context,
 
         get_user_access_scope_use_case=get_access_scope,
+
+        build_main_dashboard_use_case=build_main_dashboard,
+        main_dashboard_presenter=main_dashboard_presenter,
 
         get_resident_records_for_user_use_case=get_resident_records_for_user,
         resident_main_page_presenter=ResidentMainPagePresenter(),

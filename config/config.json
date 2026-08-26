@@ -178,7 +178,7 @@
       "resident_profile": {
         "file_name": "resident_admin",
         "worksheet_name": "resident_profile",
-        "worksheet_range": "A1:E"
+        "worksheet_range": "A1:N"
       },
       "resident_contact_information": {
         "file_name": "resident_admin",
