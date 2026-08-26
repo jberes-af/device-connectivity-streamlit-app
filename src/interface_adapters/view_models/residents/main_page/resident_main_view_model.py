@@ -73,13 +73,18 @@ PAYER_SEGMENT_ORDER: tuple[PayerTabIdEnum, ...] = (
     PayerTabIdEnum.RTM_ENROLLMENT,
 )
 
+_TAB_LABELS = {
+    PayerTabIdEnum.COVERAGES: "Coverage",
+    PayerTabIdEnum.RTM_ENROLLMENT: "RTM Enrollment",
+}
+
 
 @dataclass(frozen=True)
 class ResidentPayerAndRtmEnrollmentSectionViewModel:
     section_title: str
     section_tabs: TabViewModel
     patient_payers: PatientPayerViewModel
-    # rtm_enrollment_grid: CardGridViewModel
+    rtm_enrollment: RtmEnrollmentViewModel
 
 
 # --- TREATMENT SEGMENTED CONTROL

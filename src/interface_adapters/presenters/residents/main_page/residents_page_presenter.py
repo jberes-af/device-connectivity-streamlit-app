@@ -75,7 +75,7 @@ from src.interface_adapters.presenters.residents.provider.patient_provider_secti
     PatientProviderSectionPresenter
 )
 
-from src.interface_adapters.presenters.residents.payer.payer_section_tabs_presenter import (
+from src.interface_adapters.presenters.residents.payer.patient_payer_section_presenter import (
     PatientPayerSectionPresenter,
 )
 

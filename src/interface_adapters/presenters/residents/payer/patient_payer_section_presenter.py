@@ -1,6 +1,6 @@
-# /src/interface_adapters/presenters/residents/payer/patient_payer_section_presenter.py
+# /src/interface_adapters/presenters/treatment_plan/patient_payer_section_presenter.py
 
-from src.application.use_cases.residents.payer.get_patient_payer_profile_uc import (
+from src.application.use_cases.residents.payer.patient_payer_uc_dtos import (
     PatientPayerProfileDTO,
 )
 
@@ -16,7 +16,7 @@ from src.interface_adapters.view_models.widgets.property_field_view_model import
     PropertyFieldViewModel,
 )
 
-from src.interface_adapters.view_models.residents.main_page.resident_main_view_model import (
+from src.interface_adapters.view_models.residents.payer.patient_payer_view_models import (
     PatientPayerViewModel,
 )
 
@@ -27,7 +27,7 @@ from src.interface_adapters.presenters.utils_presenters import (
 )
 
 
-class PatientProviderPresenter:
+class PatientPayerSectionPresenter:
 
     def present(
             self,
@@ -35,23 +35,18 @@ class PatientProviderPresenter:
             payer_profiles: tuple[PatientPayerProfileDTO, ...],
             icon: str,
     ) -> PatientPayerViewModel:
-        ordered_records: tuple[
-            PatientPayerProfileDTO,
-            ...
-        ] = tuple(
+
+        ordered_records = tuple(
             sorted(
                 payer_profiles,
                 key=lambda record: (
-                    record.last_name.lower(),
-                    record.first_name.lower(),
+                    not record.is_primary,
+                    record.payer_name.lower(),
                 ),
             )
         )
 
-        payer_card_grids: tuple[
-            CardGridViewModel,
-            ...
-        ] = tuple(
+        payer_card_grids = tuple(
             CardGridViewModel(
                 columns=1,
                 cards=(
@@ -64,8 +59,8 @@ class PatientProviderPresenter:
         )
 
         return PatientPayerViewModel(
-            section_title=f"{icon} Providers",
-            payers=payer_card_grids,
+            section_title=f"{icon} Payers",
+            patient_payer_card_grids=payer_card_grids,
         )
 
     def _build_card(
@@ -73,11 +68,15 @@ class PatientProviderPresenter:
             *,
             record: PatientPayerProfileDTO,
     ) -> CardPropertyFieldsViewModel:
+
+        title = (
+            f"{record.payer_name}"
+            + (" — Primary" if record.is_primary else "")
+        )
+
         return CardPropertyFieldsViewModel(
-            id=record.patient_provider_id,
-            title=self._format_provider_name(
-                record=record,
-            ),
+            id=record.patient_payer_id,
+            title=title,
             description=None,
             property_fields=self._build_property_fields(
                 record=record,
@@ -89,39 +88,28 @@ class PatientProviderPresenter:
             *,
             record: PatientPayerProfileDTO,
     ) -> tuple[PropertyFieldViewModel, ...]:
+
         return (
             PropertyFieldViewModel(
-                label="Provider ID",
-                value=record.provider_id,
+                label="Payer ID",
+                value=record.payer_id,
             ),
             PropertyFieldViewModel(
-                label="NPI",
-                value=format_optional(
-                    record.national_provider_identifier,
-                ),
-            ),
-            PropertyFieldViewModel(
-                label="Role",
+                label="Payer Type",
                 value=format_enum(
-                    record.role,
+                    record.payer_type,
                 ),
             ),
             PropertyFieldViewModel(
-                label="Organization ID",
+                label="Member ID",
                 value=format_optional(
-                    record.organization_id,
+                    record.member_id,
                 ),
             ),
             PropertyFieldViewModel(
-                label="Specialty",
+                label="Group Number",
                 value=format_optional(
-                    record.specialty,
-                ),
-            ),
-            PropertyFieldViewModel(
-                label="Credentials",
-                value=format_optional(
-                    record.credentials,
+                    record.group_number,
                 ),
             ),
             PropertyFieldViewModel(
@@ -138,28 +126,11 @@ class PatientProviderPresenter:
                 ),
             ),
             PropertyFieldViewModel(
-                label="Active",
+                label="Primary",
                 value=(
                     "Yes"
-                    if record.is_active
+                    if record.is_primary
                     else "No"
                 ),
             ),
-        )
-
-    @staticmethod
-    def _format_provider_name(
-            *,
-            record: PatientPayerProfileDTO,
-    ) -> str:
-        name_parts = (
-            record.first_name,
-            record.middle_name,
-            record.last_name,
-        )
-
-        return " ".join(
-            part.strip()
-            for part in name_parts
-            if part and part.strip()
         )
