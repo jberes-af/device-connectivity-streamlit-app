@@ -4,6 +4,7 @@ from pathlib import Path
 
 import logging
 import sys
+
 # import traceback
 
 
@@ -70,6 +71,7 @@ def configure_logging() -> None:
         format="%(levelname)s |  %(message)s | %(filename)s:%(lineno)d",
     )
 
+
 def configure_page() -> None:
     st.set_page_config(
         page_title=_APP_NAME,
@@ -100,10 +102,8 @@ def get_or_load_access_scope(
 ) -> AccessScopeResultDTO:
     user_context = app_container.user_context
 
-    access_scope = st.session_state.get_by_user_id("access_scope")
-    cached_user_id = st.session_state.get_by_user_id(
-        "access_scope_user_id"
-    )
+    access_scope = st.session_state.get("access_scope")
+    cached_user_id = st.session_state.get("access_scope_user_id")
 
     if (
             access_scope is not None
