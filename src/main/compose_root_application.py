@@ -77,6 +77,10 @@ from src.application.use_cases.residents.rtm.get_rtm_enrollment_uc import (
     GetRtmEnrollmentUseCase
 )
 
+from src.application.use_cases.sensing.sensing_admin.get_devices_overview_uc import (
+    GetDevicesOverviewUseCase,
+)
+
 from src.application.use_cases.residents.sensing.get_resident_sensing_profile_uc import (
     GetResidentSensingProfileUseCase,
 )
@@ -143,6 +147,11 @@ class AppContainer:
 
     # get_patient_overview_use_case: GetPatientOverviewUseCase
     # patient_overview_presenter: PatientOverviewPresenter
+
+    # --- DEVICE / SENSING ADMIN
+
+    # get_device_admin_use_case: GetDevicesOverviewUseCase
+    # sensing_page_presenter: SensingPagePresenter
 
 
 def build_application_container(

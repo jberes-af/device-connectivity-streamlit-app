@@ -1,3 +1,5 @@
+# src/main/compose_root_streamlit_dashboard.py
+
 from src.gui.streamlit.screens.dashboard.dashboard_dependencies import (
     DashboardPageDependencies,
 )
