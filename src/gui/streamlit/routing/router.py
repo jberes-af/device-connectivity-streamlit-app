@@ -9,7 +9,11 @@ from src.application.use_cases.access.access_scope_uc_dtos import (
 )
 
 from src.gui.streamlit.routing.route_types import Route
-from src.gui.streamlit.routing.routes import ROUTES
+from src.gui.streamlit.routing.routes import build_routes
+
+from src.gui.streamlit.screens.dashboard.dashboard_dependencies import (
+    DashboardPageDependencies,
+)
 
 from src.gui.streamlit.screens.access.access_scope_screen import (
     render_account_and_access_page,
@@ -22,8 +26,16 @@ def _create_page_handler(
     route: Route,
     container: AppContainer,
 ) -> Callable[[], None]:
+    if route.handler is not None:
+        return route.handler
+
+    legacy_handler = route.legacy_handler
+
+    if legacy_handler is None:
+        raise RuntimeError("Route has no configured handler.")
+
     def render() -> None:
-        route.handler(container)
+        legacy_handler(container)
 
     return render
 
@@ -33,7 +45,12 @@ def render_router(
     default_route: str,
     container: AppContainer,
     access_scope: AccessScopeResultDTO,
+    dashboard_dependencies: DashboardPageDependencies,
 ) -> None:
+    routes = build_routes(
+        dashboard_dependencies=dashboard_dependencies,
+    )
+
     main_pages = [
         st.Page(
             _create_page_handler(
@@ -45,7 +62,7 @@ def render_router(
             url_path=route.route_id,
             default=route.route_id == default_route,
         )
-        for route in ROUTES
+        for route in routes
     ]
 
     def render_account_page() -> None:
