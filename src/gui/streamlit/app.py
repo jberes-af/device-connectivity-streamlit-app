@@ -27,6 +27,10 @@ from src.application.use_cases.access.access_scope_uc_dtos import (
 
 # --- GUI
 
+from src.gui.streamlit.screens.dashboard.dashboard_dependencies import (
+    DashboardPageDependencies,
+)
+
 from src.gui.streamlit.session.session_context_adapter import (
     get_session_context,
 )
@@ -53,6 +57,10 @@ from src.main.compose_root_infrastructure import (
 from src.main.compose_root_application import (
     AppContainer,
     build_application_container,
+)
+
+from src.main.compose_root_streamlit_dashboard import (
+    build_dashboard_page_dependencies,
 )
 
 from src.main.host_inputs import HostInputs, load_host_inputs
@@ -141,6 +149,7 @@ def render_login_phase(authentication: AuthenticationContainer) -> None:
 
 def render_authenticated_phase(
         app_container: AppContainer,
+        dashboard_dependencies: DashboardPageDependencies,
 ) -> None:
     # user_context = app_container.user_context
     # st.sidebar.success(f"Signed in as {user_context.user_id}")
@@ -154,6 +163,7 @@ def render_authenticated_phase(
         default_route=_DEFAULT_ROUTE_ID,
         container=app_container,
         access_scope=access_scope,
+        dashboard_dependencies=dashboard_dependencies,
     )
 
     if st.sidebar.button("Logout"):
@@ -201,8 +211,16 @@ def run_app() -> None:
         user_context=session.user_context,
     )
 
+    dashboard_dependencies: DashboardPageDependencies = (
+        build_dashboard_page_dependencies(
+            app_container=app_container,
+        )
+    )
+
     render_authenticated_phase(
-        app_container=app_container)
+        app_container=app_container,
+        dashboard_dependencies=dashboard_dependencies,
+    )
 
 
 if __name__ == "__main__":

@@ -10,6 +10,10 @@ from src.gui.streamlit.screens.billing.billing_screen import render_billing_page
 
 from src.gui.streamlit.screens.dashboard.main_dashboard_view import render_dashboard_page
 
+from src.gui.streamlit.screens.dashboard.dashboard_dependencies import (
+    DashboardPageDependencies,
+)
+
 from src.gui.streamlit.screens.residents.resident_screen import render_residents_page
 
 from src.gui.streamlit.screens.reports.reports_screen import render_reports_page
@@ -19,47 +23,55 @@ from src.gui.streamlit.screens.schedule.schedule_screen import render_schedule_p
 from src.gui.streamlit.screens.sensing.sensing_screen import render_sensing_page
 
 
-ROUTES: tuple[Route, ...] = (
-    Route(
-        route_id="dashboard",
-        label="Dashboard",
-        handler=render_dashboard_page,
-        icon=":material/dashboard:",
-    ),
-    Route(
-        route_id="residents",
-        label="Residents",
-        handler=render_residents_page,
-        icon=":material/groups:",
-    ),
-    Route(
-        route_id="sensing",
-        label="Sensing",
-        handler=render_sensing_page,
-        icon=":material/sensors:",
-    ),
-    Route(
-        route_id="schedule",
-        label="Schedule",
-        handler=render_schedule_page,
-        icon=":material/calendar_month:",
-    ),
-    Route(
-        route_id="reports",
-        label="Reports",
-        handler=render_reports_page,
-        icon=":material/analytics:",
-    ),
-    Route(
-        route_id="billing",
-        label="Billing",
-        handler=render_billing_page,
-        icon=":material/receipt_long:",
-    ),
-    Route(
-        route_id="administration",
-        label="Administration",
-        handler=render_administration_page,
-        icon=":material/note_alt:",
-    ),
-)
+def build_routes(
+        dashboard_dependencies: DashboardPageDependencies,
+) -> tuple[Route, ...]:
+    def render_dashboard() -> None:
+        render_dashboard_page(
+            dependencies=dashboard_dependencies,
+        )
+
+    return (
+        Route(
+            route_id="dashboard",
+            label="Dashboard",
+            handler=render_dashboard,
+            icon=":material/dashboard:",
+        ),
+        Route(
+            route_id="residents",
+            label="Residents",
+            legacy_handler=render_residents_page,
+            icon=":material/groups:",
+        ),
+        Route(
+            route_id="sensing",
+            label="Sensing",
+            legacy_handler=render_sensing_page,
+            icon=":material/sensors:",
+        ),
+        Route(
+            route_id="schedule",
+            label="Schedule",
+            legacy_handler=render_schedule_page,
+            icon=":material/calendar_month:",
+        ),
+        Route(
+            route_id="reports",
+            label="Reports",
+            legacy_handler=render_reports_page,
+            icon=":material/analytics:",
+        ),
+        Route(
+            route_id="billing",
+            label="Billing",
+            legacy_handler=render_billing_page,
+            icon=":material/receipt_long:",
+        ),
+        Route(
+            route_id="administration",
+            label="Administration",
+            legacy_handler=render_administration_page,
+            icon=":material/note_alt:",
+        ),
+    )
