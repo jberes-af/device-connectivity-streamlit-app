@@ -25,6 +25,7 @@ class SensorEventsResultDTO:
     start_time: datetime
     end_time: datetime
     sensor_collapsed_events: tuple[SensorEventsBySensorDTO, ...]
+    local_timezone: str
 
 
 """

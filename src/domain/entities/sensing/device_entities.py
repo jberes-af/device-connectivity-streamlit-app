@@ -122,7 +122,6 @@ class SensorEvent:
     sensor_id: str
     sensor_state: SensorStateDefinitionEnum
     activated_at_utc: datetime  # UTC
-    activated_at_local: datetime  # local time: default America / New_York
     event_id: str | None = None
 
 
