@@ -82,7 +82,7 @@ def render_residents_page(
         st.info("No renderers records available.")
         return
 
-    logging.info("Selected Resident ID: %s", selected_resident_id)
+    # logging.info("Selected Resident ID: %s", selected_resident_id)
 
     _render_selected_resident_summary(
         resident_id=selected_resident_id,
@@ -99,7 +99,7 @@ def render_residents_page(
         presenter=presenter,
     )
 
-    logging.info("Selected section: %s", selected_section)
+    # logging.info("Selected section: %s", selected_section)
 
     if selected_section == ResidentSectionEnum.CONTACT:
         with col_content:

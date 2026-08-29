@@ -55,13 +55,11 @@ class GatewayDomainMapper:
     def to_domain(
             *,
             gateway_id: str,
-            tenant_id: str,
             dto: GatewayRtdbDTO,
     ) -> GatewayDomainObjects:
         return GatewayDomainObjects(
             gateway_profile=GatewayProfile(
                 gateway_id=gateway_id,
-                tenant_id=tenant_id,
                 timezone=dto.timezone_name,
             ),
             gateway_sensor_links=tuple(
@@ -73,7 +71,6 @@ class GatewayDomainMapper:
             ),
             gateway_user_links=tuple(
                 UserGatewayLink(
-                    tenant_id=tenant_id,
                     user_id=user_id,
                     gateway_id=gateway_id,
                 )

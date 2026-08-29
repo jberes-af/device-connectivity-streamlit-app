@@ -4,9 +4,9 @@
 
 # from datetime import date, timedelta
 
-from src.application.use_cases.residents.sensing.device_profiles.get_user_sensing_account_uc import (
-    UserSensingAccountRequestDTO,
-    UserSensingAccountResultDTO,
+from src.application.use_cases.residents.sensing.get_resident_sensing_profile_uc import (
+    ResidentSensingProfileRequestDTO,
+    ResidentSensingProfileResultDTO,
 )
 
 # from src.application.use_cases.sensing.trends.build_sensor_events_use_case import (
@@ -33,11 +33,11 @@ def render_sensing_section(
         resident_id: str,
         container: AppContainer,
 ):
-    request_user_sensing_account = UserSensingAccountRequestDTO(
+    request_user_sensing_account = ResidentSensingProfileRequestDTO(
         user_id=container.user_context.user_id,
     )
 
-    result_user_sensing_account: UserSensingAccountResultDTO = (
+    result_user_sensing_account: ResidentSensingProfileResultDTO = (
         container.get_user_sensing_account_use_case.execute(
             request=request_user_sensing_account,
         ))

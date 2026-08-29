@@ -16,14 +16,12 @@ class UserSensingAccount:
 
 @dataclass(frozen=True)
 class UserSensorLink:
-    tenant_id: str
     user_id: str
     sensor_id: str
 
 
 @dataclass(frozen=True)
 class UserGatewayLink:
-    tenant_id: str
     user_id: str
     gateway_id: str
 

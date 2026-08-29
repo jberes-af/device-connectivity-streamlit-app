@@ -100,8 +100,8 @@ def get_or_load_access_scope(
 ) -> AccessScopeResultDTO:
     user_context = app_container.user_context
 
-    access_scope = st.session_state.get("access_scope")
-    cached_user_id = st.session_state.get(
+    access_scope = st.session_state.get_by_user_id("access_scope")
+    cached_user_id = st.session_state.get_by_user_id(
         "access_scope_user_id"
     )
 

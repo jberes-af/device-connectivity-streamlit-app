@@ -105,7 +105,7 @@ class GetUserAccessScopeUseCase:
             tenant_id: str,
     ) -> tuple[list[str], list[str]]:
         sensing_objects: UserSensingDomainObjects = (
-            self._user_sensing_repo.get(
+            self._user_sensing_repo.get_by_user_id(
                 user_id=user_id,
                 tenant_id=tenant_id,
             ))

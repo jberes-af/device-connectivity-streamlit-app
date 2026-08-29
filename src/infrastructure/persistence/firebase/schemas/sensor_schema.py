@@ -11,6 +11,7 @@ class SensorSystemRtdbSchema:
         return f"/{cls.ROOT}/{sensor_id}"
 
 
+"""
 class SensorUserRtdbSchema:
     ROOT = "user"
     DEVICES_NODE = "device"
@@ -20,8 +21,13 @@ class SensorUserRtdbSchema:
     FIELD_IMAGE = "image"
 
     @classmethod
-    def sensor_path(cls, user_id: str, sensor_id: str) -> str:
+    def user_sensor_path(cls, user_id: str, sensor_id: str) -> str:
+        return f"/{cls.ROOT}/{user_id}/{cls.DEVICES_NODE}"
+
+    @classmethod
+    def user_sensor_id_path(cls, user_id: str, sensor_id: str) -> str:
         return f"/{cls.ROOT}/{user_id}/{cls.DEVICES_NODE}/{sensor_id}"
+"""
 
 
 class SensorEventRtdbSchema:

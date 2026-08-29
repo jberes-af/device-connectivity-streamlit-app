@@ -111,6 +111,13 @@
         "worksheet_range": "A1:Z"
       }
     },
+    "tables_device": {
+      "device_admin_profile": {
+        "file_name": "device_admin",
+        "worksheet_name": "device_profile",
+        "worksheet_range": "A1:M"
+      }
+    },
     "tables_diagnosis": {
       "diagnosis_definition": {
         "file_name": "diagnosis_admin",

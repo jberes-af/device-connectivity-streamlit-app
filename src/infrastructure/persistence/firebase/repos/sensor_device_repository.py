@@ -28,7 +28,6 @@ class FirebaseSensorDeviceRepository(SensorDeviceRepositoryPort):
     def get(
             self,
             sensor_id: str,
-            tenant_id: str,
     ) -> SensorSystemProfile | None:
         raw = self._database.read_node(
             SensorSystemRtdbSchema.sensor_path(sensor_id)

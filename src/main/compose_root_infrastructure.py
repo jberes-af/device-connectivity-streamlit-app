@@ -25,8 +25,15 @@ from src.main.infrastructure_containers.sheets_repo_access import (
     GoogleSheetsAccessRepositories,
     build_google_sheets_access_repositories,
 )
-from src.main.infrastructure_containers.sheets_repo_diagnosis import GoogleSheetsDiagnosisRepositories, \
-    build_google_sheets_diagnosis_repositories
+from src.main.infrastructure_containers.sheets_repo_device_admin import (
+    GoogleSheetsDeviceAdminRepositories,
+    build_google_sheets_device_admin_repositories,
+)
+
+from src.main.infrastructure_containers.sheets_repo_diagnosis import (
+    GoogleSheetsDiagnosisRepositories,
+    build_google_sheets_diagnosis_repositories,
+)
 
 from src.main.infrastructure_containers.sheets_repo_patient import (
     GoogleSheetsPatientRepositories,
@@ -88,6 +95,7 @@ class InfrastructureContainer:
     sensing_repositories: FirebaseSensingRepositories
 
     access_repository: GoogleSheetsAccessRepositories
+    device_admin_repository: GoogleSheetsDeviceAdminRepositories
     diagnosis_repository: GoogleSheetsDiagnosisRepositories
     patient_repository: GoogleSheetsPatientRepositories
     payer_repository: GoogleSheetsPayerRepositories
@@ -120,6 +128,13 @@ def build_infrastructure_container(
             settings=settings,
             app_config=app_config,
         ))
+
+    device_admin_repos: GoogleSheetsDeviceAdminRepositories = (
+        build_google_sheets_device_admin_repositories(
+            settings=settings,
+            app_config=app_config,
+        )
+    )
 
     diagnosis_repos: GoogleSheetsDiagnosisRepositories = (
         build_google_sheets_diagnosis_repositories(
@@ -188,6 +203,7 @@ def build_infrastructure_container(
         sensing_repositories=sensing_repos,
 
         access_repository=access_repos,
+        device_admin_repository=device_admin_repos,
         diagnosis_repository=diagnosis_repos,
         patient_repository=patient_repos,
         payer_repository=payer_repos,

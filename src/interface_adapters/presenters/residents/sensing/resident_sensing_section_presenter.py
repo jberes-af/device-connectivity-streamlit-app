@@ -1,7 +1,7 @@
 # /src/interface_adapters/presenters/contact/resident_sensing_section_presenter.py
 
-from src.application.use_cases.residents.sensing.device_profiles.get_user_sensing_account_uc import (
-    UserSensingAccountResultDTO,
+from src.application.use_cases.residents.sensing.get_resident_sensing_profile_uc import (
+    ResidentSensingProfileResultDTO,
 )
 
 from src.interface_adapters.view_models.widgets.card_grid_view_model import (
@@ -29,7 +29,7 @@ class ResidentSensingSectionPresenter:
 
     def present_sensing_section(
             self,
-            result: UserSensingAccountResultDTO,
+            result: ResidentSensingProfileResultDTO,
     ) -> SensorSectionViewModel:
         dash_card_grid: CardGridViewModel = (
             self._present_dash_card_grid(
@@ -51,7 +51,7 @@ class ResidentSensingSectionPresenter:
 
     def _present_dash_card_grid(
             self,
-            sensing_data: UserSensingAccountResultDTO
+            sensing_data: ResidentSensingProfileResultDTO
     ) -> CardGridViewModel:
         return CardGridViewModel(
             columns=4,
@@ -78,7 +78,7 @@ class ResidentSensingSectionPresenter:
 
     @staticmethod
     def _build_dashboard_cards(
-            sensing_data: UserSensingAccountResultDTO,
+            sensing_data: ResidentSensingProfileResultDTO,
     ) -> tuple[CardAttributeNameCountListViewModel, ...]:
         sensor_attributes: list[str] = [
             f"{r.system_config.sensor_type.title().strip()} ∙ ID: {r.sensor_id}"

@@ -1,6 +1,9 @@
 # /src/infrastructure/persistence/firebase/repos/user_sensing_repository.py
 
-from src.application.models.sensing_models import UserSensingDomainObjects
+from src.application.models.sensing_models import (
+    UserSensingDomainObjects,
+    UserSensorProfiles,
+)
 
 from src.application.ports.sensing.realtime_database_port import (
     RealtimeDatabasePort,
@@ -24,13 +27,12 @@ class FirebaseUserSensingRepository(UserSensingRepositoryPort):
     def __init__(self, database: RealtimeDatabasePort) -> None:
         self._database = database
 
-    def get(
+    def get_by_user_id(
             self,
             user_id: str,
-            tenant_id: str,
     ) -> UserSensingDomainObjects | None:
         raw = self._database.read_node(
-            UserRtdbSchema.user_path(user_id)
+            UserRtdbSchema.user_id_path(user_id)
         )
 
         if raw is None:
@@ -40,7 +42,34 @@ class FirebaseUserSensingRepository(UserSensingRepositoryPort):
 
         return UserDomainMapper.to_domain(
             user_id=user_id,
-            tenant_id=tenant_id,
+            dto=rtdb,
+        )
+
+    def get_all_user_ids(
+            self,
+    ) -> tuple[str, ...]:
+        return tuple(self._database.list_children_keys(
+            UserRtdbSchema.user_path()
+        ))
+
+    def get_sensor_profiles_by_user_id(
+            self,
+            user_id: str,
+    ) -> UserSensorProfiles | None:
+
+        raw = self._database.read_node(
+            UserRtdbSchema.user_sensor_path(user_id)
+        )
+
+        if raw is None:
+            return None
+
+        rtdb = UserRtdbMapper.from_raw_user_sensors(
+            data=raw,
+        )
+
+        return UserDomainMapper.to_user_sensor_profiles(
+            user_id=user_id,
             dto=rtdb,
         )
 

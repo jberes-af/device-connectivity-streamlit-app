@@ -28,7 +28,6 @@ class FirebaseGatewayRepository(GatewayRepositoryPort):
     def get(
             self,
             gateway_id: str,
-            tenant_id: str,
     ) -> GatewayDomainObjects | None:
         raw = self._database.read_node(
             GatewayRtdbSchema.gateway_path(gateway_id)
@@ -41,7 +40,6 @@ class FirebaseGatewayRepository(GatewayRepositoryPort):
 
         return GatewayDomainMapper.to_domain(
             gateway_id=gateway_id,
-            tenant_id=tenant_id,
             dto=rtdb_objects,
         )
 

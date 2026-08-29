@@ -67,15 +67,15 @@ class AppSyncLastSeenAdapter(SensorLastSeenPort):
             print(f"AWS GraphQL errors: {result['errors']}")
             return None
 
-        connectivity = result.get("data", {}).get("getDeviceConnectivity")
+        connectivity = result.get_by_user_id("data", {}).get_by_user_id("getDeviceConnectivity")
 
         if not connectivity:
             return None
 
         # device_id_conn = connectivity.get("deviceID")
-        last_seen = connectivity.get("lastSeenAt")
-        connectivity_state = connectivity.get("connectivityState")
-        status_at = connectivity.get("statusAt")
+        last_seen = connectivity.get_by_user_id("lastSeenAt")
+        connectivity_state = connectivity.get_by_user_id("connectivityState")
+        status_at = connectivity.get_by_user_id("statusAt")
 
         status_at_utc_dt: datetime = (
             datetime.fromtimestamp(status_at, tz=timezone.utc))

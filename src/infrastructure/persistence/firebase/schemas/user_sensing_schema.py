@@ -15,5 +15,17 @@ class UserRtdbSchema:
     FILED_GROUPING = "grouping"
 
     @classmethod
-    def user_path(cls, user_id: str) -> str:
+    def user_path(cls) -> str:
+        return f"/{cls.ROOT}"
+
+    @classmethod
+    def user_id_path(cls, user_id: str) -> str:
         return f"/{cls.ROOT}/{user_id}"
+
+    @classmethod
+    def user_sensor_path(cls, user_id: str) -> str:
+        return f"/{cls.ROOT}/{user_id}/{cls.COLLECTION_SENSOR_IDS}"
+
+    @classmethod
+    def user_sensor_id_path(cls, user_id: str, sensor_id: str) -> str:
+        return f"/{cls.ROOT}/{user_id}/{cls.COLLECTION_SENSOR_IDS}/{sensor_id}"

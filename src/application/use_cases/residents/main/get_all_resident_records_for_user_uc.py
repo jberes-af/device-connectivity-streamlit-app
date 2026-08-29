@@ -104,7 +104,7 @@ class GetAllResidentRecordsForUserUseCase:
             profiles.append(profile)
             need_contacts.append(contact)
 
-        logging.info("use profiles %s", profiles)
+        # logging.info("use profiles %s", profiles)
 
         return GetAllResidentRecordsResultDTO(
             resident_profiles=tuple(profiles),

@@ -1,16 +1,41 @@
 # /src/domain/entities/sensing/device_entities.py
 
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import date, datetime
 
 from src.domain.enums.sensing.notification_enums import (
     NotificationMessageStatusEnum)
 
-from src.domain.enums.sensing.device_enums import SensorStateDefinitionEnum
+from src.domain.enums.sensing.device_enums import (
+    DeviceTypeEnum,
+    SensorPurposeEnum,
+)
+
+from src.domain.enums.sensing.device_enums import (
+    SensorTypeEnum,
+    SensorStateDefinitionEnum,
+)
 
 
 # --- GENERAL
 
+@dataclass(frozen=True)
+class DeviceAdministrationProfile:
+    device_id: str
+    device_type: DeviceTypeEnum
+    tenant_id: str
+    sensor_purpose: SensorPurposeEnum | None = None
+    install_date: date | None = None
+    removed_date: date | None = None
+    owned_from_date: date | None = None
+    owned_to_date: date | None = None
+    hardware_version: str | None = None
+    firmware_version_sensor: str | None = None
+    firmware_version_gateway: str | None = None
+    firmware_version_cellular: str | None = None
+
+
+"""
 @dataclass(frozen=True)
 class DeviceOwnership:
     device_id: str
@@ -19,6 +44,7 @@ class DeviceOwnership:
     ownership_id: str
     tenant_id: str
     owned_to_iso: str | None = None
+"""
 
 
 # --- GATEWAY
@@ -28,7 +54,8 @@ class GatewayProfile:
     gateway_id: str
     tenant_id: str | None = None
     timezone: str | None = None
-    firmware_version: str | None = None
+    firmware_version_mcu: str | None = None
+    firmware_version_cellular: str | None = None
     hardware_version: str | None = None
 
 
@@ -48,7 +75,7 @@ class GatewayHealth:
 class SensorSystemProfile:
     brand: str
     sensor_id: str
-    sensor_type: str
+    sensor_type: SensorTypeEnum
     tenant_id: str | None = None
     firmware_version: str | None = None
     hardware_version: str | None = None
@@ -86,7 +113,6 @@ class SensorHealth:
     tenant_id: str
     is_online: bool
     battery_level: float | None = None
-    install_date: str | None = None
     last_seen_at: str | None = None
     signal_strength: float | None = None
 
@@ -95,7 +121,7 @@ class SensorHealth:
 class SensorEvent:
     sensor_id: str
     sensor_state: SensorStateDefinitionEnum
-    activated_at_utc: datetime    # UTC
+    activated_at_utc: datetime  # UTC
     activated_at_local: datetime  # local time: default America / New_York
     event_id: str | None = None
 

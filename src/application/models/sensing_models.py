@@ -31,11 +31,16 @@ class UserSensingDomainObjects:
 
 
 @dataclass(frozen=True, slots=True)
+class UserSensorProfiles:
+    user_id: str
+    sensor_profiles: tuple[UserSensorProfile, ...]
+
+
+@dataclass(frozen=True, slots=True)
 class GatewayDomainObjects:
     gateway_profile: GatewayProfile
     gateway_sensor_links: tuple[GatewaySensorLink, ...]
     gateway_user_links: tuple[UserGatewayLink, ...]
-
 
 
 """

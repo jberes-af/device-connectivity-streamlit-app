@@ -41,8 +41,8 @@ class ResidentContactSectionPresenter:
             need_case_contact: ResidentInCaseOfNeedContact,
             icon: str,
     ) -> ResidentContactViewModel:
-        logging.info("resident profile %s", profile)
-        logging.info("need case contact %s", need_case_contact)
+        # logging.info("resident profile %s", profile)
+        # logging.info("need case contact %s", need_case_contact)
 
         return ResidentContactViewModel(
             # section_title=":material/contact_page: Contact Information",

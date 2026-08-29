@@ -16,6 +16,9 @@ from src.gui.streamlit.screens.reports.reports_screen import render_reports_page
 
 from src.gui.streamlit.screens.schedule.schedule_screen import render_schedule_page
 
+from src.gui.streamlit.screens.sensing.sensing_screen import render_sensing_page
+
+
 ROUTES: tuple[Route, ...] = (
     Route(
         route_id="dashboard",
@@ -28,6 +31,12 @@ ROUTES: tuple[Route, ...] = (
         label="Residents",
         handler=render_residents_page,
         icon=":material/groups:",
+    ),
+    Route(
+        route_id="sensing",
+        label="Sensing",
+        handler=render_sensing_page,
+        icon=":material/sensors:",
     ),
     Route(
         route_id="schedule",

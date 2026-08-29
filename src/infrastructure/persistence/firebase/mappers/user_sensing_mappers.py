@@ -3,7 +3,11 @@
 from dataclasses import dataclass
 from typing import Any, Mapping
 
-from src.application.models.sensing_models import UserSensingDomainObjects
+from src.application.models.sensing_models import (
+    UserSensingDomainObjects,
+    UserSensorProfiles,
+)
+
 from src.infrastructure.persistence.firebase.schemas.user_sensing_schema import (
     UserRtdbSchema,
 )
@@ -40,6 +44,11 @@ class UserRtdbDTO:
     notes: Any | None = None
     journal: Any | None = None
     settings: Any | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class UserSensorRtdbDTO:
+    sensor_profiles: tuple[SensorUserRtdbDTO, ...]
 
 
 class UserRtdbMapper:
@@ -90,17 +99,24 @@ class UserRtdbMapper:
             gateway_ids=gateway_ids,
         )
 
-    """
     @staticmethod
-    def to_rtdb(entity: UserAccount) -> dict[str, Any]:
-        profile = entity.user_profile
+    def from_raw_user_sensors(
+            data: Mapping[str, Any],
+    ) -> UserSensorRtdbDTO:
+        sensor_profiles = tuple(
+            SensorUserRtdbDTO(
+                sensor_id=sensor_id,
+                name=str(profile.get("name", "") or ""),
+                location=str(profile.get("location", "") or ""),
+                zone=str(profile.get("zone", "") or ""),
+            )
+            for sensor_id, profile in data.items()
+            if isinstance(profile, Mapping)
+        )
 
-        return {
-            UserRtdbSchema.FIELD_NAME: profile.user_name,
-            UserRtdbSchema.FIELD_TELEPHONE: profile.user_telephone,
-            UserRtdbSchema.FIELD_EMAIL: profile.user_email_address,
-        }
-    """
+        return UserSensorRtdbDTO(
+            sensor_profiles=sensor_profiles,
+        )
 
 
 class UserDomainMapper:
@@ -109,7 +125,6 @@ class UserDomainMapper:
     def to_domain(
             *,
             user_id: str,
-            tenant_id: str,
             dto: UserRtdbDTO,
     ) -> UserSensingDomainObjects:
         return UserSensingDomainObjects(
@@ -121,7 +136,6 @@ class UserDomainMapper:
             ),
             user_sensor_links=tuple(
                 UserSensorLink(
-                    tenant_id=tenant_id,
                     user_id=user_id,
                     sensor_id=s.sensor_id,
                 )
@@ -129,7 +143,6 @@ class UserDomainMapper:
             ),
             user_gateway_links=tuple(
                 UserGatewayLink(
-                    tenant_id=tenant_id,
                     user_id=user_id,
                     gateway_id=g,
                 )
@@ -151,6 +164,25 @@ class UserDomainMapper:
             ),
 
             user_sensor_profiles=tuple(
+                UserSensorProfile(
+                    sensor_id=record.sensor_id,
+                    name=record.name,
+                    location=record.location,
+                    zone=record.zone,
+                )
+                for record in dto.sensor_profiles
+            ),
+        )
+
+    @staticmethod
+    def to_user_sensor_profiles(
+            *,
+            user_id: str,
+            dto: UserSensorRtdbDTO,
+    ) -> UserSensorProfiles:
+        return UserSensorProfiles(
+            user_id=user_id,
+            sensor_profiles=tuple(
                 UserSensorProfile(
                     sensor_id=record.sensor_id,
                     name=record.name,

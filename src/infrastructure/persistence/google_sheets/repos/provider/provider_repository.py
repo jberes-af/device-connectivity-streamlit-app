@@ -82,14 +82,3 @@ class GoogleSheetsProviderRepository(
         )
 
         return self._mapper.to_domain(raw_row)
-
-    def append_open_event(
-            self,
-            event: ProviderProfile,
-    ) -> None:
-        raw_row: RawRow = self._mapper.to_row(event)
-
-        self._append_raw_row(
-            row=raw_row,
-            columns=ProviderColumns.ORDER,
-        )

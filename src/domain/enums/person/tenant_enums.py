@@ -10,6 +10,7 @@ class TenantTypeEnum(StrEnum):
     SKILLED_NURSING_FACILITY = "Skilled Nursing Facility"
     RETIREMENT_COMMUNITY = "Retirement Community"
     INDEPENDENT_LIVING_COMMUNITY = "Independent Living Community"
+    HEALTHCARE_CLINIC = "Healthcare Clinic"
     THERAPY_CLINIC = "Therapy Clinic"
     RESEARCH_FACILITY = "Research Facility"
     HOSPITAL = "Hospital"

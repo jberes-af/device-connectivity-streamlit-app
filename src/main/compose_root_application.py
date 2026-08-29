@@ -77,11 +77,11 @@ from src.application.use_cases.residents.rtm.get_rtm_enrollment_uc import (
     GetRtmEnrollmentUseCase
 )
 
-from src.application.use_cases.residents.sensing.device_profiles.get_user_sensing_account_uc import (
-    GetUserSensingAccountUseCase,
+from src.application.use_cases.residents.sensing.get_resident_sensing_profile_uc import (
+    GetResidentSensingProfileUseCase,
 )
 
-from src.application.use_cases.residents.sensing.trends.build_sensor_events_use_case import (
+from src.application.use_cases.sensing.trends.build_sensor_events_use_case import (
     BuildSensorEventsUseCase,
 )
 
@@ -138,7 +138,7 @@ class AppContainer:
     get_patient_provider_profile_use_case: GetPatientProviderProfileUseCase
     # presenter
 
-    get_user_sensing_account_use_case: GetUserSensingAccountUseCase
+    get_user_sensing_account_use_case: GetResidentSensingProfileUseCase
     build_sensor_event_timeline_use_case: BuildSensorEventsUseCase
 
     # get_patient_overview_use_case: GetPatientOverviewUseCase
@@ -274,7 +274,7 @@ def build_application_container(
 
     # --- RESIDENT SENSING RECORDS
 
-    get_user_sensing_account = GetUserSensingAccountUseCase(
+    get_user_sensing_account = GetResidentSensingProfileUseCase(
         user_sensing_repository=sensing_repos.user_sensing_repository,
         gateway_repository=sensing_repos.gateway_repository,
         sensor_repository=sensing_repos.sensor_device_repository,

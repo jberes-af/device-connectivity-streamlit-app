@@ -1,22 +1,25 @@
 # /src/application/ports/sensing/device_ports.py
 
-from typing import Protocol
+from typing import Protocol, Sequence
 
 from src.domain.entities.sensing.device_entities import (
     GatewayProfile,
     SensorSystemProfile,
     SensorEvent,
+
+    DeviceAdministrationProfile
 )
 
 from src.application.models.sensing_models import GatewayDomainObjects
 
+
+# --- FIREBASE
 
 class GatewayRepositoryPort(Protocol):
 
     def get(
             self,
             gateway_id: str,
-            tenant_id: str,
     ) -> GatewayDomainObjects | None:
         ...
 
@@ -29,7 +32,6 @@ class SensorDeviceRepositoryPort(Protocol):
     def get(
             self,
             sensor_id: str,
-            tenant_id: str,
     ) -> SensorSystemProfile | None:
         ...
 
@@ -49,4 +51,31 @@ class SensorEventRepositoryPort(Protocol):
             self,
             sensor_id: str,
     ) -> SensorEvent | None:
+        ...
+
+
+# --- GOOGLE SHEETS
+
+
+class DeviceAdministrationRepositoryPort(Protocol):
+
+    def list_device_admin_profiles(self) -> tuple[DeviceAdministrationProfile, ...]:
+        ...
+
+    def get_by_id(
+            self,
+            device_id: str,
+    ) -> DeviceAdministrationProfile:
+        ...
+
+    def get_by_ids(
+            self,
+            device_ids: Sequence[str],
+    ) -> tuple[DeviceAdministrationProfile, ...]:
+        ...
+
+    def list_devices_for_tenant_id(
+            self,
+            tenant_id: str,
+    ) -> tuple[DeviceAdministrationProfile, ...]:
         ...

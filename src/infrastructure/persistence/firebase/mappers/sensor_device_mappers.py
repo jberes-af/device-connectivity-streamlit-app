@@ -3,6 +3,10 @@
 from dataclasses import dataclass
 from typing import Any, Mapping
 
+from src.domain.enums.sensing.device_enums import (
+    SensorTypeEnum,
+)
+
 from src.domain.entities.sensing.device_entities import (
     SensorSystemProfile,
 )
@@ -52,11 +56,9 @@ class SensorDeviceDomainMapper:
     def system_to_domain(
             *,
             dto: SensorSystemRtdbDTO,
-            tenant_id: str | None = None,
     ) -> SensorSystemProfile:
         return SensorSystemProfile(
             sensor_id=dto.sensor_id,
-            tenant_id=tenant_id,
             brand=dto.brand,
             sensor_type=dto.sensor_type,
             icon=dto.icon,
