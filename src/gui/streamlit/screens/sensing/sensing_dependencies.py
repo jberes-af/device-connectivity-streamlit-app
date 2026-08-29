@@ -2,12 +2,16 @@
 
 from dataclasses import dataclass
 
-from src.application.use_cases.sensing.sensing_admin.get_devices_overview_uc import (
-    GetDevicesOverviewUseCase,
+from src.application.use_cases.sensing.sensing_admin.get_device_admin_uc import (
+    GetDeviceAdministrationUseCase,
+)
+
+from src.interface_adapters.presenters.sensing.device_admin.device_admin_presenter import (
+    DeviceAdministrationPresenter,
 )
 
 
 @dataclass(frozen=True, slots=True)
 class SensingPageDependencies:
-    use_case: GetDevicesOverviewUseCase
-    presenter: SensingPagePresenter
+    use_case: GetDeviceAdministrationUseCase
+    presenter: DeviceAdministrationPresenter

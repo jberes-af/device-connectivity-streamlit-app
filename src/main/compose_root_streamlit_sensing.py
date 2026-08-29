@@ -14,6 +14,6 @@ def build_sensing_page_dependencies(
         app_container: AppContainer,
 ) -> SensingPageDependencies:
     return SensingPageDependencies(
-        use_case=app_container. < existing_sensing_use_case >,
-        presenter=app_container. < sensing_presenter >,
+        use_case=app_container.get_device_admin_use_case,
+        presenter=app_container.device_admin_page_presenter,
     )

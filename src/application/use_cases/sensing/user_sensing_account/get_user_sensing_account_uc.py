@@ -32,7 +32,7 @@ from src.application.use_cases.residents.sensing.user_resident_sensing_uc_dtos i
 )
 
 
-class GetResidentSensingProfileUseCase:
+class GetUserSensingAccountUseCase:
     def __init__(
             self,
             user_sensing_repository: UserSensingRepositoryPort,
@@ -52,10 +52,7 @@ class GetResidentSensingProfileUseCase:
         _TENANT_ID_DEV = "larry"
 
         user_objects: UserSensingDomainObjects = (
-            self._user_sensing_repo.get_by_user_id(
-                user_id=uid,
-                # tenant_id=_TENANT_ID_DEV
-            ))
+            self._user_sensing_repo.get_by_user_id(user_id=uid))
 
         sensor_ids: list[str] = [
             r.sensor_id for r in user_objects.user_sensor_links
@@ -103,7 +100,7 @@ class GetResidentSensingProfileUseCase:
         for sensor_id in sensor_ids:
             system_profile: SensorSystemProfile = self._sensor_repo.get(
                 sensor_id=sensor_id,
-                # tenant_id=tenant_id,
+                tenant_id=tenant_id,
             )
 
             if system_profile is None:
@@ -131,7 +128,7 @@ class GetResidentSensingProfileUseCase:
         for gateway_id in gateway_ids:
             gateway: GatewayDomainObjects = self._gateway_repo.get(
                 gateway_id=gateway_id,
-                # tenant_id=tenant_id,
+                tenant_id=tenant_id,
             )
 
             if gateway is None:

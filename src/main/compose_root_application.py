@@ -43,6 +43,7 @@ from src.application.services.care.get_treatment_service import (
     FetchTreatmentInterventionService,
     FetchTreatmentPlanReviewService,
 )
+from src.application.services.sensing.get_device_admin_service import FetchDeviceAdminService
 
 # --- APPLICATION USE CASES
 
@@ -77,8 +78,8 @@ from src.application.use_cases.residents.rtm.get_rtm_enrollment_uc import (
     GetRtmEnrollmentUseCase
 )
 
-from src.application.use_cases.sensing.sensing_admin.get_devices_overview_uc import (
-    GetDevicesOverviewUseCase,
+from src.application.use_cases.sensing.sensing_admin.get_device_admin_uc import (
+    GetDeviceAdministrationUseCase,
 )
 
 from src.application.use_cases.residents.sensing.get_resident_sensing_profile_uc import (
@@ -107,6 +108,10 @@ from src.interface_adapters.presenters.residents.main_page.residents_page_presen
 
 from src.interface_adapters.presenters.residents.treatment.treatment_section_tabs_presenter import (
     TreatmentSectionPresenter,
+)
+
+from src.interface_adapters.presenters.sensing.device_admin.device_admin_presenter import (
+    DeviceAdministrationPresenter,
 )
 
 
@@ -145,13 +150,10 @@ class AppContainer:
     get_user_sensing_account_use_case: GetResidentSensingProfileUseCase
     build_sensor_event_timeline_use_case: BuildSensorEventsUseCase
 
-    # get_patient_overview_use_case: GetPatientOverviewUseCase
-    # patient_overview_presenter: PatientOverviewPresenter
-
     # --- DEVICE / SENSING ADMIN
 
-    # get_device_admin_use_case: GetDevicesOverviewUseCase
-    # sensing_page_presenter: SensingPagePresenter
+    get_device_admin_use_case: GetDeviceAdministrationUseCase
+    device_admin_page_presenter: DeviceAdministrationPresenter
 
 
 def build_application_container(
@@ -162,6 +164,7 @@ def build_application_container(
 
     access_repos = infrastructure.access_repository
     diagnosis_repos = infrastructure.diagnosis_repository
+    device_repos = infrastructure.device_admin_repository
     patient_repos = infrastructure.patient_repository
     payer_repos = infrastructure.payer_repository
     provider_repos = infrastructure.provider_repository
@@ -219,6 +222,10 @@ def build_application_container(
 
     fetch_treatment_plan_review_service = FetchTreatmentPlanReviewService(
         treatment_plan_review_repository=treatment_repos.treatment_plan_review_repository,
+    )
+
+    fetch_device_admin_service = FetchDeviceAdminService(
+        device_admin_repository=device_repos.device_admin_profile_repository
     )
 
     # --- ACCESS RECORDS
@@ -295,7 +302,12 @@ def build_application_container(
         sensor_event_repository=sensing_repos.sensor_event_repository,
     )
 
-    # --- ASSIGN PRESENTERS
+    get_device_administration = GetDeviceAdministrationUseCase(
+        fetch_device_admin_service=fetch_device_admin_service,
+        gateway_repository=sensing_repos.gateway_repository,
+        sensor_repository=sensing_repos.sensor_device_repository,
+        user_sensing_repository=sensing_repos.user_sensing_repository,
+    )
 
     return AppContainer(
         user_context=user_context,
@@ -317,4 +329,6 @@ def build_application_container(
         get_user_sensing_account_use_case=get_user_sensing_account,
         build_sensor_event_timeline_use_case=build_sensor_events,
 
+        get_device_admin_use_case=get_device_administration,
+        device_admin_page_presenter=DeviceAdministrationPresenter(),
     )
