@@ -16,7 +16,7 @@ class FirebaseRoutineRepository:
         routine_id: str,
         tenant_id: str,
     ) -> AlertaRoutineProfile | None:
-        raw = self._client.get_by_user_id(
+        raw = self._client.get(
             RoutineRtdbSchema.routine_path(routine_id)
         )
 

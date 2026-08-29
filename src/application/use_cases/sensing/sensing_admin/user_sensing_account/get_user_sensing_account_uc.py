@@ -52,8 +52,7 @@ class GetUserSensingAccountUseCase:
         _TENANT_ID_DEV = "larry"
 
         user_objects: UserSensingDomainObjects = (
-            self._user_sensing_repo.get_by_user_id(user_id=uid,
-                                                   tenant_id=_TENANT_ID_DEV))
+            self._user_sensing_repo.get_by_user_id(user_id=uid))
 
         sensor_ids: list[str] = [
             r.sensor_id for r in user_objects.user_sensor_links

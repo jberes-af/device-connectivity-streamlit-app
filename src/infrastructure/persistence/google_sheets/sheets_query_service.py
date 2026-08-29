@@ -20,7 +20,7 @@ class GoogleSheetsQueryService:
                 self.sheets_service
                 .spreadsheets()
                 .values()
-                .get_by_user_id(
+                .get(
                     spreadsheetId=spreadsheet_id,
                     range=range_a1,
                 )
@@ -29,7 +29,7 @@ class GoogleSheetsQueryService:
 
         result = retry_google_api_operation(op)
 
-        values = result.get_by_user_id("values", [])
+        values = result.get("values", [])
 
         if not values:
             return []

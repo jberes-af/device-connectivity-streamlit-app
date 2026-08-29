@@ -6,7 +6,7 @@ from src.application.context import SessionContext
 
 
 def get_session_context() -> SessionContext:
-    context = st.session_state.get_by_user_id("session_context")
+    context = st.session_state("session_context")
 
     if context is None:
         context = SessionContext()
