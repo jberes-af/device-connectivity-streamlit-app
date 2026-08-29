@@ -5,10 +5,6 @@ from src.application.use_cases.patient.diagnosis_and_treatment_uc_dtos import (
     GetDiagnosisAndTreatmentResultDTO,
 )
 
-from src.gui.streamlit.screens.resident.renderers.treatment_plan_renderer import (
-    render_resident_treatment_plan,
-)
-
 from src.main.compose_root_application import AppContainer
 
 

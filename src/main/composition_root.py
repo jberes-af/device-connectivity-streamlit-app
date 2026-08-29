@@ -8,10 +8,6 @@ from pathlib import Path
 
 # --- APPLICATION PORTS
 
-from src.application.ports.patient_repo_ports import (
-    PatientRepositoryPort,
-)
-
 # from src.application.ports.m365_email_ports import MailSenderPort
 
 # --- APPLICATION USE CASES

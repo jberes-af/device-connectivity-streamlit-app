@@ -1,8 +1,7 @@
 # /src/gui/streamlit/screens/resident_screen.py
 
 from collections.abc import Callable
-from datetime import datetime
-from datetime import datetime, date, timedelta
+from datetime import date, timedelta
 
 from streamlit.elements.lib.column_types import Column
 from typing import Any

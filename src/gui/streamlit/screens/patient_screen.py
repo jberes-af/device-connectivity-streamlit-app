@@ -3,13 +3,9 @@
 from src.application.use_cases.get_patient_records.patient_uc_dtos import (
     GetPatientOverviewRequestDTO,
     GetPatientOverviewResultDTO,
-    PatientOverviewDevDTO,
 )
 
 from src.gui.streamlit.components.card_renderer import render_card
-from src.gui.streamlit.components.table_searchable_renderer import (
-    render_searchable_table,
-)
 
 from src.interface_adapters.view_models.patient.patient_overview_page_view_model import (
     PatientOverviewPageViewModel,

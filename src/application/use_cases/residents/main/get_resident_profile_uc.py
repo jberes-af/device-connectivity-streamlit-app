@@ -1,25 +1,11 @@
 # /src/application/use_cases/treatment/get_resident_profile_uc.py
 
-from src.domain.entities.person.resident_entities import (
-    ResidentProfile,
-    ResidentInCaseOfNeedContact,
-)
-from src.domain.entities.access.access_entities import ResidentGatewayLink, ResidentSensorLink, UserResidentAccess
-
-from src.application.ports.resident_repo_ports import (
-    ResidentProfileRepositoryPort,
-    ResidentContactInformationRepositoryPort,
-)
-from src.application.ports.access_repo_ports import ResidentGatewayLinkRepositoryPort, ResidentSensorLinkRepositoryPort
-
 from src.application.use_cases.patient.patient_uc_dtos import (
     PatientOverviewDevDTO,
     PatientAdministrationDTO,
     RTMEnrollmentSummaryDTO,
     PatientSearchableRecordDTO,
 
-    GetResidentOverviewRequestDTO,
-    GetResidentOverviewResultDTO,
 )
 
 

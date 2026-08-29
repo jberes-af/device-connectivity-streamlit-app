@@ -1,16 +1,8 @@
 # /src/interface_adapters/presenters/payer/payer_section_presenter.py
 
 
-from src.application.use_cases.resident.resident_uc_dtos import (
-    GetAllResidentRecordsRequestDTO
-)
-
 from src.interface_adapters.view_models.resident.resident_main_view_model import (
-    ResidentTabIdEnum,
     ResidentMainPageTopViewModel,
-    ResidentRecordCardGridViewModel,
-    ResidentTabViewModel,
-    ResidentRecordTabsViewModel,
 )
 
 # from src.interface_adapters.view_models.widgets.table_view_model import (
