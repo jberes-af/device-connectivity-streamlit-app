@@ -5,7 +5,6 @@
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Any, Mapping
-from zoneinfo import ZoneInfo
 
 from src.domain.entities.sensing.device_entities import (
     SensorEvent,
@@ -15,8 +14,6 @@ from src.domain.enums.sensing.device_enums import (
     SENSOR_STATE_CODE_LOOKUP,
     SensorStateDefinitionEnum,
 )
-
-from src.main.host_inputs import LOCAL_TIME_ZONE
 
 
 @dataclass(frozen=True, slots=True)
@@ -74,16 +71,10 @@ class SensorEventDomainMapper:
     def to_domain(
             dto: SensorEventRtdbDTO,
     ) -> SensorEvent:
-        local_timezone = ZoneInfo(LOCAL_TIME_ZONE)
-
         return SensorEvent(
             sensor_id=dto.sensor_id,
             sensor_state=dto.state,
             activated_at_utc=dto.timestamp_utc,
-            activated_at_local=_utc_to_local(
-                timestamp_utc=dto.timestamp_utc,
-                local_timezone=local_timezone,
-            ),
             event_id=None,
         )
 
@@ -129,13 +120,6 @@ def build_raw_sensor_event_objects_from_last(
         )
         for timestamp, state in raw.items()
     )
-
-
-def _utc_to_local(
-        timestamp_utc: datetime,
-        local_timezone: ZoneInfo,
-) -> datetime:
-    return timestamp_utc.astimezone(local_timezone)
 
 
 def _date_time_stamp_str_to_datetime(

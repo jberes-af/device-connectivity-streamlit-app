@@ -1,6 +1,6 @@
 # /src/application/use_cases/build_sensor_events_use_case.py
 
-from datetime import date, datetime, time
+from datetime import date, datetime, time, timezone
 from zoneinfo import ZoneInfo
 
 from src.application.ports.sensing.device_ports import (
@@ -47,13 +47,16 @@ class BuildSensorEventsUseCase:
             local_timezone=request.local_timezone,
         )
 
+        start_time_utc = start_time.astimezone(timezone.utc)
+        end_time_utc = end_time.astimezone(timezone.utc)
+
         # --- FILTER EVENTS BY START & END DATETIME
 
         filtered_events_by_id: dict[str, list[SensorEvent]] = {
             sid: (self._filter_events_by_time_period(
                 events=events,
-                start_time=start_time,
-                end_time=end_time,
+                start_time_utc=start_time_utc,
+                end_time_utc=end_time_utc,
             ))
             for sid, events in events_by_id.items()
         }
@@ -79,6 +82,7 @@ class BuildSensorEventsUseCase:
             start_time=start_time,
             end_time=end_time,
             sensor_collapsed_events=tuple(sensor_collapsed_events),
+            local_timezone=request.local_timezone,
         )
 
     @staticmethod
@@ -139,11 +143,11 @@ class BuildSensorEventsUseCase:
     @staticmethod
     def _filter_events_by_time_period(
             events: tuple[SensorEvent, ...],
-            start_time: datetime,
-            end_time: datetime,
+            start_time_utc: datetime,
+            end_time_utc: datetime,
     ) -> list[SensorEvent]:
         return [
             event
             for event in events
-            if start_time <= event.activated_at_local <= end_time
+            if start_time_utc <= event.activated_at_utc <= end_time_utc
         ]
