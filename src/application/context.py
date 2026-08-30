@@ -13,13 +13,6 @@ from src.domain.enums.access.permission_enums import PermissionEnum
 class UserContext:
     user_id: str
     tenant_id: str
-    # role: UserRoleEnum
-
-
-@dataclass(frozen=True)
-class UserContext:
-    user_id: str
-    tenant_id: str
 
 
 @dataclass(frozen=True)

@@ -30,17 +30,12 @@ from src.infrastructure.persistence.google_sheets.mappers.access.role_permission
     RolePermissionRowMapper,
 )
 
-from src.infrastructure.persistence.google_sheets.schemas.access.role_permission_columns import (
-    RolePermissionColumns,
-)
-
 
 class GoogleSheetsRolePermissionRepository(
     GoogleSheetsRepository,
     RolePermissionRepositoryPort,
 ):
     TABLE_NAME = "role_permission"
-    ID_COLUMN = RolePermissionColumns.ROLE
 
     def __init__(
             self,
@@ -53,7 +48,6 @@ class GoogleSheetsRolePermissionRepository(
             query_service=query_service,
             catalog=catalog,
         )
-
         self._mapper = mapper
 
     def list_for_roles(
@@ -61,21 +55,18 @@ class GoogleSheetsRolePermissionRepository(
             *,
             roles: Sequence[UserRoleEnum],
     ) -> tuple[RolePermission, ...]:
-        return tuple(
+        role_set = set(roles)
+
+        if not role_set:
+            return ()
+
+        records = (
             self._mapper.to_domain(row)
             for row in self._read_rows()
         )
 
-    """
-    def get_by_id(
-            self,
-            patient_id: str,
-    ) -> RolePermission:
-        raw_row: RawRow = self._find_single_row(
-            rows=self._read_rows(),
-            column_name=self.ID_COLUMN,
-            value=patient_id,
+        return tuple(
+            record
+            for record in records
+            if record.role in role_set
         )
-
-        return self._mapper.to_domain(raw_row)
-    """

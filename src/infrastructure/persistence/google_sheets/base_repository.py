@@ -187,3 +187,40 @@ class GoogleSheetsRepository(ABC):
             )
 
         return matches[0]
+
+    @staticmethod
+    def _find_rows_by_fields(
+            *,
+            rows: list[RawRow],
+            filters: dict[str, str],
+    ) -> list[RawRow]:
+
+        normalized_filters = {
+            key: value.strip()
+            for key, value in filters.items()
+        }
+
+        if not normalized_filters:
+            raise ValueError(
+                "At least one lookup filter is required."
+            )
+
+        if any(
+                not value
+                for value in normalized_filters.values()
+        ):
+            raise ValueError(
+                "Lookup values cannot be empty."
+            )
+
+        return [
+            row
+            for row in rows
+            if all(
+                str(
+                    row.get(column_name, "")
+                ).strip() == expected_value
+                for column_name, expected_value
+                in normalized_filters.items()
+            )
+        ]

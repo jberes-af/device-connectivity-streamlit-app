@@ -8,7 +8,7 @@ from src.domain.entities.access.membership_entities import (
     UserTenantMembership,
 )
 
-from src.infrastructure.persistence.common.types import RawRow
+# from src.infrastructure.persistence.common.types import RawRow
 
 from src.infrastructure.persistence.google_sheets.base_repository import (
     GoogleSheetsRepository,
@@ -58,7 +58,18 @@ class GoogleSheetsUserTenantMembershipRepository(
             user_id: str,
             tenant_id: str,
     ) -> UserTenantMembership:
-        ...
+        raw_row = self._find_single_row_by_fields(
+            rows=self._read_rows(),
+            filters={
+                UserTenantMembershipColumns.USER_ID:
+                    user_id,
+
+                UserTenantMembershipColumns.TENANT_ID:
+                    tenant_id,
+            },
+        )
+
+        return self._mapper.to_domain(raw_row)
 
     """
     def list_user_tenant_memberships(self) -> tuple[UserTenantMembership, ...]:

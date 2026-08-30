@@ -57,9 +57,11 @@ class GoogleSheetsUserTenantRoleAssignmentRepository(
             *,
             membership_id: str,
     ) -> tuple[UserTenantRoleAssignment, ...]:
-        raw_rows: list[RawRow] = self._find_rows(
+        raw_rows = self._find_rows(
             rows=self._read_rows(),
-            column_name="patient_id",
+            column_name=(
+                UserTenantRoleAssignmentColumns.MEMBERSHIP_ID
+            ),
             value=membership_id,
         )
 

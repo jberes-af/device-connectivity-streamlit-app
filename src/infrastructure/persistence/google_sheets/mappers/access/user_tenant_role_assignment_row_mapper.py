@@ -13,7 +13,11 @@ from src.infrastructure.persistence.google_sheets.schemas.access \
     UserTenantRoleAssignmentColumns
 )
 
-from src.infrastructure.persistence.common.utils_parsing import *
+from src.infrastructure.persistence.common.utils_parsing import (
+    parse_required_bool,
+    parse_required_enum,
+    parse_required_text,
+)
 
 
 class UserTenantRoleAssignmentRowMapper:
@@ -31,12 +35,12 @@ class UserTenantRoleAssignmentRowMapper:
                 row.get(schema.MEMBERSHIP_ID),
                 field_name=schema.MEMBERSHIP_ID,
             ),
-            role=parse_optional_enum(
+            role=parse_required_enum(
                 row.get(schema.ROLE),
                 enum_type=UserRoleEnum,
                 field_name=schema.ROLE,
             ),
-            is_active=parse_optional_bool(
+            is_active=parse_required_bool(
                 row.get(schema.IS_ACTIVE),
                 field_name=schema.IS_ACTIVE,
             ),
@@ -44,22 +48,22 @@ class UserTenantRoleAssignmentRowMapper:
 
     @staticmethod
     def to_row(
-                user_tenant_role_assignment: UserTenantRoleAssignment,
-        ) -> RawRow:
-            schema = UserTenantRoleAssignmentColumns
+            user_tenant_role_assignment: UserTenantRoleAssignment,
+    ) -> RawRow:
+        schema = UserTenantRoleAssignmentColumns
 
-            return {
+        return {
 
-                schema.ROLE_ASSIGNMENT_ID:
-                    user_tenant_role_assignment.role_assignment_id,
+            schema.ROLE_ASSIGNMENT_ID:
+                user_tenant_role_assignment.role_assignment_id,
 
-                schema.MEMBERSHIP_ID:
-                    user_tenant_role_assignment.membership_id,
+            schema.MEMBERSHIP_ID:
+                user_tenant_role_assignment.membership_id,
 
-                schema.ROLE:
-                    user_tenant_role_assignment.role,
+            schema.ROLE:
+                user_tenant_role_assignment.role.value,
 
-                schema.IS_ACTIVE:
-                    user_tenant_role_assignment.is_active,
+            schema.IS_ACTIVE:
+                user_tenant_role_assignment.is_active,
 
-            }
+        }
