@@ -67,12 +67,12 @@ class GatewayProfileDTO:
 
 
 @dataclass(frozen=True)
-class GetDevicesOverviewRequestDTO:
+class GetDevicesAdministrationRequestDTO:
     tenant_id: str | None = None
 
 
 @dataclass(frozen=True)
-class GetDevicesOverviewResultDTO:
+class GetDeviceAdministrationResultDTO:
     # device_admin_profiles: tuple[DeviceAdminProfileDTO, ...]
     sensor_profiles: tuple[SensorProfileDTO, ...]
     gateway_profiles: tuple[GatewayProfileDTO, ...]

@@ -18,6 +18,7 @@ class AppConfigLoader:
         "tables_billing",
         "tables_care_plan",
         "tables_diagnosis",
+        "tables_device",
         "tables_patient",
         "tables_payer",
         "tables_provider",

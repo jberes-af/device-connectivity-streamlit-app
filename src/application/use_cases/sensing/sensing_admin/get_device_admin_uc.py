@@ -47,8 +47,8 @@ from src.application.services.sensing.get_device_admin_service import (
 from src.application.use_cases.sensing.sensing_admin.device_admin_uc_dtos import (
     SensorProfileDTO,
     GatewayProfileDTO,
-    GetDevicesOverviewRequestDTO,
-    GetDevicesOverviewResultDTO
+    GetDevicesAdministrationRequestDTO,
+    GetDeviceAdministrationResultDTO
 )
 
 logger = logging.getLogger(__name__)
@@ -71,8 +71,8 @@ class GetDeviceAdministrationUseCase:
 
     def execute(
             self,
-            request: GetDevicesOverviewRequestDTO,
-    ) -> GetDevicesOverviewResultDTO:
+            request: GetDevicesAdministrationRequestDTO,
+    ) -> GetDeviceAdministrationResultDTO:
 
         if request.tenant_id is None:
             device_admin_profiles: tuple[DeviceAdministrationProfile, ...] = (
@@ -95,7 +95,7 @@ class GetDeviceAdministrationUseCase:
                 gateway_profiles=gateway_profiles,
             ))
 
-        return GetDevicesOverviewResultDTO(
+        return GetDeviceAdministrationResultDTO(
             sensor_profiles=sensor_profiles,
             gateway_profiles=gateway_profiles,
         )

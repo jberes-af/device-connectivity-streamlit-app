@@ -1,16 +1,17 @@
 # /src/interface_adapters/presenters/sensing/device_admin_presenter.py
 
 from datetime import date
+from enum import StrEnum
 
 from src.application.use_cases.sensing.sensing_admin.device_admin_uc_dtos import (
     GatewayProfileDTO,
-    GetDevicesOverviewResultDTO,
+    GetDeviceAdministrationResultDTO,
     SensorProfileDTO,
 )
 
 from src.interface_adapters.view_models.sensing.device_admin_view_models import (
     DeviceSummaryViewModel,
-    DevicesOverviewViewModel,
+    DevicesAdministrationViewModel,
     GatewayOverviewRowViewModel,
     SensorOverviewRowViewModel,
 )
@@ -21,8 +22,8 @@ class DeviceAdministrationPresenter:
     def present(
             self,
             *,
-            result: GetDevicesOverviewResultDTO,
-    ) -> DevicesOverviewViewModel:
+            result: GetDeviceAdministrationResultDTO,
+    ) -> DevicesAdministrationViewModel:
         sensor_rows = tuple(
             self._present_sensor(profile)
             for profile in result.sensor_profiles
@@ -49,7 +50,7 @@ class DeviceAdministrationPresenter:
             ),
         )
 
-        return DevicesOverviewViewModel(
+        return DevicesAdministrationViewModel(
             title="Sensing Devices",
             summary=summary,
             sensors=sensor_rows,
@@ -163,8 +164,11 @@ class DeviceAdministrationPresenter:
         return value.strftime("%m/%d/%Y") if value else "—"
 
     @staticmethod
-    def _enum_label(value) -> str:
+    def _enum_label(value: StrEnum | str | None) -> str:
         if value is None:
             return "—"
 
-        return str(value.value)
+        if isinstance(value, StrEnum):
+            return str(value.value)
+
+        return str(value)

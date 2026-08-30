@@ -57,7 +57,7 @@ class GatewayOverviewRowViewModel:
 
 
 @dataclass(frozen=True)
-class DevicesOverviewViewModel:
+class DevicesAdministrationViewModel:
     title: str
 
     summary: DeviceSummaryViewModel

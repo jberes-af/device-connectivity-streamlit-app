@@ -15,6 +15,10 @@ from src.gui.streamlit.screens.dashboard.dashboard_dependencies import (
     DashboardPageDependencies,
 )
 
+from src.gui.streamlit.screens.sensing.sensing_dependencies import (
+    SensingPageDependencies,
+)
+
 from src.gui.streamlit.screens.access.access_scope_screen import (
     render_account_and_access_page,
 )
@@ -23,8 +27,8 @@ from src.main.compose_root_application import AppContainer
 
 
 def _create_page_handler(
-    route: Route,
-    container: AppContainer,
+        route: Route,
+        container: AppContainer,
 ) -> Callable[[], None]:
     if route.handler is not None:
         return route.handler
@@ -41,14 +45,16 @@ def _create_page_handler(
 
 
 def render_router(
-    app_name: str,
-    default_route: str,
-    container: AppContainer,
-    access_scope: AccessScopeResultDTO,
-    dashboard_dependencies: DashboardPageDependencies,
+        app_name: str,
+        default_route: str,
+        container: AppContainer,
+        access_scope: AccessScopeResultDTO,
+        dashboard_dependencies: DashboardPageDependencies,
+        sensing_dependencies: SensingPageDependencies,
 ) -> None:
     routes = build_routes(
         dashboard_dependencies=dashboard_dependencies,
+        sensing_dependencies=sensing_dependencies,
     )
 
     main_pages = [

@@ -21,6 +21,7 @@ class SensorPurposeEnum(StrEnum):
     FACILITY_EXIT = "facility_exit"
     COMMON_AREA = "common_area"
     INGRESS_EGRESS = "room_ingress_egress"
+    GATEWAY = "gateway"
     OTHER = "other"
 
 
