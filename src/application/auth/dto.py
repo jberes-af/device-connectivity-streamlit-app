@@ -9,7 +9,7 @@ LoginResultDTO = application output
 
 from dataclasses import dataclass
 
-from src.domain.entities.access.access_entities import UserTenantMembership
+from src.domain.entities.access.membership_entities import UserTenantMembership
 
 
 @dataclass(frozen=True)

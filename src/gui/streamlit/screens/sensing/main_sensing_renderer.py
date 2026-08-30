@@ -22,16 +22,31 @@ from src.gui.streamlit.components.cards.card_property_value_renderer_hor import 
 
 
 def render_main_sensing(
-
         view_model: DevicesAdministrationViewModel,
 ) -> None:
     st.title("🚧 :material/sensors: Sensing")
 
     st.subheader(view_model.title)
 
+    # --- SUMMARY
+
     _render_summary(
         view_model=view_model,
     )
+
+    # --- TENANT SELECTBOX
+
+    selected_option = st.selectbox(
+        "Select Tenant",
+        options=[
+            vm.tenant_display_state_zip
+            for vm in view_model.tenants
+        ]
+    )
+
+    st.write(selected_option)
+
+    # --- DETAILS
 
     st.divider()
 

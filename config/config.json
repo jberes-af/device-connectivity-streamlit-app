@@ -20,6 +20,21 @@
         "file_name": "access_admin",
         "worksheet_name": "resident_gateway_link",
         "worksheet_range": "A1:E"
+      },
+      "access_scope": {
+        "file_name": "access_admin",
+        "worksheet_name": "access_scope",
+        "worksheet_range": "A1:J"
+      },
+      "role_permission": {
+        "file_name": "access_admin",
+        "worksheet_name": "role_permission",
+        "worksheet_range": "A1:B"
+      },
+      "user_tenant_role_assignment": {
+        "file_name": "access_admin",
+        "worksheet_name": "user_tenant_role_assignment",
+        "worksheet_range": "A1:D"
       }
     },
     "tables_billing": {

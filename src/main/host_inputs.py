@@ -5,7 +5,7 @@ Living Well: user_id="FlEl9LLqpBcFX7xyLcE8OYfTvZ73", tenant_id="b77891d5e60d4078
 
 """
 
-from src.domain.enums.person.tenant_enums import UserRoleEnum
+from src.domain.enums.access.permission_enums import UserRoleEnum
 
 from src.application.context import SessionContext, UserContext
 

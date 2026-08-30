@@ -1,8 +1,7 @@
 # /src/interface_adapters/presenters/dashboard/dashboard_main_presenter.py
 
-from src.domain.enums.priority_item_enums import (
+from src.domain.enums.priority_items.priority_item_enums import (
     PriorityItemLevelEnum,
-    PriorityItemStatusEnum,
 )
 
 from src.application.use_cases.dashboard.main_dashboard_uc_dtos import (

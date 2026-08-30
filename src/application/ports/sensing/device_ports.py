@@ -6,8 +6,12 @@ from src.domain.entities.sensing.device_entities import (
     GatewayProfile,
     SensorSystemProfile,
     SensorEvent,
-
     DeviceAdministrationProfile
+)
+
+from src.domain.entities.sensing.assignment_entities import (
+    ResidentGatewayLink,
+    ResidentSensorLink,
 )
 
 from src.application.models.sensing_models import GatewayDomainObjects
@@ -78,4 +82,30 @@ class DeviceAdministrationRepositoryPort(Protocol):
             self,
             tenant_id: str,
     ) -> tuple[DeviceAdministrationProfile, ...]:
+        ...
+
+
+class ResidentGatewayLinkRepositoryPort(Protocol):
+
+    def list_resident_gateway_links(
+            self) -> tuple[ResidentGatewayLink, ...]:
+        ...
+
+    def get_by_id(
+            self,
+            resident_id: str,
+    ) -> ResidentGatewayLink:
+        ...
+
+
+class ResidentSensorLinkRepositoryPort(Protocol):
+
+    def list_resident_sensor_links(
+            self) -> tuple[ResidentSensorLink, ...]:
+        ...
+
+    def get_by_id(
+            self,
+            resident_id: str,
+    ) -> ResidentSensorLink:
         ...

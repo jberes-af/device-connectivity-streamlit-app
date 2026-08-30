@@ -4,7 +4,7 @@
 from src.domain.entities.person.user_entities import (
     UserProfile,
 )
-from src.domain.entities.access.access_entities import UserTenantMembership
+from src.domain.entities.access.membership_entities import UserTenantMembership
 
 from src.application.auth.dto import (
     AuthenticatedUserDTO,

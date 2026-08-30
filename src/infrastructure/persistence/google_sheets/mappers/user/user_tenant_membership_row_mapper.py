@@ -1,6 +1,6 @@
 # /src/infrastructure/persistence/google_sheets/mappers/tenant/user_tenant_membership_row_mapper.py
 
-from src.domain.enums.person.tenant_enums import UserRoleEnum
+from src.domain.enums.access.permission_enums import UserRoleEnum
 
 from src.domain.entities.person.user_entities import UserTenantMembership
 

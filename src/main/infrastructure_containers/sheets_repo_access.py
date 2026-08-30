@@ -5,9 +5,9 @@ from dataclasses import dataclass
 from src.application.ports.access_repo_ports import (
     UserResidentAccessRepositoryPort,
     UserTenantMembershipRepositoryPort,
-    ResidentGatewayLinkRepositoryPort,
-    ResidentSensorLinkRepositoryPort,
 )
+from src.application.ports.sensing.device_ports import ResidentGatewayLinkRepositoryPort, \
+    ResidentSensorLinkRepositoryPort
 
 from src.infrastructure.config.app_config_models import (
     AppRuntimeConfig,

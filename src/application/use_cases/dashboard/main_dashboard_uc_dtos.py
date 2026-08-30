@@ -3,9 +3,8 @@
 from dataclasses import dataclass
 from datetime import datetime
 
-from src.domain.enums.priority_item_enums import (
+from src.domain.enums.priority_items.priority_item_enums import (
     PriorityItemLevelEnum,
-    PriorityItemStatusEnum,
 )
 
 

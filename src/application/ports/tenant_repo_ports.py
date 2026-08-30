@@ -1,8 +1,8 @@
 # /src/application/ports/tenant_repo_ports.py
 
-from typing import Protocol
+from typing import Protocol, Sequence
 
-from src.domain.entities.person.tenant_entities import (
+from src.domain.entities.tenant.tenant_entities import (
     TenantProfile,
 )
 
@@ -16,4 +16,10 @@ class TenantProfileRepositoryPort(Protocol):
             self,
             tenant_id: str,
     ) -> TenantProfile:
+        ...
+
+    def get_by_ids(
+            self,
+            tenant_ids: Sequence[str],
+    ) -> tuple[TenantProfile, ...]:
         ...

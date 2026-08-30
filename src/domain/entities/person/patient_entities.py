@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 from datetime import date
 
-from src.domain.enums.person.patient_enums import (
+from src.domain.enums.access.status_and_method_enums import (
     # MonitoringStatus,
     PatientProviderRoleEnum,
 )

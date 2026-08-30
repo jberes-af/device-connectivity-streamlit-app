@@ -3,6 +3,8 @@
 from datetime import date
 from enum import StrEnum
 
+from src.domain.entities.tenant.tenant_entities import TenantProfile
+
 from src.application.use_cases.sensing.sensing_admin.device_admin_uc_dtos import (
     GatewayProfileDTO,
     GetDeviceAdministrationResultDTO,
@@ -13,7 +15,7 @@ from src.interface_adapters.view_models.sensing.device_admin_view_models import 
     DeviceSummaryViewModel,
     DevicesAdministrationViewModel,
     GatewayOverviewRowViewModel,
-    SensorOverviewRowViewModel,
+    SensorOverviewRowViewModel, TenantViewModel,
 )
 
 
@@ -50,11 +52,41 @@ class DeviceAdministrationPresenter:
             ),
         )
 
+        tenants: tuple[TenantViewModel, ...] = (
+            self._present_tenants(
+                profiles=result.tenant_profiles,
+            ))
+
         return DevicesAdministrationViewModel(
             title="Sensing Devices",
             summary=summary,
+            tenants=tenants,
             sensors=sensor_rows,
             gateways=gateway_rows,
+        )
+
+    @staticmethod
+    def _present_tenants(
+            profiles: tuple[TenantProfile, ...]
+    ) -> tuple[TenantViewModel, ...]:
+
+        return tuple(
+            [
+                TenantViewModel(
+                    tenant_id=record.tenant_id,
+                    tenant_name=record.tenant_name,
+                    tenant_name_label=f"{record.tenant_name} • {record.tenant_id}",
+                    tenant_type=record.tenant_type,
+                    tenant_street=record.tenant_street,
+                    tenant_city=record.tenant_city,
+                    tenant_state=record.tenant_state,
+                    tenant_postal_code=record.tenant_postal_code,
+                    tenant_display_state_zip=f"{record.tenant_state} • {record.tenant_postal_code}",
+                    tenant_telephone=record.tenant_telephone,
+                    tenant_manager=record.tenant_manager,
+                )
+                for record in profiles
+            ]
         )
 
     def _present_sensor(
@@ -89,7 +121,7 @@ class DeviceAdministrationPresenter:
             ),
 
             hardware_version=self._text(
-                profile.hardware_version
+                profile.hardware_version0
             ),
 
             install_date=self._date(profile.install_date),

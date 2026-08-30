@@ -1,17 +1,11 @@
 # /src/application/use_cases/sensing/sensing_admin/get_device_admin_uc.py
 
-from collections import defaultdict
-from datetime import date, datetime
-
 import logging
 
+from src.application.services.tenant.get_tenant_service import FetchTenantAdminService
+from src.domain.entities.tenant.tenant_entities import TenantProfile
 from src.domain.enums.sensing.device_enums import (
     DeviceTypeEnum,
-    SensorPurposeEnum,
-)
-
-from src.domain.enums.sensing.device_enums import (
-    SensorTypeEnum,
 )
 
 from src.domain.entities.sensing.device_entities import (
@@ -60,11 +54,13 @@ class GetDeviceAdministrationUseCase:
             self,
             *,
             fetch_device_admin_service: FetchDeviceAdminService,
+            fetch_tenant_service: FetchTenantAdminService,
             gateway_repository: GatewayRepositoryPort,
             sensor_repository: SensorDeviceRepositoryPort,
             user_sensing_repository: UserSensingRepositoryPort,
     ):
         self._fetch_device_admin_service = fetch_device_admin_service
+        self._fetch_tenant_service = fetch_tenant_service
         self._gateway_repo = gateway_repository
         self._sensor_repo = sensor_repository
         self._user_sensing_repo = user_sensing_repository
@@ -78,11 +74,19 @@ class GetDeviceAdministrationUseCase:
             device_admin_profiles: tuple[DeviceAdministrationProfile, ...] = (
                 self._fetch_device_admin_service.fetch_all_device_admin_profiles(
                 ))
+
+            tenant_profiles: tuple[TenantProfile, ...] = (
+                self._fetch_tenant_service.fetch_all_tenant_profiles()
+            )
+
         else:
             device_admin_profiles: tuple[DeviceAdministrationProfile, ...] = (
                 self._fetch_device_admin_service.fetch_device_admin_profiles_for_tenant_id(
                     tenant_id=request.tenant_id,
                 ))
+            tenant_profiles: tuple[TenantProfile] = (
+                self._fetch_tenant_service.get_by_id(request.tenant_id),
+            )
 
         gateway_profiles: tuple[GatewayProfileDTO, ...] = (
             self._build_gateway_profiles(
@@ -96,6 +100,7 @@ class GetDeviceAdministrationUseCase:
             ))
 
         return GetDeviceAdministrationResultDTO(
+            tenant_profiles=tenant_profiles,
             sensor_profiles=sensor_profiles,
             gateway_profiles=gateway_profiles,
         )
@@ -201,6 +206,7 @@ class GetDeviceAdministrationUseCase:
             )
 
             profiles.append(
+
                 SensorProfileDTO(
                     sensor_id=sensor_id,
                     sensor_type=system_profile.sensor_type,

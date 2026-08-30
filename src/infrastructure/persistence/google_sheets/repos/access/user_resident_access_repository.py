@@ -2,7 +2,7 @@
 
 from src.application.ports.access_repo_ports import UserResidentAccessRepositoryPort
 
-from src.domain.entities.access.access_entities import UserResidentAccess
+from src.domain.entities.access.resource_access_entities import UserResourceAssignment
 
 from src.infrastructure.persistence.common.types import RawRow
 
@@ -51,7 +51,7 @@ class GoogleSheetsUserResidentAccessRepository(
     def list_resident_access_records_for_user_id(
             self,
             user_id: str,
-    ) -> tuple[UserResidentAccess, ...]:
+    ) -> tuple[UserResourceAssignment, ...]:
         raw_rows: list[RawRow] = self._find_rows(
             rows=self._read_rows(),
             column_name="user_id",
@@ -66,7 +66,7 @@ class GoogleSheetsUserResidentAccessRepository(
     def get_by_id(
             self,
             resident_id: str,
-    ) -> UserResidentAccess:
+    ) -> UserResourceAssignment:
         raw_row = self._find_single_row(
             rows=self._read_rows(),
             column_name=self.ID_COLUMN,

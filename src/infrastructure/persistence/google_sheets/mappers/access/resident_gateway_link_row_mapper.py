@@ -5,7 +5,7 @@ from src.infrastructure.persistence.common.types import RawRow
 from src.infrastructure.persistence.google_sheets.schemas.access.resident_gateway_link_columns import (
     ResidentGatewayLinkColumns)
 
-from src.domain.entities.access.access_entities import ResidentGatewayLink
+from src.domain.entities.sensing.assignment_entities import ResidentGatewayLink
 
 from src.infrastructure.persistence.common.utils_parsing import (
     parse_required_text,

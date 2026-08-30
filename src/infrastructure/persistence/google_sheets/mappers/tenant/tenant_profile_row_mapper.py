@@ -1,7 +1,7 @@
 # /src/infrastructure/persistence/google_sheets/mappers/tenant/tenant_profile_row_mapper.py
 
-from src.domain.enums.person.tenant_enums import TenantTypeEnum
-from src.domain.entities.person.tenant_entities import (
+from src.domain.enums.tenant.tenant_enums import TenantTypeEnum
+from src.domain.entities.tenant.tenant_entities import (
     TenantProfile,
 )
 

@@ -6,9 +6,7 @@ from src.domain.entities.person.resident_entities import (
     ResidentProfile,
     ResidentInCaseOfNeedContact,
 )
-from src.domain.entities.access.access_entities import (
-    UserResidentAccess,
-)
+from src.domain.entities.access.resource_access_entities import UserResourceAssignment
 
 from src.application.ports.resident_repo_ports import (
     ResidentProfileRepositoryPort,
@@ -64,7 +62,7 @@ class GetAllResidentRecordsForUserUseCase:
 
         uid: str = request.user_id
 
-        user_access_records: tuple[UserResidentAccess, ...] = (
+        user_access_records: tuple[UserResourceAssignment, ...] = (
             self._user_resident_access_repo.list_resident_access_records_for_user_id(
                 user_id=uid,
             )

@@ -1,8 +1,8 @@
 # /src/infrastructure/persistence/google_sheets/repos/contact/resident_sensor_link.py
 
-from src.application.ports.access_repo_ports import ResidentSensorLinkRepositoryPort
+from src.application.ports.sensing.device_ports import ResidentSensorLinkRepositoryPort
 
-from src.domain.entities.access.access_entities import ResidentSensorLink
+from src.domain.entities.sensing.assignment_entities import ResidentSensorLink
 
 from src.infrastructure.persistence.google_sheets.base_repository import (
     GoogleSheetsRepository,

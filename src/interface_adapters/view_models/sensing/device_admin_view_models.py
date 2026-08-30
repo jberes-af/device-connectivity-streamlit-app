@@ -2,6 +2,8 @@
 
 from dataclasses import dataclass
 
+from src.domain.enums.tenant.tenant_enums import TenantTypeEnum
+
 
 @dataclass(frozen=True)
 class DeviceSummaryViewModel:
@@ -57,10 +59,28 @@ class GatewayOverviewRowViewModel:
 
 
 @dataclass(frozen=True)
+class TenantViewModel:
+    tenant_id: str
+    tenant_name: str
+    tenant_name_label: str
+    tenant_type: TenantTypeEnum
+    tenant_street: str
+    tenant_city: str
+    tenant_state: str
+    tenant_postal_code: str
+    tenant_display_state_zip: str
+    tenant_telephone: str
+    tenant_manager: str
+    # timezone: str | None = None
+
+
+@dataclass(frozen=True)
 class DevicesAdministrationViewModel:
     title: str
 
     summary: DeviceSummaryViewModel
+
+    tenants: tuple[TenantViewModel, ...]
 
     sensors: tuple[SensorOverviewRowViewModel, ...]
     gateways: tuple[GatewayOverviewRowViewModel, ...]

@@ -23,7 +23,7 @@ from src.domain.enums.care.rtm_enums import (
     RtmNecessityStatus,
 )
 
-from src.domain.enums.person.patient_enums import (
+from src.domain.enums.access.status_and_method_enums import (
     EnrollmentStatusEnum,
     ConsentStatusEnum,
     ConsentMethodEnum

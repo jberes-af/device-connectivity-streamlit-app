@@ -3,6 +3,7 @@
 from dataclasses import dataclass
 from datetime import date
 
+from src.domain.entities.tenant.tenant_entities import TenantProfile
 from src.domain.enums.sensing.device_enums import (
     # DeviceTypeEnum,
     SensorPurposeEnum,
@@ -73,6 +74,7 @@ class GetDevicesAdministrationRequestDTO:
 
 @dataclass(frozen=True)
 class GetDeviceAdministrationResultDTO:
+    tenant_profiles: tuple[TenantProfile, ...]
     # device_admin_profiles: tuple[DeviceAdminProfileDTO, ...]
     sensor_profiles: tuple[SensorProfileDTO, ...]
     gateway_profiles: tuple[GatewayProfileDTO, ...]

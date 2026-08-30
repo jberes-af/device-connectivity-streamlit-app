@@ -2,8 +2,8 @@
 
 # from src.domain.enums.contact.tenant_enums import UserRoleEnum
 
-from src.domain.enums.person.resident_enums import ResidentAccessLevelEnum
-from src.domain.entities.access.access_entities import UserResidentAccess
+from src.domain.enums.access.resident_enums import ResidentAccessLevelEnum
+from src.domain.entities.access.resource_access_entities import UserResourceAssignment
 
 from src.infrastructure.persistence.common.types import RawRow
 
@@ -22,10 +22,10 @@ from src.infrastructure.persistence.common.utils_parsing import (
 class UserResidentAccessRowMapper:
 
     @staticmethod
-    def to_domain(row: RawRow) -> UserResidentAccess:
+    def to_domain(row: RawRow) -> UserResourceAssignment:
         schema = UserResidentAccessColumns
 
-        return UserResidentAccess(
+        return UserResourceAssignment(
             user_id=parse_required_text(
                 row.get(schema.USER_ID),
                 field_name=schema.USER_ID,
@@ -59,7 +59,7 @@ class UserResidentAccessRowMapper:
 
     @staticmethod
     def to_row(
-            user_resident_access: UserResidentAccess,
+            user_resident_access: UserResourceAssignment,
     ) -> RawRow:
         schema = UserResidentAccessColumns
 

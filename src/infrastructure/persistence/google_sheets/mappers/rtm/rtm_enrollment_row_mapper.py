@@ -1,6 +1,6 @@
 # /src/infrastructure/persistence/google_sheets/mappers/rtm/rtm_enrollment_mapper.py
 
-from src.domain.enums.person.patient_enums import (
+from src.domain.enums.access.status_and_method_enums import (
     EnrollmentStatusEnum,
     ConsentMethodEnum,
     ConsentStatusEnum,

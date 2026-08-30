@@ -6,7 +6,7 @@ from src.infrastructure.persistence.google_sheets.schemas.access.resident_sensor
     ResidentSensorLinkColumns,
 )
 
-from src.domain.entities.access.access_entities import ResidentSensorLink
+from src.domain.entities.sensing.assignment_entities import ResidentSensorLink
 
 from src.infrastructure.persistence.common.utils_parsing import (
     parse_optional_date,

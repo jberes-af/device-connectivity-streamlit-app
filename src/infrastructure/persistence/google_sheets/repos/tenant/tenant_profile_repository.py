@@ -4,7 +4,7 @@ from src.application.ports.tenant_repo_ports import (
     TenantProfileRepositoryPort,
 )
 
-from src.domain.entities.person.tenant_entities import (
+from src.domain.entities.tenant.tenant_entities import (
     TenantProfile,
 )
 

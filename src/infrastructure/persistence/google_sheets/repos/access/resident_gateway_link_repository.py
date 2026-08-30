@@ -1,8 +1,8 @@
 # /src/infrastructure/persistence/google_sheets/repos/contact/resident_gateway_link.py
 
-from src.application.ports.access_repo_ports import ResidentGatewayLinkRepositoryPort
+from src.application.ports.sensing.device_ports import ResidentGatewayLinkRepositoryPort
 
-from src.domain.entities.access.access_entities import ResidentGatewayLink
+from src.domain.entities.sensing.assignment_entities import ResidentGatewayLink
 
 from src.infrastructure.persistence.common.types import RawRow
 
