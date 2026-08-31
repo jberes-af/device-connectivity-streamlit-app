@@ -1,4 +1,4 @@
-# /src/gui/streamlit/components/person/payers_renderer.py
+# /src/gui/streamlit/components/resident/payers_renderer.py
 
 import streamlit as st
 

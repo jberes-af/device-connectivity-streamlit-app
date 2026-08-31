@@ -81,32 +81,3 @@ class PermissionEnum(StrEnum):
     TENANT_VIEW = "tenant.view"
     TENANT_UPDATE = "tenant.update"
 
-
-
-
-"""
-class UserRoleEnum(StrEnum):
-    ADMINISTRATOR = "Administrator"
-    CARE_MANAGER = "Care Manager"
-    CAREGIVER = "Caregiver"
-    CLINICIAN = "Clinician"
-    EXECUTIVE_DIRECTOR = "Executive Director"
-    OWNER = "Owner"
-    TECHNICIAN = "Technician"
-    VIEWER = "Viewer"
-
-CREATE_NOTES = "Create Notes"
-CONFIGURE_RESIDENT = "Configure Resident"
-MANAGE_PRIORITY_ITEMS = "Manage Priority Items"
-CONFIGURE_SENSOR = "Configure Sensor"
-VIEW_ANALYTICS = "View Analytics"
-VIEW_NOTES = "View Notes"
-VIEW_PRIORITY_ITEMS = "View Priority Items"
-VIEW_RESIDENT = "View Resident"
-VIEW_SENSORS = "View Sensors"
-VIEW_SENSOR_EVENTS = "View Sensor Events"
-VIEW_THERAPEUTIC_PLANS = "View Therapeutic Plans"
-MANAGE_THERAPEUTIC_PLANS = "Manage Therapeutic Plans"
-MANAGE_ADLS = "Manage Adls"
-VIEW_ADLS = "View Adls"
-"""

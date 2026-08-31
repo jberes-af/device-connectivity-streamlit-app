@@ -1,6 +1,6 @@
 # /src/application/use_cases/residents/provider/get_provider_profile_uc.py
 
-from src.application.services.person.get_provider_profile_service import (
+from src.application.services.provider.get_provider_profile_service import (
     FetchProviderProfileService
 )
 

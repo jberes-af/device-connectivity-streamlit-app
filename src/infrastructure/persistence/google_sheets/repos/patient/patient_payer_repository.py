@@ -92,4 +92,13 @@ class GoogleSheetsPatientPayerRepository(
             self,
             patient_payer_ids: Sequence[str],
     ) -> tuple[PatientPayer, ...]:
-        ...
+        raw_rows: list[RawRow] = self._find_rows_for_multiple_values(
+            rows=self._read_rows(),
+            column_name=self.ID_COLUMN,
+            values=patient_payer_ids,
+        )
+
+        return tuple(
+            self._mapper.to_domain(row)
+            for row in raw_rows
+        )

@@ -9,7 +9,7 @@ from src.gui.streamlit.screens.sensing.sensing_dependencies import (
     SensingPageDependencies
 )
 
-from src.main.compose_root_streamlit_sensing import (
+from src.main.streamlit_containers.compose_root_streamlit_sensing import (
     build_sensing_page_dependencies
 )
 
@@ -29,8 +29,8 @@ from src.application.context import (
 )
 
 from src.application.use_cases.access.access_scope_uc_dtos import (
-    AccessScopeRequestDTO,
-    AccessScopeResultDTO,
+    BuildAccessScopeRequestDTO,
+    BuildAccessScopeResultDTO
 )
 
 # --- GUI
@@ -67,7 +67,7 @@ from src.main.compose_root_application import (
     build_application_container,
 )
 
-from src.main.compose_root_streamlit_dashboard import (
+from src.main.streamlit_containers.compose_root_streamlit_dashboard import (
     build_dashboard_page_dependencies,
 )
 
@@ -111,6 +111,37 @@ def logout() -> None:
     st.session_state.pop("access_scope_user_id", None)
 
     st.rerun()
+
+
+def ensure_access_scope(
+        *,
+        session: SessionContext,
+        app_container: AppContainer,
+) -> SessionContext:
+    if session.user_context is None:
+        raise RuntimeError(
+            "Cannot build access scope without UserContext."
+        )
+
+    if session.access_scope is not None:
+        return session
+
+    request = BuildAccessScopeRequestDTO(
+        user_id=session.user_context.user_id,
+        tenant_id=session.user_context.tenant_id,
+    )
+
+    result = (
+        app_container
+        .build_access_scope_use_case
+        .execute(request=request)
+    )
+
+    session.access_scope = result.access_scope
+
+    st.session_state["session_context"] = session
+
+    return session
 
 
 def get_or_load_access_scope(
@@ -190,6 +221,7 @@ def get_infrastructure_container() -> InfrastructureContainer:
     )
 
 
+"""
 def run_app() -> None:
     configure_logging()
 
@@ -234,6 +266,88 @@ def run_app() -> None:
     )
 
     render_authenticated_phase(
+        app_container=app_container,
+        dashboard_dependencies=dashboard_dependencies,
+        sensing_dependencies=sensing_dependencies,
+    )
+"""
+
+
+def run_app() -> None:
+    configure_logging()
+    configure_page()
+    initialize_session_state()
+
+    infrastructure = get_infrastructure_container()
+
+    host_inputs = load_host_inputs()
+
+    # ----------------------------------------
+    # 1. Authentication
+    # ----------------------------------------
+
+    if host_inputs.bypass_authentication:
+        session = host_inputs.session_context
+
+    else:
+        session = get_session_context()
+
+        if not session.is_authenticated:
+            authentication = build_authentication_container(
+                infrastructure=infrastructure,
+            )
+
+            render_login_phase(
+                authentication=authentication,
+            )
+
+            return
+
+    if session.user_context is None:
+        raise RuntimeError(
+            "Authenticated session is missing UserContext."
+        )
+
+    # ----------------------------------------
+    # 2. Application composition
+    # ----------------------------------------
+
+    app_container = build_application_container(
+        infrastructure=infrastructure,
+        user_context=session.user_context,
+    )
+
+    # ----------------------------------------
+    # 3. Authorization
+    # ----------------------------------------
+
+    session = ensure_access_scope(
+        session=session,
+        app_container=app_container,
+    )
+
+    # ----------------------------------------
+    # 4. Page composition
+    # ----------------------------------------
+
+    dashboard_dependencies = (
+        build_dashboard_page_dependencies(
+            app_container=app_container,
+        )
+    )
+
+    sensing_dependencies = (
+        build_sensing_page_dependencies(
+            app_container=app_container,
+        )
+    )
+
+    # ----------------------------------------
+    # 5. Routing / rendering
+    # ----------------------------------------
+
+    render_authenticated_phase(
+        session=session,
         app_container=app_container,
         dashboard_dependencies=dashboard_dependencies,
         sensing_dependencies=sensing_dependencies,

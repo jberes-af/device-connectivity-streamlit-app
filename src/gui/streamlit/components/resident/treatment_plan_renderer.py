@@ -1,4 +1,4 @@
-# /src/gui/streamlit/components/person/treatment_plan_renderer.py
+# /src/gui/streamlit/components/resident/treatment_plan_renderer.py
 
 import streamlit as st
 

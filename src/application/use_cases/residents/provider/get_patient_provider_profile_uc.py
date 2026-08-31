@@ -8,7 +8,7 @@ from src.application.ports.patient_repo_ports import (
     PatientProviderRepositoryPort,
 )
 
-from src.application.services.person.get_provider_profile_service import (
+from src.application.services.provider.get_provider_profile_service import (
     FetchProviderProfileService,
 )
 

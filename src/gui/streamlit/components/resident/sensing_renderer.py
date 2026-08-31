@@ -1,4 +1,4 @@
-# /src/gui/streamlit/components/person/sensing_renderer.py
+# /src/gui/streamlit/components/resident/sensing_renderer.py
 
 import streamlit as st
 

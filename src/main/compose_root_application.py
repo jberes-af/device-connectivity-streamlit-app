@@ -11,44 +11,14 @@ from src.application.context import (
 
 # --- APPLICATION SERVICES
 
-from src.application.services.payer.get_payer_profile_service import (
-    FetchPayerProfileService,
+from src.main.application_service_containers.fetch_repos_services import (
+    FetchRepositoryService,
 )
-
-from src.application.services.payer.get_patient_payer_service import (
-    FetchPatientPayerProfileService
-)
-
-from src.application.services.person.get_provider_profile_service import (
-    FetchProviderProfileService,
-)
-
-from src.application.services.care.get_diagnosis_definition_service import (
-    FetchDiagnosisDefinitionService
-)
-
-from src.application.services.person.get_patient_diagnosis_service import (
-    FetchPatientDiagnosisService
-)
-
-from src.application.services.care.get_rtm_service import (
-    FetchRtmNecessityService,
-    FetchRtmEnrollmentService,
-)
-
-from src.application.services.care.get_treatment_service import (
-    FetchTreatmentPlanService,
-    FetchTherapeuticGoalService,
-    FetchTreatmentMonitoringParameterService,
-    FetchTreatmentInterventionService,
-    FetchTreatmentPlanReviewService,
-)
-from src.application.services.sensing.get_device_admin_service import FetchDeviceAdminService
 
 # --- APPLICATION USE CASES
 
-from src.application.use_cases.access.get_access_scope_uc import (
-    GetUserAccessScopeUseCase,
+from src.application.use_cases.access.build_access_scope_use_case import (
+    BuildAccessScopeUseCase,
 )
 from src.application.use_cases.dashboard.build_main_dashboard_use_case import (
     BuildMainDashboardUseCase
@@ -126,7 +96,7 @@ class AppContainer:
 
     user_context: UserContext
 
-    get_user_access_scope_use_case: GetUserAccessScopeUseCase
+    get_user_access_scope_use_case: BuildAccessScopeUseCase
 
     # --- DASHBOARD
 
@@ -161,82 +131,20 @@ def build_application_container(
         user_context: UserContext,
 ) -> AppContainer:
     # --- ASSIGN REPOSITORIES
-
-    access_repos = infrastructure.access_repository
-    diagnosis_repos = infrastructure.diagnosis_repository
-    device_repos = infrastructure.device_admin_repository
+    _repo = FetchRepositoryService(
+        infrastructure=infrastructure,
+    )
     patient_repos = infrastructure.patient_repository
-    payer_repos = infrastructure.payer_repository
-    provider_repos = infrastructure.provider_repository
-    resident_repos = infrastructure.resident_repository
-    rtm_repos = infrastructure.rtm_repository
     sensing_repos = infrastructure.sensing_repositories
-    tenant_repos = infrastructure.tenant_repository
-    treatment_repos = infrastructure.treatment_repository
-
-    # --- SERVICES
-
-    fetch_diagnosis_definition_service = FetchDiagnosisDefinitionService(
-        diagnosis_definition_repository=diagnosis_repos.diagnosis_definition_repository,
-    )
-
-    fetch_patient_diagnosis_service = FetchPatientDiagnosisService(
-        patient_diagnosis_repository=patient_repos.patient_diagnosis_repository,
-    )
-
-    fetch_patient_payer_service = FetchPatientPayerProfileService(
-        patient_payer_repository=patient_repos.patient_payer_repository,
-    )
-
-    fetch_payer_profile_service = FetchPayerProfileService(
-        payer_repository=payer_repos.payer_repository,
-    )
-
-    fetch_provider_profile_service = FetchProviderProfileService(
-        provider_repository=provider_repos.provider_repository,
-    )
-
-    fetch_rtm_enrollment_service = FetchRtmEnrollmentService(
-        rtm_enrollment_repository=rtm_repos.rtm_enrollment_repository,
-    )
-
-    fetch_rtm_necessity_service = FetchRtmNecessityService(
-        rtm_necessity_repository=rtm_repos.rtm_necessity_repository,
-    )
-
-    fetch_therapeutic_goal_service = FetchTherapeuticGoalService(
-        therapeutic_goal_repository=treatment_repos.therapeutic_goal_repository,
-    )
-
-    fetch_treatment_plan_service = FetchTreatmentPlanService(
-        treatment_plan_repository=treatment_repos.treatment_plan_repository,
-    )
-
-    fetch_treatment_intervention_service = FetchTreatmentInterventionService(
-        treatment_intervention_repository=treatment_repos.treatment_intervention_repository,
-    )
-
-    fetch_treatment_monitoring_parameter_service = FetchTreatmentMonitoringParameterService(
-        treatment_monitoring_parameter_repository=treatment_repos.treatment_monitoring_parameter_repository,
-    )
-
-    fetch_treatment_plan_review_service = FetchTreatmentPlanReviewService(
-        treatment_plan_review_repository=treatment_repos.treatment_plan_review_repository,
-    )
-
-    fetch_device_admin_service = FetchDeviceAdminService(
-        device_admin_repository=device_repos.device_admin_profile_repository
-    )
 
     # --- ACCESS RECORDS
 
-    get_access_scope = GetUserAccessScopeUseCase(
-        user_tenant_membership_repository=access_repos.user_tenant_membership_repository,
-        user_resident_repository=access_repos.user_resident_access_repository,
-        resident_gateway_repository=access_repos.resident_gateway_link_repository,
-        resident_sensor_repository=access_repos.resident_sensor_link_repository,
-        user_sensing_repository=sensing_repos.user_sensing_repository,
-        tenant_profile_repository=tenant_repos.tenant_profile_repository
+    get_access_scope = BuildAccessScopeUseCase(
+        fetch_user_tenant_membership_service=_repo.fetch_user_tenant_membership_service(),
+        fetch_user_tenant_role_assignment_service=_repo.fetch_user_tenant_role_assignment_service(),
+        fetch_role_permission_service=_repo.fetch_role_permission_service(),
+        fetch_user_resource_assignment_service=_repo.fetch_user_resource_assignment_service(),
+        fetch_role_resource_scope_service=_repo.fetch_role_resource_scope_service(),
     )
 
     # MAIN DASHBOARD
@@ -247,33 +155,33 @@ def build_application_container(
     # --- RESIDENT RECORDS
 
     get_resident_records_for_user = GetAllResidentRecordsForUserUseCase(
-        user_resident_access_repository=access_repos.user_resident_access_repository,  # IS THIS NEEDED?????
-        resident_profile_repository=resident_repos.resident_profile_repository,
-        resident_contacts_repository=resident_repos.resident_contact_info_repository,
+        # user_resident_access_repository=.user_resident_access_repository,  # IS THIS NEEDED?????
+        fetch_resident_profile_repository=_repo.fetch_resident_profile_service(),
+        fetch_resident_contacts_repository=_repo.fetch_resident_contacts_service(),
     )
 
     # --- RESIDENT / PATIENT DIAGNOSES & TREATMENT RECORDS
 
     get_diagnosis_and_treatment = GetPatientDiagnosesAndTreatmentsUseCase(
-        fetch_diagnosis_definition_service=fetch_diagnosis_definition_service,
-        fetch_patient_diagnosis_service=fetch_patient_diagnosis_service,
-        fetch_treatment_plan_service=fetch_treatment_plan_service,
-        fetch_therapeutic_goal_service=fetch_therapeutic_goal_service,
-        fetch_rtm_necessity_service=fetch_rtm_necessity_service,
-        fetch_treatment_intervention_service=fetch_treatment_intervention_service,
-        fetch_treatment_monitoring_parameter_service=fetch_treatment_monitoring_parameter_service,
-        fetch_treatment_plan_review_service=fetch_treatment_plan_review_service,
+        fetch_diagnosis_definition_service=_repo.fetch_diagnosis_definition_service(),
+        fetch_patient_diagnosis_service=_repo.fetch_patient_diagnosis_service(),
+        fetch_treatment_plan_service=_repo.fetch_treatment_plan_service(),
+        fetch_therapeutic_goal_service=_repo.fetch_therapeutic_goal_service(),
+        fetch_rtm_necessity_service=_repo.fetch_rtm_necessity_service(),
+        fetch_treatment_intervention_service=_repo.fetch_treatment_intervention_service(),
+        fetch_treatment_monitoring_parameter_service=_repo.fetch_treatment_monitoring_parameter_service(),
+        fetch_treatment_plan_review_service=_repo.fetch_treatment_plan_review_service(),
     )
 
     # --- RESIDENT / PATIENT PAYER & RTM ENROLLMENT RECORDS
 
     get_patient_payer_profile = GetPatientPayerProfileUseCase(
-        fetch_patient_payer_service=fetch_patient_payer_service,
-        fetch_payer_profile_service=fetch_payer_profile_service,
+        fetch_patient_payer_service=_repo.fetch_patient_payer_service(),
+        fetch_payer_profile_service=_repo.fetch_payer_profile_service(),
     )
 
     get_rtm_enrollment = GetRtmEnrollmentUseCase(
-        fetch_rtm_enrollment_service=fetch_rtm_enrollment_service,
+        fetch_rtm_enrollment_service=_repo.fetch_rtm_enrollment_service(),
     )
 
     get_patient_payer_and_rtm_enrollment = GetPatientPayerAndRtmEnrollmentUseCase(
@@ -284,7 +192,7 @@ def build_application_container(
     # --- RESIDENT / PATIENT PROVIDER RECORDS
 
     get_patient_provider_profile = GetPatientProviderProfileUseCase(
-        fetch_provider_profile_service=fetch_provider_profile_service,
+        fetch_provider_profile_service=_repo.fetch_provider_profile_service(),
         patient_provider_repository=patient_repos.patient_provider_repository,
     )
 
@@ -303,7 +211,7 @@ def build_application_container(
     )
 
     get_device_administration = GetDeviceAdministrationUseCase(
-        fetch_device_admin_service=fetch_device_admin_service,
+        fetch_device_admin_service=_repo.fetch_device_admin_service(),
         gateway_repository=sensing_repos.gateway_repository,
         sensor_repository=sensing_repos.sensor_device_repository,
         user_sensing_repository=sensing_repos.user_sensing_repository,

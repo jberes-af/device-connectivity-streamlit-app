@@ -31,10 +31,20 @@
         "worksheet_name": "role_permission",
         "worksheet_range": "A1:B"
       },
+      "role_resource_scope": {
+        "file_name": "access_admin",
+        "worksheet_name": "role_resource_scope",
+        "worksheet_range": "A1:C"
+      },
       "user_tenant_role_assignment": {
         "file_name": "access_admin",
         "worksheet_name": "user_tenant_role_assignment",
         "worksheet_range": "A1:D"
+      },
+      "user_resource_assignment": {
+        "file_name": "access_admin",
+        "worksheet_name": "user_resource_assignment",
+        "worksheet_range": "A1:H"
       }
     },
     "tables_billing": {

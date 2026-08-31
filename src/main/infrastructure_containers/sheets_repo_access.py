@@ -3,11 +3,11 @@
 from dataclasses import dataclass
 
 from src.application.ports.access_repo_ports import (
-    UserResidentAccessRepositoryPort,
     UserTenantMembershipRepositoryPort,
+    UserTenantRoleAssignmentRepositoryPort,
+    RolePermissionRepositoryPort,
+    UserResourceAssignmentRepositoryPort, RoleResourceScopeRepositoryPort,
 )
-from src.application.ports.sensing.device_ports import ResidentGatewayLinkRepositoryPort, \
-    ResidentSensorLinkRepositoryPort
 
 from src.infrastructure.config.app_config_models import (
     AppRuntimeConfig,
@@ -15,37 +15,41 @@ from src.infrastructure.config.app_config_models import (
 from src.infrastructure.config.settings_model import (
     Settings,
 )
-
-from src.infrastructure.persistence.google_sheets.mappers.access.user_resident_access_row_mapper import (
-    UserResidentAccessRowMapper,
-)
+from src.infrastructure.persistence.google_sheets.mappers.access.role_resource_scope_row_mapper import \
+    RoleResourceScopeRowMapper
 
 from src.infrastructure.persistence.google_sheets.mappers.access.user_tenant_membership_row_mapper import (
     UserTenantMembershipRowMapper,
 )
 
-from src.infrastructure.persistence.google_sheets.mappers.access.resident_gateway_link_row_mapper import (
-    ResidentGatewayLinkRowMapper,
+from src.infrastructure.persistence.google_sheets.mappers.access.user_tenant_role_assignment_row_mapper import (
+    UserTenantRoleAssignmentRowMapper,
 )
 
-from src.infrastructure.persistence.google_sheets.mappers.access.resident_sensor_link_row_mapper import (
-    ResidentSensorLinkRowMapper,
+from src.infrastructure.persistence.google_sheets.mappers.access.role_permission_row_mapper import (
+    RolePermissionRowMapper,
 )
 
-from src.infrastructure.persistence.google_sheets.repos.access.user_resident_access_repository import (
-    GoogleSheetsUserResidentAccessRepository,
+from src.infrastructure.persistence.google_sheets.mappers.access.user_resource_assignment_row_mapper import (
+    UserResourceAssignmentRowMapper
+)
+from src.infrastructure.persistence.google_sheets.repos.access.role_resource_scope_repository import \
+    GoogleSheetsRoleResourceScopeRepository
+
+from src.infrastructure.persistence.google_sheets.repos.access.user_tenant_role_assignment_repository import (
+    GoogleSheetsUserTenantRoleAssignmentRepository,
 )
 
 from src.infrastructure.persistence.google_sheets.repos.access.user_tenant_membership_repository import (
     GoogleSheetsUserTenantMembershipRepository,
 )
 
-from src.infrastructure.persistence.google_sheets.repos.access.resident_gateway_link_repository import (
-    GoogleSheetsResidentGatewayLinkRepository,
+from src.infrastructure.persistence.google_sheets.repos.access.user_resource_assignment_repository import (
+    GoogleSheetsUserResourceAssignmentRepository
 )
 
-from src.infrastructure.persistence.google_sheets.repos.access.resident_sensor_link_repository import (
-    GoogleSheetsResidentSensorLinkRepository,
+from src.infrastructure.persistence.google_sheets.repos.access.role_permission_repository import (
+    GoogleSheetsRolePermissionRepository,
 )
 
 from src.main.infrastructure_containers.utils_sheets_composition_root import (
@@ -56,10 +60,11 @@ from src.main.infrastructure_containers.utils_sheets_composition_root import (
 
 @dataclass(frozen=True, slots=True)
 class GoogleSheetsAccessRepositories:
-    resident_gateway_link_repository: ResidentGatewayLinkRepositoryPort
-    resident_sensor_link_repository: ResidentSensorLinkRepositoryPort
-    user_resident_access_repository: UserResidentAccessRepositoryPort
     user_tenant_membership_repository: UserTenantMembershipRepositoryPort
+    user_tenant_role_assignment_repository: UserTenantRoleAssignmentRepositoryPort
+    role_permission_repository: RolePermissionRepositoryPort
+    user_resource_assignment_repository: UserResourceAssignmentRepositoryPort
+    role_resource_scope_repository: RoleResourceScopeRepositoryPort
 
 
 def build_google_sheets_access_repositories(
@@ -76,13 +81,6 @@ def build_google_sheets_access_repositories(
         app_config=app_config,
     )
 
-    user_resident_access_repo: UserResidentAccessRepositoryPort = (
-        GoogleSheetsUserResidentAccessRepository(
-            query_service=query_service,
-            catalog=catalog,
-            mapper=UserResidentAccessRowMapper(),
-        ))
-
     user_tenant_membership_repo: UserTenantMembershipRepositoryPort = (
         GoogleSheetsUserTenantMembershipRepository(
             query_service=query_service,
@@ -90,26 +88,40 @@ def build_google_sheets_access_repositories(
             mapper=UserTenantMembershipRowMapper(),
         ))
 
-    resident_gateway_repo: ResidentGatewayLinkRepositoryPort = (
-        GoogleSheetsResidentGatewayLinkRepository(
+    user_tenant_role_repo: UserTenantRoleAssignmentRepositoryPort = (
+        GoogleSheetsUserTenantRoleAssignmentRepository(
             query_service=query_service,
             catalog=catalog,
-            mapper=ResidentGatewayLinkRowMapper(),
+            mapper=UserTenantRoleAssignmentRowMapper(),
+        ))
+
+    role_permission_repo: RolePermissionRepositoryPort = (
+        GoogleSheetsRolePermissionRepository(
+            query_service=query_service,
+            catalog=catalog,
+            mapper=RolePermissionRowMapper(),
         )
     )
 
-    resident_sensor_repo: ResidentSensorLinkRepositoryPort = (
-        GoogleSheetsResidentSensorLinkRepository(
+    role_scope_repo: RoleResourceScopeRepositoryPort = (
+        GoogleSheetsRoleResourceScopeRepository(
             query_service=query_service,
             catalog=catalog,
-            mapper=ResidentSensorLinkRowMapper(),
-
+            mapper=RoleResourceScopeRowMapper(),
         )
     )
+
+    user_resident_repo: UserResourceAssignmentRepositoryPort = (
+        GoogleSheetsUserResourceAssignmentRepository(
+            query_service=query_service,
+            catalog=catalog,
+            mapper=UserResourceAssignmentRowMapper(),
+        ))
 
     return GoogleSheetsAccessRepositories(
-        resident_gateway_link_repository=resident_gateway_repo,
-        resident_sensor_link_repository=resident_sensor_repo,
-        user_resident_access_repository=user_resident_access_repo,
         user_tenant_membership_repository=user_tenant_membership_repo,
+        user_tenant_role_assignment_repository=user_tenant_role_repo,
+        role_permission_repository=role_permission_repo,
+        user_resource_assignment_repository=user_resident_repo,
+        role_resource_scope_repository=role_scope_repo,
     )

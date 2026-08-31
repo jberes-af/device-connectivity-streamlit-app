@@ -80,10 +80,6 @@ from src.main.infrastructure_containers.firebase_repositories import (
 )
 
 
-# --- INTERFACE ADAPTERS
-
-# --- SERVICE ADAPTERS
-
 # from src.main.compo_root_m365 import build_m365_graph_mail_service
 
 

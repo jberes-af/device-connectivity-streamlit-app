@@ -70,7 +70,10 @@ class GoogleSheetsUserTenantRoleAssignmentRepository(
             for row in raw_rows
         )
 
-    def list_user_tenant_role_assignments(self) -> tuple[UserTenantRoleAssignment, ...]:
+    """
+    def list_user_tenant_role_assignments(
+            self,
+    ) -> tuple[UserTenantRoleAssignment, ...]:
         return tuple(
             self._mapper.to_domain(row)
             for row in self._read_rows()
@@ -87,3 +90,4 @@ class GoogleSheetsUserTenantRoleAssignmentRepository(
         )
 
         return self._mapper.to_domain(raw_row)
+    """

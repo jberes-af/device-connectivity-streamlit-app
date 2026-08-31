@@ -12,17 +12,14 @@ from src.application.ports.resident_repo_ports import (
     ResidentProfileRepositoryPort,
     ResidentContactInformationRepositoryPort,
 )
-from src.application.ports.access_repo_ports import (
-    UserResidentAccessRepositoryPort,
+
+from src.application.services.resident.get_resident_profile_service import (
+    FetchResidentProfileService
 )
 
-"""
-from src.application.use_cases.treatment.patient_uc_dtos import (
-    PatientOverviewDevDTO,
-    PatientAdministrationDTO,
-    RTMEnrollmentSummaryDTO,
-    PatientSearchableRecordDTO,
-"""
+from src.application.services.resident.get_resident_contacts_service import (
+    FetchResidentContactsService,
+)
 
 from src.application.use_cases.residents.main.resident_uc_dtos import (
     ResidentSearchableRecordDTO,
@@ -38,21 +35,13 @@ class GetAllResidentRecordsForUserUseCase:
     def __init__(
             self,
             *,
-            user_resident_access_repository: UserResidentAccessRepositoryPort,
-            resident_profile_repository: ResidentProfileRepositoryPort,
-            resident_contacts_repository: ResidentContactInformationRepositoryPort,
-
-            # patient_repository: PatientRepositoryPort,
-            # patient_diagnosis_repository: PatientDiagnosisRepositoryPort,
-            # patient_provider_repository: PatientProviderRepositoryPort,
-            # patient_payer_repository: PatientPayerRepositoryPort,
-            # rtm_enrollment_repository: RTMEnrollmentRepositoryPort,
-            # provider_repository: ProviderRepositoryPort,
-            # payer_repository: PayerRepositoryPort,
+            fetch_resident_profile_repository: FetchResidentProfileService,
+            fetch_resident_contacts_repository: FetchResidentContactsService,
     ):
-        self._resident_profile_repo = resident_profile_repository
+        self._fetch_profile_repo = fetch_resident_profile_repository
+        self._fetch_contacts_repo = fetch_resident_contacts_repository
+
         self._user_resident_access_repo = user_resident_access_repository
-        self._resident_contacts_repo = resident_contacts_repository
 
     def execute(
             self,
@@ -72,14 +61,24 @@ class GetAllResidentRecordsForUserUseCase:
             r.resident_id for r in user_access_records
         ]
 
-        resident_profiles: dict[str, ResidentProfile] = {
-            r: self._resident_profile_repo.get_by_id(r)
-            for r in resident_ids
+        profiles: tuple[ResidentProfile, ...] = (
+            self._fetch_profile_repo.fetch_resident_profiles(
+                resident_ids=resident_ids)
+        )
+
+        profiles_mapping: dict[str, ResidentProfile] = {
+            r.resident_id: r
+            for r in profiles
         }
 
-        need_case_contacts: dict[str, ResidentInCaseOfNeedContact] = {
-            r: self._resident_contacts_repo.get_by_id(r)
-            for r in resident_ids
+        contacts: tuple[ResidentInCaseOfNeedContact, ...] = (
+            self._fetch_contacts_repo.fetch_resident_contacts_profiles(
+                resident_ids=resident_ids)
+        )
+
+        contacts_mapping: dict[str, ResidentInCaseOfNeedContact] = {
+            r.resident_id: r
+            for r in contacts
         }
 
         # --- RESIDENT RECORDS FOR SEARCHABLE TABLE
@@ -88,8 +87,8 @@ class GetAllResidentRecordsForUserUseCase:
         need_contacts: list[ResidentInCaseOfNeedContact] = []
         table_records: list[ResidentSearchableRecordDTO] = []
         for r in resident_ids:
-            profile: ResidentProfile = resident_profiles[r]
-            contact: ResidentInCaseOfNeedContact = need_case_contacts[r]
+            profile: ResidentProfile = profiles_mapping[r]
+            contact: ResidentInCaseOfNeedContact = contacts_mapping[r]
             table_records.append(
                 ResidentSearchableRecordDTO(
                     resident_id=r,

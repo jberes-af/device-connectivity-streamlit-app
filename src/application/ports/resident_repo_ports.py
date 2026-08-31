@@ -1,6 +1,6 @@
 # /src/application/ports/resident_repo_ports.py
 
-from typing import Protocol
+from typing import Protocol, Sequence
 
 from src.domain.entities.person.resident_entities import (
     ResidentProfile,
@@ -19,6 +19,12 @@ class ResidentProfileRepositoryPort(Protocol):
     ) -> ResidentProfile:
         ...
 
+    def get_by_ids(
+            self,
+            resident_ids: Sequence[str],
+    ) -> tuple[ResidentProfile, ...]:
+        ...
+
 
 class ResidentContactInformationRepositoryPort(Protocol):
 
@@ -28,4 +34,8 @@ class ResidentContactInformationRepositoryPort(Protocol):
     ) -> ResidentInCaseOfNeedContact:
         ...
 
-
+    def get_by_ids(
+            self,
+            resident_ids: Sequence[str],
+    ) -> tuple[ResidentInCaseOfNeedContact, ...]:
+        ...

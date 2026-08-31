@@ -1,4 +1,4 @@
-# /src/gui/streamlit/components/person/priority_items_renderer.py
+# /src/gui/streamlit/components/resident/priority_items_renderer.py
 
 import streamlit as st
 

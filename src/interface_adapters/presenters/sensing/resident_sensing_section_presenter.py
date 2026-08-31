@@ -1,4 +1,4 @@
-# /src/interface_adapters/presenters/person/resident_sensing_section_presenter.py
+# /src/interface_adapters/presenters/resident/resident_sensing_section_presenter.py
 
 from src.application.use_cases.sensing.device_profiles.user_sensing_account_uc_dtos import (
     UserSensingAccountResultDTO,

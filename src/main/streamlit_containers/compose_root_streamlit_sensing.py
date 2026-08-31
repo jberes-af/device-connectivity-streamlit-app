@@ -1,0 +1,19 @@
+# src/main/compose_root_streamlit_sensing.py
+
+from src.gui.streamlit.screens.sensing.sensing_dependencies import (
+    SensingPageDependencies,
+)
+
+from src.main.compose_root_application import (
+    AppContainer,
+)
+
+
+def build_sensing_page_dependencies(
+        *,
+        app_container: AppContainer,
+) -> SensingPageDependencies:
+    return SensingPageDependencies(
+        use_case=app_container.get_device_admin_use_case,
+        presenter=app_container.device_admin_page_presenter,
+    )

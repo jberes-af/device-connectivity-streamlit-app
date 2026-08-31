@@ -1,6 +1,6 @@
 # /src/infrastructure/persistence/mappers/resident/user_resident_access_row_mapper.py
 
-# from src.domain.enums.person.tenant_enums import UserRoleEnum
+# from src.domain.enums.resident.tenant_enums import UserRoleEnum
 from src.domain.enums.access.resident_enums import ResidentAccessLevelEnum
 from src.domain.entities.person.resident_entities import UserResidentAccess
 

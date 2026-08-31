@@ -4,7 +4,10 @@ from typing import Protocol, Sequence
 
 from src.domain.enums.access.role_enums import UserRoleEnum
 
-from src.domain.entities.access.authorization_entities import RolePermission
+from src.domain.entities.access.authorization_entities import (
+    RolePermission,
+    RoleResourceScope,
+)
 
 from src.domain.entities.access.membership_entities import (
     UserTenantMembership,
@@ -55,4 +58,14 @@ class UserResourceAssignmentRepositoryPort(Protocol):
             user_id: str,
             tenant_id: str,
     ) -> tuple[UserResourceAssignment, ...]:
+        ...
+
+
+class RoleResourceScopeRepositoryPort(Protocol):
+
+    def list_for_roles(
+            self,
+            *,
+            roles: Sequence[UserRoleEnum],
+    ) -> tuple[RoleResourceScope, ...]:
         ...

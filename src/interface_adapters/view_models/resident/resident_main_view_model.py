@@ -1,4 +1,4 @@
-# /src/interface_adapters/view_models/person/resident_main_view_model.py
+# /src/interface_adapters/view_models/resident/resident_main_view_model.py
 
 from dataclasses import dataclass
 from enum import StrEnum

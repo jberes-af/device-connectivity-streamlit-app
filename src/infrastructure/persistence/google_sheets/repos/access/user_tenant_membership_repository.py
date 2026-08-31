@@ -36,7 +36,7 @@ class GoogleSheetsUserTenantMembershipRepository(
     UserTenantMembershipRepositoryPort,
 ):
     TABLE_NAME = "user_tenant_membership"
-    ID_COLUMN = UserTenantMembershipColumns.MEMBERSHIP_ID
+    # ID_COLUMN = UserTenantMembershipColumns.MEMBERSHIP_ID
 
     def __init__(
             self,

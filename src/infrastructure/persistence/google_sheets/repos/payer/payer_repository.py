@@ -28,7 +28,6 @@ from src.infrastructure.persistence.google_sheets.mappers.payer.payer_row_mapper
     PayerRowMapper,
 )
 
-
 from src.infrastructure.persistence.google_sheets.schemas.payer.payer_columns import (
     PayerColumns,
 )
@@ -38,19 +37,16 @@ class GoogleSheetsPayerRepository(
     GoogleSheetsRepository,
     PayerRepositoryPort,
 ):
-
     TABLE_NAME = "payer"
     ID_COLUMN = PayerColumns.PAYER_ID
 
-
     def __init__(
-        self,
-        *,
-        query_service: GoogleSheetsQueryService,
-        catalog: GoogleSheetCatalog,
-        mapper: PayerRowMapper,
+            self,
+            *,
+            query_service: GoogleSheetsQueryService,
+            catalog: GoogleSheetCatalog,
+            mapper: PayerRowMapper,
     ) -> None:
-
         super().__init__(
             query_service=query_service,
             catalog=catalog,
@@ -59,12 +55,10 @@ class GoogleSheetsPayerRepository(
         self._mapper = mapper
 
     def list_payers(self) -> tuple[PayerProfile, ...]:
-
         return tuple(
             self._mapper.to_domain(row)
             for row in self._read_rows()
         )
-
 
     def get_by_ids(
             self,
@@ -80,7 +74,6 @@ class GoogleSheetsPayerRepository(
             self._mapper.to_domain(row)
             for row in raw_rows
         )
-
 
     def get_by_id(
             self,

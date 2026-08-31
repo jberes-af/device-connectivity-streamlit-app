@@ -17,7 +17,7 @@ from src.interface_adapters.view_models.widgets.card_grid_view_model import (
     CardGridViewModel
 )
 
-# from src.interface_adapters.presenters.person.searchable_table_presenter import (
+# from src.interface_adapters.presenters.resident.searchable_table_presenter import (
 #     ResidentRecordsSearchableTablePresenter,
 # )
 
@@ -48,7 +48,7 @@ class PayerSectionPresenter:
                 id="resident_profile",
                 title="Resident Profile",
                 card_text=(
-                    "View person demographics, contact information, "
+                    "View resident demographics, contact information, "
                     "and administrative details."
                 ),
                 button_label="View profile",
@@ -76,7 +76,7 @@ class PayerSectionPresenter:
                 title="Analytics",
                 card_text=(
                     "View trends, comparisons, baselines, "
-                    "and person activity insights."
+                    "and resident activity insights."
                 ),
                 button_label="View analytics",
             ),

@@ -6,7 +6,7 @@ from src.application.ports.resident_repo_ports import (
 )
 
 from src.domain.entities.person.resident_entities import (
-    ResidentContactInformation,
+    ResidentInCaseOfNeedContact,
 )
 
 from src.infrastructure.persistence.common.types import RawRow
@@ -55,12 +55,12 @@ class GoogleSheetsResidentContactInformationRepository(
 
     def get_by_id(
             self,
-            patient_id: str,
-    ) -> ResidentContactInformation:
+            resident_id: str,
+    ) -> ResidentInCaseOfNeedContact:
         raw_row = self._find_single_row(
             rows=self._read_rows(),
             column_name=self.ID_COLUMN,
-            value=patient_id,
+            value=resident_id,
         )
 
         return self._mapper.to_domain(raw_row)

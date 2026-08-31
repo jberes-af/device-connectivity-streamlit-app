@@ -1,5 +1,7 @@
 # /src/infrastructure/persistence/google_sheets/repos/resident_profile_repository.py
 
+from typing import Sequence
+
 from src.application.ports.resident_repo_ports import (
     ResidentProfileRepositoryPort,
 )
@@ -70,15 +72,17 @@ class GoogleSheetsResidentProfileRepository(
 
         return self._mapper.to_domain(raw_row)
 
-    """
-    def append_open_event(
+    def get_by_ids(
             self,
-            event: ResidentProfile,
-    ) -> None:
-        raw_row: RawRow = self._mapper.to_row(event)
-
-        self._append_raw_row(
-            row=raw_row,
-            columns=ResidentProfileColumns.ORDER,
+            resident_ids: Sequence[str],
+    ) -> tuple[ResidentProfile, ...]:
+        raw_rows: list[RawRow] = self._find_rows_for_multiple_values(
+            rows=self._read_rows(),
+            column_name=self.ID_COLUMN,
+            values=resident_ids,
         )
-    """
+
+        return tuple(
+            self._mapper.to_domain(row)
+            for row in raw_rows
+        )

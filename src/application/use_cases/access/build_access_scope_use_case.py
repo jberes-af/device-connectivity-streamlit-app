@@ -2,11 +2,36 @@
 
 from src.application.context import AccessScope
 
-from src.application.ports.access_repo_ports import (
-    RolePermissionRepositoryPort,
-    UserResourceAssignmentRepositoryPort,
-    UserTenantMembershipRepositoryPort,
-    UserTenantRoleAssignmentRepositoryPort,
+from src.domain.enums.access.permission_enums import PermissionEnum
+
+from src.domain.enums.access.role_enums import UserRoleEnum
+
+from src.domain.entities.access.membership_entities import (
+    UserTenantMembership,
+    UserTenantRoleAssignment,
+)
+
+from src.domain.entities.access.authorization_entities import (
+    RolePermission,
+    RoleResourceScope,
+)
+
+from src.domain.entities.access.resource_access_entities import (
+    UserResourceAssignment,
+)
+
+from src.application.services.access.get_user_tenant_services import (
+    FetchUserTenantMembershipService,
+    FetchUserTenantRoleAssignmentService,
+)
+
+from src.application.services.access.get_roles_service import (
+    FetchRolePermissionService,
+    FetchRoleResourceScopeService,
+)
+
+from src.application.services.access.get_user_resource_service import (
+    FetchUserResourceAssignmentService
 )
 
 from src.application.use_cases.access.access_scope_uc_dtos import (
@@ -23,104 +48,162 @@ from src.domain.enums.access.resource_access_enums import (
 class BuildAccessScopeUseCase:
 
     def __init__(
-        self,
-        *,
-        membership_repository: UserTenantMembershipRepositoryPort,
-        role_assignment_repository: UserTenantRoleAssignmentRepositoryPort,
-        role_permission_repository: RolePermissionRepositoryPort,
-        resource_assignment_repository: UserResourceAssignmentRepositoryPort,
+            self,
+            *,
+            fetch_user_tenant_membership_service: FetchUserTenantMembershipService,
+            fetch_user_tenant_role_assignment_service: FetchUserTenantRoleAssignmentService,
+            fetch_role_permission_service: FetchRolePermissionService,
+            fetch_user_resource_assignment_service: FetchUserResourceAssignmentService,
+            fetch_role_resource_scope_service: FetchRoleResourceScopeService,
     ) -> None:
-        self._membership_repository = membership_repository
-        self._role_assignment_repository = role_assignment_repository
-        self._role_permission_repository = role_permission_repository
-        self._resource_assignment_repository = resource_assignment_repository
+        self._fetch_user_tenant_membership_service = fetch_user_tenant_membership_service
+        self._fetch_user_tenant_role_service = fetch_user_tenant_role_assignment_service
+        self._fetch_role_permission_service = fetch_role_permission_service
+        self._fetch_user_resource_service = fetch_user_resource_assignment_service
+        self._fetch_resource_scope_service = fetch_role_resource_scope_service
 
     def execute(
-        self,
-        request: BuildAccessScopeRequestDTO,
+            self,
+            request: BuildAccessScopeRequestDTO,
     ) -> BuildAccessScopeResultDTO:
+        # --- RESOLVE MEMBERSHIP
 
-        # 1. Resolve tenant membership
-        membership = self._membership_repository.get_by_user_and_tenant(
-            user_id=request.user_id,
-            tenant_id=request.tenant_id,
-        )
+        membership: UserTenantMembership = (
+            self._fetch_user_tenant_membership_service
+            .fetch_user_tenant_membership(
+                user_id=request.user_id,
+                tenant_id=request.tenant_id,
+            ))
 
         if not membership.is_active:
             raise PermissionError(
                 "User does not have an active tenant membership."
             )
 
-        # 2. Resolve roles
-        role_assignments = (
-            self._role_assignment_repository.list_for_membership_id(
+        # --- RESOLVE ROLES
+
+        role_assignments: tuple[UserTenantRoleAssignment, ...] = (
+            self._fetch_user_tenant_role_service
+            .fetch_user_tenant_role_assignments_for_membership(
                 membership_id=membership.membership_id,
             )
         )
 
-        roles = frozenset(
+        roles: frozenset[UserRoleEnum] = frozenset(
             assignment.role
             for assignment in role_assignments
             if assignment.is_active
         )
 
-        # 3. Resolve permissions
-        role_permissions = self._role_permission_repository.list_for_roles(
-            roles=tuple(roles),
-        )
+        if not roles:
+            raise PermissionError(
+                "User does not have an active role."
+            )
 
-        permissions = frozenset(
+        # --- RESOLVE PERMISSIONS
+
+        role_permissions: tuple[RolePermission, ...] = (
+            self._fetch_role_permission_service.fetch_permissions_for_roles(
+                roles=tuple(roles),
+            ))
+
+        permissions: frozenset[PermissionEnum] = frozenset(
             role_permission.permission
             for role_permission in role_permissions
         )
 
-        # 4. Resolve explicit resource assignments
-        resource_assignments = (
-            self._resource_assignment_repository.list_for_user_and_tenant(
+        # --- RESOLVE RESOURCE SCOPES
+
+        role_resource_scopes: tuple[
+            RoleResourceScope, ...
+        ] = (
+            self._fetch_resource_scope_service
+            .fetch_resource_scopes_for_roles(
+                roles=tuple(roles),
+            )
+        )
+
+        resident_scope = self._resolve_resource_scope(
+            resource_type=AccessResourceTypeEnum.RESIDENT,
+            role_resource_scopes=role_resource_scopes,
+        )
+
+        sensor_scope = self._resolve_resource_scope(
+            resource_type=AccessResourceTypeEnum.SENSOR,
+            role_resource_scopes=role_resource_scopes,
+        )
+
+        gateway_scope = self._resolve_resource_scope(
+            resource_type=AccessResourceTypeEnum.GATEWAY,
+            role_resource_scopes=role_resource_scopes,
+        )
+
+        # --- RESOLVE RESOURCE ASSIGNMENTS
+
+        resource_assignments: tuple[UserResourceAssignment, ...] = (
+            self._fetch_user_resource_service.fetch_resource_assignments_for_user(
                 user_id=request.user_id,
                 tenant_id=request.tenant_id,
             )
         )
 
-        active_assignments = tuple(
+        active_assignments: tuple[UserResourceAssignment, ...] = tuple(
             assignment
             for assignment in resource_assignments
             if assignment.is_active
         )
 
-        resident_ids = frozenset(
+        resident_ids: frozenset[str] = frozenset(
             assignment.resource_id
             for assignment in active_assignments
             if assignment.resource_type
             == AccessResourceTypeEnum.RESIDENT
         )
 
-        sensor_ids = frozenset(
+        sensor_ids: frozenset[str] = frozenset(
             assignment.resource_id
             for assignment in active_assignments
             if assignment.resource_type
             == AccessResourceTypeEnum.SENSOR
         )
 
-        gateway_ids = frozenset(
+        gateway_ids: frozenset[str] = frozenset(
             assignment.resource_id
             for assignment in active_assignments
             if assignment.resource_type
             == AccessResourceTypeEnum.GATEWAY
         )
 
-        # 5. Build resolved scope
+        # --- RESOLVE TENANT BOUNDARY
+
+        has_platform_scope = any(
+            scope == ResourceScopeEnum.PLATFORM
+            for scope in (
+                resident_scope,
+                sensor_scope,
+                gateway_scope,
+            )
+        )
+
+        tenant_ids: frozenset[str] = (
+            frozenset()
+            if has_platform_scope
+            else frozenset({
+                request.tenant_id,
+            })
+        )
+
+        # BUILD ACCESS SCOPE
+
         access_scope = AccessScope(
             user_id=request.user_id,
-            tenant_id=request.tenant_id,
-
             roles=roles,
             permissions=permissions,
+            resident_scope=resident_scope,
+            sensor_scope=sensor_scope,
+            gateway_scope=gateway_scope,
 
-            resident_scope=ResourceScopeEnum.ASSIGNED,
-            sensor_scope=ResourceScopeEnum.ASSIGNED,
-            gateway_scope=ResourceScopeEnum.ASSIGNED,
-
+            tenant_ids=tenant_ids,
             resident_ids=resident_ids,
             sensor_ids=sensor_ids,
             gateway_ids=gateway_ids,
@@ -128,4 +211,52 @@ class BuildAccessScopeUseCase:
 
         return BuildAccessScopeResultDTO(
             access_scope=access_scope,
+        )
+
+    @staticmethod
+    def _resolve_resource_scope(
+            *,
+            resource_type: AccessResourceTypeEnum,
+            role_resource_scopes: tuple[
+                RoleResourceScope, ...
+            ],
+    ) -> ResourceScopeEnum:
+
+        matching_scopes = tuple(
+            item.scope
+            for item in role_resource_scopes
+            if item.resource_type == resource_type
+        )
+
+        if not matching_scopes:
+            return ResourceScopeEnum.ASSIGNED
+
+        scope_rank = {
+            ResourceScopeEnum.ASSIGNED: 1,
+            ResourceScopeEnum.TENANT: 2,
+            ResourceScopeEnum.PLATFORM: 3,
+        }
+
+        return max(
+            matching_scopes,
+            key=lambda scope: scope_rank[scope],
+        )
+
+    @staticmethod
+    def _resolve_assigned_resource_ids(
+            *,
+            resource_type: AccessResourceTypeEnum,
+            scope: ResourceScopeEnum,
+            assignments: tuple[
+                UserResourceAssignment, ...
+            ],
+    ) -> frozenset[str]:
+
+        if scope != ResourceScopeEnum.ASSIGNED:
+            return frozenset()
+
+        return frozenset(
+            assignment.resource_id
+            for assignment in assignments
+            if assignment.resource_type == resource_type
         )

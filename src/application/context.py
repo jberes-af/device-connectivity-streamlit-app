@@ -15,15 +15,15 @@ class UserContext:
     tenant_id: str
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class AccessScope:
     user_id: str
-    tenant_id: str
     roles: frozenset[UserRoleEnum]
     permissions: frozenset[PermissionEnum]
     resident_scope: ResourceScopeEnum
     sensor_scope: ResourceScopeEnum
     gateway_scope: ResourceScopeEnum
+    tenant_ids: frozenset[str]
     resident_ids: frozenset[str]
     sensor_ids: frozenset[str]
     gateway_ids: frozenset[str]
