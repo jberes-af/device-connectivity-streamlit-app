@@ -2,6 +2,9 @@
 
 from src.gui.streamlit.routing.route_types import Route
 
+from src.application.context import AccessScope
+from src.main.compose_root_application import AppContainer
+
 from src.gui.streamlit.screens.admin.administration_screen import (
     render_administration_page,
 )
@@ -40,6 +43,8 @@ from src.gui.streamlit.screens.sensing.main_sensing_view import (
 
 
 def build_routes(
+        app_container: AppContainer,
+        access_scope: AccessScope,
         dashboard_dependencies: DashboardPageDependencies,
         sensing_dependencies: SensingPageDependencies,
 ) -> tuple[Route, ...]:
@@ -53,6 +58,12 @@ def build_routes(
             dependencies=sensing_dependencies,
         )
 
+    def render_residents() -> None:
+        render_residents_page(
+            container=app_container,
+            access_scope=access_scope,
+        )
+
     return (
         Route(
             route_id="dashboard",
@@ -63,7 +74,7 @@ def build_routes(
         Route(
             route_id="residents",
             label="Residents",
-            legacy_handler=render_residents_page,
+            handler=render_residents,
             icon=":material/groups:",
         ),
         Route(
