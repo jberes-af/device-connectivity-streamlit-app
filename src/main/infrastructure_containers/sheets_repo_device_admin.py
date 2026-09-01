@@ -29,7 +29,7 @@ from src.infrastructure.persistence.google_sheets.mappers.access.resident_sensor
     ResidentSensorLinkRowMapper,
 )
 
-from src.infrastructure.persistence.google_sheets.repos.device.device_profile_repository import (
+from src.infrastructure.persistence.google_sheets.repos.device.device_admin_repository import (
     GoogleSheetsDeviceAdministrationProfileRepository,
 )
 

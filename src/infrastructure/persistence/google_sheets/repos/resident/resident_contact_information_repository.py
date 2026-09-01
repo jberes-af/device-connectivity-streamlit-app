@@ -80,15 +80,6 @@ class GoogleSheetsResidentContactInformationRepository(
             )
         )
 
-        print()
-        print("*******************")
-
-        print('raw rows')
-        print(raw_rows)
-
-        print("*******************")
-        print()
-
         return tuple(
             self._mapper.to_domain(row)
             for row in raw_rows

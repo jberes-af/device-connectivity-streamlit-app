@@ -84,6 +84,12 @@ class DeviceAdministrationRepositoryPort(Protocol):
     ) -> tuple[DeviceAdministrationProfile, ...]:
         ...
 
+    def list_devices_for_tenant_ids(
+            self,
+            tenant_ids: tuple[str, ...],
+    ) -> tuple[DeviceAdministrationProfile, ...]:
+        ...
+
 
 class ResidentGatewayLinkRepositoryPort(Protocol):
 

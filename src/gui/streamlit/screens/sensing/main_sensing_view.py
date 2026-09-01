@@ -1,8 +1,10 @@
 # /src/gui/streamlit/screens/sensing/main_sensing_view.py
 
-from src.application.use_cases.sensing.sensing_admin.get_device_admin_uc import (
-    GetDevicesAdministrationRequestDTO,
-    GetDeviceAdministrationResultDTO,
+import streamlit as st
+
+from src.application.use_cases.sensing.sensing_admin.build_view.build_admin_view_uc_dtos import (
+    BuildSensingAdminViewRequestDTO,
+    BuildSensingAdminViewResultDTO,
 )
 
 from src.gui.streamlit.screens.sensing.sensing_dependencies import (
@@ -14,7 +16,7 @@ from src.gui.streamlit.screens.sensing.main_sensing_renderer import (
 )
 
 from src.interface_adapters.view_models.sensing.device_admin_view_models import (
-    DevicesAdministrationViewModel,
+    SensingAdministrationViewModel,
 )
 
 
@@ -22,9 +24,15 @@ def render_sensing_page(
         *,
         dependencies: SensingPageDependencies,
 ) -> None:
-    request = GetDevicesAdministrationRequestDTO()
+    selected_tenant_name = st.session_state.get(
+        "sensing_selected_tenant_name"
+    )
 
-    result: GetDeviceAdministrationResultDTO = (
+    request = BuildSensingAdminViewRequestDTO(
+        selected_tenant_name=selected_tenant_name,
+    )
+
+    result: BuildSensingAdminViewResultDTO = (
         dependencies
         .use_case
         .execute(
@@ -32,7 +40,7 @@ def render_sensing_page(
         )
     )
 
-    view_model: DevicesAdministrationViewModel = (
+    view_model: SensingAdministrationViewModel = (
         dependencies
         .presenter
         .present(

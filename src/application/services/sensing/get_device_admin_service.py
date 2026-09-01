@@ -30,3 +30,11 @@ class FetchDeviceAdminService:
         return self._device_admin_repo.list_devices_for_tenant_id(
             tenant_id=tenant_id
         )
+
+    def fetch_device_admin_profiles_for_tenant_ids(
+            self,
+            tenant_ids: tuple[str, ...],
+    ) -> tuple[DeviceAdministrationProfile, ...]:
+        return self._device_admin_repo.list_devices_for_tenant_ids(
+            tenant_ids=tenant_ids
+        )

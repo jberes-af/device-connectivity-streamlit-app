@@ -33,6 +33,7 @@ class FetchResidentContactsService:
             self,
             resident_ids: Sequence[str],
     ) -> tuple[ResidentInCaseOfNeedContact, ...]:
+        """
         print()
         print("CONTACT SERVICE DEBUG")
         print("repo object:", self._contacts_repo)
@@ -46,12 +47,10 @@ class FetchResidentContactsService:
         )
         print("get_by_ids:", getattr(self._contacts_repo, "get_by_ids", None))
         print()
+        """
 
         result = self._contacts_repo.get_by_ids(
             resident_ids=resident_ids,
         )
-
-        print("repository result:", result)
-        print("repository result type:", type(result))
 
         return result

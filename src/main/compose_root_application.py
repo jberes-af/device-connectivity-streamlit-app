@@ -48,8 +48,12 @@ from src.application.use_cases.residents.rtm.get_rtm_enrollment_uc import (
     GetRtmEnrollmentUseCase
 )
 
-from src.application.use_cases.sensing.sensing_admin.get_device_admin_uc import (
+from src.application.use_cases.sensing.sensing_admin.admin_profiles.get_device_admin_uc import (
     GetDeviceAdministrationUseCase,
+)
+
+from src.application.use_cases.sensing.sensing_admin.build_view.build_sensing_admin_view_use_case import (
+    BuildSensingAdministrationViewUseCase
 )
 
 from src.application.use_cases.residents.sensing.get_resident_sensing_profile_uc import (
@@ -60,7 +64,9 @@ from src.application.use_cases.sensing.trends.build_sensor_events_use_case impor
     BuildSensorEventsUseCase,
 )
 
-# from src.application.use_cases.treatment.get_patient_overview_uc import (GetPatientOverviewUseCase, )
+from src.application.use_cases.tenant.get_tenant_profiles_uc import (
+    GetTenantProfilesUseCase,
+)
 
 # --- INFRASTRUCTURE ADAPTERS
 
@@ -80,8 +86,8 @@ from src.interface_adapters.presenters.residents.treatment.treatment_section_tab
     TreatmentSectionPresenter,
 )
 
-from src.interface_adapters.presenters.sensing.device_admin.device_admin_presenter import (
-    DeviceAdministrationPresenter,
+from src.interface_adapters.presenters.sensing.sensing_admin.sensing_admin_presenter import (
+    SensingAdministrationPresenter,
 )
 
 
@@ -123,7 +129,12 @@ class AppContainer:
     # --- DEVICE / SENSING ADMIN
 
     get_device_admin_use_case: GetDeviceAdministrationUseCase
-    device_admin_page_presenter: DeviceAdministrationPresenter
+    build_sensing_admin_view_use_case: BuildSensingAdministrationViewUseCase
+    sensing_admin_page_presenter: SensingAdministrationPresenter
+
+    # --- TENANT
+
+    get_tenant_profiles_use_case: GetTenantProfilesUseCase
 
 
 def build_application_container(
@@ -195,12 +206,21 @@ def build_application_container(
         patient_provider_repository=patient_repos.patient_provider_repository,
     )
 
-    # --- RESIDENT SENSING RECORDS
+    # --- RESIDENT SENSING RECORDS??? USER
 
     get_user_sensing_account = GetResidentSensingProfileUseCase(
         user_sensing_repository=sensing_repos.user_sensing_repository,
         gateway_repository=sensing_repos.gateway_repository,
         sensor_repository=sensing_repos.sensor_device_repository,
+    )
+
+    # --- DEVICE ADMIN
+
+    get_device_administration = GetDeviceAdministrationUseCase(
+        fetch_device_admin_service=_repo.fetch_device_admin_service(),
+        gateway_repository=sensing_repos.gateway_repository,
+        sensor_repository=sensing_repos.sensor_device_repository,
+        user_sensing_repository=sensing_repos.user_sensing_repository,
     )
 
     # --- SENSOR EVENTS
@@ -209,12 +229,17 @@ def build_application_container(
         sensor_event_repository=sensing_repos.sensor_event_repository,
     )
 
-    get_device_administration = GetDeviceAdministrationUseCase(
-        fetch_device_admin_service=_repo.fetch_device_admin_service(),
-        fetch_tenant_service=_repo.fetch_tenant_admin_service(),
-        gateway_repository=sensing_repos.gateway_repository,
-        sensor_repository=sensing_repos.sensor_device_repository,
-        user_sensing_repository=sensing_repos.user_sensing_repository,
+    # --- TENANT RECORDS
+
+    get_tenant_profiles = GetTenantProfilesUseCase(
+        fetch_tenant_service=_repo.fetch_tenant_admin_service()
+    )
+
+    # --- COMPOSITE: SENSING ADMIN
+    build_main_sensing_admin_view = BuildSensingAdministrationViewUseCase(
+        get_tenant_profiles_use_case=get_tenant_profiles,
+        get_device_admin_profiles_use_case=get_device_administration,
+
     )
 
     return AppContainer(
@@ -238,5 +263,8 @@ def build_application_container(
         build_sensor_event_timeline_use_case=build_sensor_events,
 
         get_device_admin_use_case=get_device_administration,
-        device_admin_page_presenter=DeviceAdministrationPresenter(),
+        build_sensing_admin_view_use_case=build_main_sensing_admin_view,
+        sensing_admin_page_presenter=SensingAdministrationPresenter(),
+
+        get_tenant_profiles_use_case=get_tenant_profiles,
     )

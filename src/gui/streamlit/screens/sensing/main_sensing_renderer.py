@@ -7,7 +7,7 @@ from src.interface_adapters.view_models.common.property_field_view_model import 
 )
 
 from src.interface_adapters.view_models.sensing.device_admin_view_models import (
-    DevicesAdministrationViewModel,
+    SensingAdministrationViewModel,
     GatewayOverviewRowViewModel,
     SensorOverviewRowViewModel,
 )
@@ -22,11 +22,27 @@ from src.gui.streamlit.components.cards.card_property_value_renderer_hor import 
 
 
 def render_main_sensing(
-        view_model: DevicesAdministrationViewModel,
+        view_model: SensingAdministrationViewModel,
 ) -> None:
     st.title("🚧 :material/sensors: Sensing")
 
     st.subheader(view_model.title)
+
+    # --- TENANT SELECTBOX
+
+    tenant_names = tuple(
+        tenant.tenant_name
+        for tenant in view_model.tenants
+    )
+
+    if tenant_names:
+        col, _ = st.columns([1, 2])
+        with col:
+            st.selectbox(
+                "Select Tenant",
+                options=tenant_names,
+                key="sensing_selected_tenant_name",
+            )
 
     # --- SUMMARY
 
@@ -34,21 +50,11 @@ def render_main_sensing(
         view_model=view_model,
     )
 
-    # --- TENANT SELECTBOX
-
-    selected_option = st.selectbox(
-        "Select Tenant",
-        options=[
-            vm.tenant_display_state_zip
-            for vm in view_model.tenants
-        ]
-    )
-
-    st.write(selected_option)
-
     # --- DETAILS
 
     st.divider()
+
+    st.subheader("Device Details")
 
     sensor_tab, gateway_tab = st.tabs(
         [
@@ -75,7 +81,7 @@ def render_main_sensing(
 
 def _render_summary(
         *,
-        view_model: DevicesAdministrationViewModel,
+        view_model: SensingAdministrationViewModel,
 ) -> None:
     summary = view_model.summary
 

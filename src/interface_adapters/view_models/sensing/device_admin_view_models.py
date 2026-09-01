@@ -6,7 +6,7 @@ from src.domain.enums.tenant.tenant_enums import TenantTypeEnum
 
 
 @dataclass(frozen=True)
-class DeviceSummaryViewModel:
+class SensingSummaryViewModel:
     sensor_count: int
     gateway_count: int
     assigned_sensor_count: int
@@ -59,28 +59,26 @@ class GatewayOverviewRowViewModel:
 
 
 @dataclass(frozen=True)
-class TenantViewModel:
+class TenantOptionViewModel:
     tenant_id: str
     tenant_name: str
     tenant_name_label: str
-    tenant_type: TenantTypeEnum
-    tenant_street: str
-    tenant_city: str
-    tenant_state: str
-    tenant_postal_code: str
-    tenant_display_state_zip: str
-    tenant_telephone: str
-    tenant_manager: str
+    # tenant_type: TenantTypeEnum
+    # tenant_street: str
+    # tenant_city: str
+    # tenant_state: str
+    # tenant_postal_code: str
+    # tenant_display_state_zip: str
+    # tenant_telephone: str
+    # tenant_manager: str
     # timezone: str | None = None
 
 
 @dataclass(frozen=True)
-class DevicesAdministrationViewModel:
+class SensingAdministrationViewModel:
     title: str
-
-    summary: DeviceSummaryViewModel
-
-    tenants: tuple[TenantViewModel, ...]
-
+    tenants: tuple[TenantOptionViewModel, ...]
+    selected_tenant_name: str | None
+    summary: SensingSummaryViewModel
     sensors: tuple[SensorOverviewRowViewModel, ...]
     gateways: tuple[GatewayOverviewRowViewModel, ...]
