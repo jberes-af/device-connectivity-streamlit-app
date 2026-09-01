@@ -309,11 +309,6 @@
         "file_name": "user_admin",
         "worksheet_name": "user_profile",
         "worksheet_range": "A1:F"
-      },
-      "user_tenant_membership": {
-        "file_name": "user_admin",
-        "worksheet_name": "user_tenant_membership",
-        "worksheet_range": "A1:D"
       }
     }
   }

@@ -192,7 +192,7 @@ class BuildAccessScopeUseCase:
 
         # --- RESOLVE TENANT BOUNDARY
 
-        has_platform_scope = any(
+        has_only_platform_scopes = all(
             scope == ResourceScopeEnum.PLATFORM
             for scope in (
                 resident_scope,
@@ -203,7 +203,7 @@ class BuildAccessScopeUseCase:
 
         tenant_ids: frozenset[str] = (
             frozenset()
-            if has_platform_scope
+            if has_only_platform_scopes
             else frozenset({
                 request.tenant_id,
             })
