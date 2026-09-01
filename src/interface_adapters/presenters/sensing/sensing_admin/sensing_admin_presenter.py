@@ -68,21 +68,47 @@ class SensingAdministrationPresenter:
             if profile.attached_user_ids
         )
 
+        offline_sensor_ids: tuple[str, ...] = tuple(
+            status.sensor_id
+            for status in result.sensor_online_statuses
+            if status.connectivity_state != "ONLINE"
+        )
+
+        offline_sensor_count: int = len(offline_sensor_ids)
+        online_sensor_count: int = sensor_count - offline_sensor_count
+
+        offline_sensor_percent: float = (
+            100.0 * offline_sensor_count / sensor_count
+            if sensor_count
+            else 0.0
+        )
+
+        offline_sensors: tuple[OfflineSensorRowViewModel, ...] = (
+            self._present_offline_sensor(
+                profiles=result.sensor_profiles,
+                connectivity_statuses=result.sensor_online_statuses,
+                last_activations=result.most_recent_events,
+                offline_sensor_ids=offline_sensor_ids,
+            )
+        )
+
+        """
         online_sensor_count: int = sum(
             1
             for status in result.sensor_online_statuses
             if status.connectivity_state == "ONLINE"
         )
 
+        offline_sensor_count: int = sensor_count - online_sensor_count
+
         offline_sensor_ids: tuple[str, ...] = ()
-        if online_sensor_count:
+        if offline_sensor_count > 0:
             offline_sensor_ids = tuple([
                 status.sensor_id
                 for status in result.sensor_online_statuses
                 if status.connectivity_state != "ONLINE"
             ])
 
-        offline_sensor_count: int = sensor_count - online_sensor_count
 
         offline_sensor_percent = (
             100.0 * offline_sensor_count / sensor_count
@@ -97,6 +123,7 @@ class SensingAdministrationPresenter:
                 last_activations=result.most_recent_events,
                 offline_sensor_ids=offline_sensor_ids,
             ))
+        """
 
         summary = SensingSummaryViewModel(
             sensor_count=sensor_count,
