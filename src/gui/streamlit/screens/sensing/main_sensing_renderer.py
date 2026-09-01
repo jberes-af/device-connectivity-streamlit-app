@@ -57,6 +57,10 @@ def render_main_sensing(
 
     st.subheader("Device Details")
 
+    # st.write("")
+    st.caption("All timestamps are shown in U.S. Eastern Time.")
+    # st.write("")
+
     sensor_tab, gateway_tab, offline_tab = st.tabs(
         [
             f"Sensor Profiles ({view_model.summary.sensor_count})",
