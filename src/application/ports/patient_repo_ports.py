@@ -2,7 +2,7 @@
 
 from typing import Protocol, Sequence
 
-from src.domain.entities.person.patient_entities import (
+from src.domain.entities.resident.patient_entities import (
     PatientPayer,
     PatientProvider,
     PatientDiagnosis,

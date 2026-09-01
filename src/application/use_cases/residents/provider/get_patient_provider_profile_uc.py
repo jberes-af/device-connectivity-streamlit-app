@@ -2,7 +2,7 @@
 
 from src.domain.entities.care.provider_entities import ProviderProfile
 
-from src.domain.entities.person.patient_entities import PatientProvider
+from src.domain.entities.resident.patient_entities import PatientProvider
 
 from src.application.ports.patient_repo_ports import (
     PatientProviderRepositoryPort,

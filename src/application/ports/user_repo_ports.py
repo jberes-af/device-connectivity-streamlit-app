@@ -2,7 +2,7 @@
 
 from typing import Protocol
 
-from src.domain.entities.person.user_entities import UserProfile
+from src.domain.entities.user.user_entities import UserProfile
 
 
 class UserProfileRepositoryPort(Protocol):

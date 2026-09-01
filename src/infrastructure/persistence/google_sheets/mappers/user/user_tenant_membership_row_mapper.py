@@ -2,7 +2,7 @@
 
 from src.domain.enums.access.permission_enums import UserRoleEnum
 
-from src.domain.entities.person.user_entities import UserTenantMembership
+from src.domain.entities.user.user_entities import UserTenantMembership
 
 from src.infrastructure.persistence.common.types import RawRow
 

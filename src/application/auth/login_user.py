@@ -1,7 +1,7 @@
 # /src/application/auth/login_user.py
 
 
-from src.domain.entities.person.user_entities import UserTenantMembership, UserProfile
+from src.domain.entities.user.user_entities import UserTenantMembership, UserProfile
 
 from src.application.auth.dto import (
     AuthenticatedUserDTO,

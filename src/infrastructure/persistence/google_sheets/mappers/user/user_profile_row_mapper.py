@@ -1,7 +1,7 @@
 # /src/infrastructure/persistence/google_sheets/mappers/tenant/user_profile_row_mapper.py
 
 
-from src.domain.entities.person.user_entities import UserProfile
+from src.domain.entities.user.user_entities import UserProfile
 
 from src.infrastructure.persistence.common.types import RawRow
 

@@ -2,7 +2,7 @@
 
 import logging
 
-from src.domain.entities.person.patient_entities import PatientDiagnosis
+from src.domain.entities.resident.patient_entities import PatientDiagnosis
 
 from src.domain.entities.care.rtm_entities import RtmMedicalNecessity
 
@@ -16,7 +16,7 @@ from src.application.services.care.get_diagnosis_definition_service import (
     FetchDiagnosisDefinitionService
 )
 
-from src.application.services.person.get_patient_diagnosis_service import (
+from src.application.services.resident.get_patient_diagnosis_service import (
     FetchPatientDiagnosisService
 )
 

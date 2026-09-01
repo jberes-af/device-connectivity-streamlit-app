@@ -3,7 +3,7 @@
 from dataclasses import dataclass
 from datetime import date
 
-from src.domain.enums.access.status_and_method_enums import PatientProviderRoleEnum
+from src.domain.enums.care.provider_enums import PatientProviderRoleEnum
 
 
 @dataclass(frozen=True)

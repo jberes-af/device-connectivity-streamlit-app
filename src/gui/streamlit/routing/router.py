@@ -4,9 +4,7 @@ from collections.abc import Callable
 
 import streamlit as st
 
-from src.application.use_cases.access.access_scope_uc_dtos import (
-    AccessScopeResultDTO,
-)
+from src.application.context import AccessScope
 
 from src.gui.streamlit.routing.route_types import Route
 from src.gui.streamlit.routing.routes import build_routes
@@ -48,7 +46,7 @@ def render_router(
         app_name: str,
         default_route: str,
         container: AppContainer,
-        access_scope: AccessScopeResultDTO,
+        access_scope: AccessScope,
         dashboard_dependencies: DashboardPageDependencies,
         sensing_dependencies: SensingPageDependencies,
 ) -> None:

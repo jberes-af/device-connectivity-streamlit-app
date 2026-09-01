@@ -2,7 +2,7 @@
 
 from typing import Protocol, Sequence
 
-from src.domain.entities.person.resident_entities import (
+from src.domain.entities.resident.resident_entities import (
     ResidentProfile,
     ResidentInCaseOfNeedContact,
 )
@@ -10,7 +10,9 @@ from src.domain.entities.person.resident_entities import (
 
 class ResidentProfileRepositoryPort(Protocol):
 
-    def list_resident_profiles(self) -> tuple[ResidentProfile, ...]:
+    def list_resident_profiles(
+            self,
+    ) -> tuple[ResidentProfile, ...]:
         ...
 
     def get_by_id(
@@ -22,6 +24,12 @@ class ResidentProfileRepositoryPort(Protocol):
     def get_by_ids(
             self,
             resident_ids: Sequence[str],
+    ) -> tuple[ResidentProfile, ...]:
+        ...
+
+    def list_profiles_for_tenant_ids(
+            self,
+            tenant_ids: Sequence[str],
     ) -> tuple[ResidentProfile, ...]:
         ...
 

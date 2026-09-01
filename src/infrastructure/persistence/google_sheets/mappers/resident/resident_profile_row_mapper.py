@@ -6,7 +6,7 @@ from src.infrastructure.persistence.google_sheets.schemas.resident.resident_prof
     ResidentProfileColumns,
 )
 
-from src.domain.entities.person.resident_entities import ResidentProfile
+from src.domain.entities.resident.resident_entities import ResidentProfile
 
 from src.infrastructure.persistence.common.utils_parsing import (
     parse_optional_bool,

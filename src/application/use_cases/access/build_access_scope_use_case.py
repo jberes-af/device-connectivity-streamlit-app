@@ -123,55 +123,71 @@ class BuildAccessScopeUseCase:
             )
         )
 
-        resident_scope = self._resolve_resource_scope(
-            resource_type=AccessResourceTypeEnum.RESIDENT,
-            role_resource_scopes=role_resource_scopes,
+        resident_scope: ResourceScopeEnum = (
+            self._resolve_resource_scope(
+                resource_type=AccessResourceTypeEnum.RESIDENT,
+                role_resource_scopes=role_resource_scopes,
+            )
         )
 
-        sensor_scope = self._resolve_resource_scope(
-            resource_type=AccessResourceTypeEnum.SENSOR,
-            role_resource_scopes=role_resource_scopes,
+        sensor_scope: ResourceScopeEnum = (
+            self._resolve_resource_scope(
+                resource_type=AccessResourceTypeEnum.SENSOR,
+                role_resource_scopes=role_resource_scopes,
+            )
         )
 
-        gateway_scope = self._resolve_resource_scope(
-            resource_type=AccessResourceTypeEnum.GATEWAY,
-            role_resource_scopes=role_resource_scopes,
+        gateway_scope: ResourceScopeEnum = (
+            self._resolve_resource_scope(
+                resource_type=AccessResourceTypeEnum.GATEWAY,
+                role_resource_scopes=role_resource_scopes,
+            )
         )
 
         # --- RESOLVE RESOURCE ASSIGNMENTS
 
-        resource_assignments: tuple[UserResourceAssignment, ...] = (
-            self._fetch_user_resource_service.fetch_resource_assignments_for_user(
+        resource_assignments: tuple[
+            UserResourceAssignment, ...
+        ] = (
+            self._fetch_user_resource_service
+            .fetch_resource_assignments_for_user(
                 user_id=request.user_id,
                 tenant_id=request.tenant_id,
             )
         )
 
-        active_assignments: tuple[UserResourceAssignment, ...] = tuple(
+        active_assignments: tuple[
+            UserResourceAssignment, ...
+        ] = tuple(
             assignment
             for assignment in resource_assignments
             if assignment.is_active
         )
 
-        resident_ids: frozenset[str] = frozenset(
-            assignment.resource_id
-            for assignment in active_assignments
-            if assignment.resource_type
-            == AccessResourceTypeEnum.RESIDENT
+        # --- Resolve IDs WHERE SCOPE == ASSIGNED
+
+        resident_ids: frozenset[str] = (
+            self._resolve_assigned_resource_ids(
+                resource_type=AccessResourceTypeEnum.RESIDENT,
+                scope=resident_scope,
+                assignments=active_assignments,
+            )
         )
 
-        sensor_ids: frozenset[str] = frozenset(
-            assignment.resource_id
-            for assignment in active_assignments
-            if assignment.resource_type
-            == AccessResourceTypeEnum.SENSOR
+        sensor_ids: frozenset[str] = (
+            self._resolve_assigned_resource_ids(
+                resource_type=AccessResourceTypeEnum.SENSOR,
+                scope=sensor_scope,
+                assignments=active_assignments,
+            )
         )
 
-        gateway_ids: frozenset[str] = frozenset(
-            assignment.resource_id
-            for assignment in active_assignments
-            if assignment.resource_type
-            == AccessResourceTypeEnum.GATEWAY
+        gateway_ids: frozenset[str] = (
+            self._resolve_assigned_resource_ids(
+                resource_type=AccessResourceTypeEnum.GATEWAY,
+                scope=gateway_scope,
+                assignments=active_assignments,
+            )
         )
 
         # --- RESOLVE TENANT BOUNDARY
@@ -202,7 +218,6 @@ class BuildAccessScopeUseCase:
             resident_scope=resident_scope,
             sensor_scope=sensor_scope,
             gateway_scope=gateway_scope,
-
             tenant_ids=tenant_ids,
             resident_ids=resident_ids,
             sensor_ids=sensor_ids,

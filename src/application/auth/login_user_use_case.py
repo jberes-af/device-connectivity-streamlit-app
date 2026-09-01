@@ -1,7 +1,7 @@
 # /src/application/auth/login_user_use_case.py
 
 
-from src.domain.entities.person.user_entities import (
+from src.domain.entities.user.user_entities import (
     UserProfile,
 )
 from src.domain.entities.access.membership_entities import UserTenantMembership

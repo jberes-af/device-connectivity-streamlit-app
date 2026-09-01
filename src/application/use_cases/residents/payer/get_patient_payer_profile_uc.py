@@ -4,7 +4,7 @@ from src.application.services.payer.get_patient_payer_service import (
     FetchPatientPayerProfileService,
 )
 
-from src.domain.entities.person.patient_entities import (
+from src.domain.entities.resident.patient_entities import (
     # Patient,
     PatientPayer,
 )

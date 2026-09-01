@@ -4,7 +4,7 @@ from src.application.ports.user_repo_ports import (
     UserProfileRepositoryPort,
 )
 
-from src.domain.entities.person.user_entities import UserProfile
+from src.domain.entities.user.user_entities import UserProfile
 
 # from src.infrastructure.persistence.widgets.types import RawRow
 

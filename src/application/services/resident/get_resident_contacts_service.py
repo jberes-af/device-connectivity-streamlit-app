@@ -2,7 +2,7 @@
 
 from typing import Sequence
 
-from src.domain.entities.person.resident_entities import (
+from src.domain.entities.resident.resident_entities import (
     ResidentInCaseOfNeedContact
 )
 

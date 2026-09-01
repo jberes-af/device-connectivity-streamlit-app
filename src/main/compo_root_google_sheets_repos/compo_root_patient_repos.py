@@ -36,7 +36,7 @@ from src.infrastructure.persistence.mappers.patient.rtm_enrollment_row_mapper im
     RTMEnrollmentRowMapper,
 )
 
-from src.infrastructure.persistence.google_sheets.repos.patient.patient_repository import (
+from scripts.patient_repository import (
     GoogleSheetsPatientRepository,
 )
 
@@ -52,7 +52,7 @@ from src.infrastructure.persistence.google_sheets.repos.patient.patient_payer_re
     GoogleSheetsPatientPayerRepository,
 )
 
-from src.infrastructure.persistence.google_sheets.repos.patient.rtm_enrollment_repository import (
+from scripts.rtm_enrollment_repository import (
     GoogleSheetsRTMEnrollmentRepository,
 )
 

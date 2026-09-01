@@ -6,7 +6,7 @@ from src.application.ports.patient_repo_ports import (
     PatientPayerRepositoryPort,
 )
 
-from src.domain.entities.person.patient_entities import (
+from src.domain.entities.resident.patient_entities import (
     PatientPayer,
 )
 

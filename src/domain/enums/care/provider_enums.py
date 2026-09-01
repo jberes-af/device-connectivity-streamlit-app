@@ -48,3 +48,14 @@ class TimeCategory(StrEnum):
     CARE_TEAM_COORDINATION = "care_team_coordination"
     DOCUMENTATION = "documentation"
     OTHER = "other"
+
+
+class PatientProviderRoleEnum(StrEnum):
+    TREATING_PROVIDER = "treating_provider"
+    ORDERING_PROVIDER = "ordering_provider"
+    SUPERVISING_PROVIDER = "supervising_provider"
+    PRIMARY_CARE_PROVIDER = "primary_care_provider"
+    REFERRING_PROVIDER = "referring_provider"
+    CONSULTING_PROVIDER = "consulting_provider"
+    THERAPIST = "therapist"
+    OTHER = "other"

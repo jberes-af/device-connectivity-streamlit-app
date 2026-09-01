@@ -2,7 +2,7 @@
 
 import logging
 
-from src.domain.entities.person.resident_entities import (
+from src.domain.entities.resident.resident_entities import (
     ResidentProfile,
     ResidentInCaseOfNeedContact,
 )

@@ -6,7 +6,7 @@ from src.infrastructure.persistence.google_sheets.schemas.resident.resident_need
     ResidentNeedCaseContactColumns,
 )
 
-from src.domain.entities.person.resident_entities import ResidentInCaseOfNeedContact
+from src.domain.entities.resident.resident_entities import ResidentInCaseOfNeedContact
 
 from src.infrastructure.persistence.common.utils_parsing import (
     parse_required_text,

@@ -30,19 +30,3 @@ class AccessScope:
 @dataclass(frozen=True, slots=True)
 class BuildAccessScopeResultDTO:
     access_scope: AccessScope
-
-
-"""
-@dataclass(frozen=True)
-class AccessScopeRequestDTO:
-    user_id: str
-    tenant_id: str
-
-
-@dataclass(frozen=True, slots=True)
-class AccessScopeResultDTO:
-    resident_ids: tuple[str, ...]
-    sensor_ids: tuple[str, ...]
-    gateway_ids: tuple[str, ...]
-    tenant_profile: TenantProfile
-"""

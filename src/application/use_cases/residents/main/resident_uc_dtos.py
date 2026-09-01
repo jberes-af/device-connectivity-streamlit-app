@@ -1,10 +1,10 @@
 # /src/application/use_cases/main/resident_uc_dtos.py
 
-from src.domain.enums.access.permission_enums import UserRoleEnum
+from src.domain.enums.access.role_enums import UserRoleEnum
 
 from src.domain.entities.sensing.assignment_entities import ResidentGatewayLink, ResidentSensorLink
 
-from src.domain.entities.person.resident_entities import (
+from src.domain.entities.resident.resident_entities import (
     ResidentProfile,
     ResidentInCaseOfNeedContact,
 )

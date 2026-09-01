@@ -6,7 +6,7 @@ from src.application.ports.resident_repo_ports import (
     ResidentProfileRepositoryPort,
 )
 
-from src.domain.entities.person.resident_entities import (
+from src.domain.entities.resident.resident_entities import (
     ResidentProfile,
 )
 
@@ -86,3 +86,21 @@ class GoogleSheetsResidentProfileRepository(
             self._mapper.to_domain(row)
             for row in raw_rows
         )
+
+    def list_profiles_for_tenant_ids(
+            self,
+            tenant_ids: Sequence[str],
+    ) -> tuple[ResidentProfile, ...]:
+        raw_rows: list[RawRow] = (
+            self._find_rows_for_multiple_values(
+                rows=self._read_rows(),
+                column_name=ResidentProfileColumns.TENANT_ID,
+                values=tenant_ids,
+            )
+        )
+
+        return tuple(
+            self._mapper.to_domain(row)
+            for row in raw_rows
+        )
+

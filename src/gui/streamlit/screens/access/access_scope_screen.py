@@ -5,7 +5,7 @@ import streamlit as st
 from src.application.context import UserContext
 
 from src.application.use_cases.access.access_scope_uc_dtos import (
-    AccessScopeResultDTO,
+    BuildAccessScopeResultDTO,
 )
 
 # from src.main.compose_root_application import AppContainer
@@ -22,7 +22,7 @@ _CSS_EXPANDER_ACCESS = """
 
 def render_account_and_access_page(
         user_context: UserContext,
-        access_scope: AccessScopeResultDTO,
+        access_scope: BuildAccessScopeResultDTO,
 ) -> None:
     st.title("🚧 :material/account_circle: Account & Access")
     # st.write("Organization and treatment monitoring overview.")

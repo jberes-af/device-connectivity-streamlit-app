@@ -6,12 +6,12 @@ from src.domain.enums.access.status_and_method_enums import (
     ConsentStatusEnum,
 
 )
-from src.domain.entities.person.patient_entities import RTMEnrollment
+from src.domain.entities.care.rtm_entities import RtmEnrollment
 
 from src.infrastructure.persistence.common.types import RawRow
 
 from src.infrastructure.persistence.google_sheets.schemas.patient.rtm_enrollment_columns import (
-    RTMEnrollmentColumns)
+    RtmEnrollmentColumns)
 
 from src.infrastructure.persistence.common.utils_parsing import (
     parse_optional_enum,
@@ -22,13 +22,13 @@ from src.infrastructure.persistence.common.utils_parsing import (
 )
 
 
-class RTMEnrollmentRowMapper:
+class RtmEnrollmentRowMapper:
 
     @staticmethod
-    def to_domain(row: RawRow) -> RTMEnrollment:
-        schema = RTMEnrollmentColumns
+    def to_domain(row: RawRow) -> RtmEnrollment:
+        schema = RtmEnrollmentColumns
 
-        return RTMEnrollment(
+        return RtmEnrollment(
             enrollment_id=parse_required_text(
                 row.get(schema.ENROLLMENT_ID),
                 field_name=schema.ENROLLMENT_ID,

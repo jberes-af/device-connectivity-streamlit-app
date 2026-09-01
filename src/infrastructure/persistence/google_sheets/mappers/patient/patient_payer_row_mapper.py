@@ -5,7 +5,7 @@ from src.infrastructure.persistence.common.types import RawRow
 from src.infrastructure.persistence.google_sheets.schemas.patient.patient_payer_columns import (
     PatientPayerColumns)
 
-from src.domain.entities.person.patient_entities import PatientPayer
+from src.domain.entities.resident.patient_entities import PatientPayer
 
 from src.infrastructure.persistence.common.utils_parsing import (
     parse_optional_bool,
