@@ -86,6 +86,28 @@ _CSS_HORIZONTAL: str = """
     overflow-wrap: anywhere;
 }
 
+
+
+/* =========================
+   MOBILE
+   ========================= */
+
+@media (max-width: 640px) {
+    .card-horizontal-properties {
+        grid-template-columns: minmax(0, 1fr);
+        column-gap: 0;
+        row-gap: 12px;
+    }
+}
+
+
+@media (max-width: 400px) {
+    .card-horizontal-row {
+        grid-template-columns: minmax(0, 1fr);
+        row-gap: 2px;
+    }
+}
+
 </style>
 """
 

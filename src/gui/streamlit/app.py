@@ -88,7 +88,7 @@ def configure_page() -> None:
         page_title=_APP_NAME,
         page_icon=_PATH_FILE_FAVICON,
         layout="wide",
-        initial_sidebar_state="expanded",
+        initial_sidebar_state="collapsed",
     )
 
 
