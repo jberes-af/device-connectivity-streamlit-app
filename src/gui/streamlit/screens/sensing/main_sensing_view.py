@@ -34,7 +34,7 @@ def render_sensing_page(
 
     result: BuildSensingAdminViewResultDTO = (
         dependencies
-        .use_case
+        .build_sensing_admin_view_use_case
         .execute(
             request=request
         )

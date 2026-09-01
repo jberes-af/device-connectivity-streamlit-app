@@ -1,4 +1,4 @@
-# /src/application/use_cases/build_sensor_events_use_case.py
+# /src/application/use_cases/sensing/trends/build_sensor_events_use_case.py
 
 from datetime import date, datetime, time, timezone
 from zoneinfo import ZoneInfo

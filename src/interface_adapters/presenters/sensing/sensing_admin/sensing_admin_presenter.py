@@ -28,21 +28,47 @@ class SensingAdministrationPresenter:
             *,
             result: BuildSensingAdminViewResultDTO,
     ) -> SensingAdministrationViewModel:
-        sensor_rows = tuple(
-            self._present_sensor(profile)
-            for profile in result.sensor_profiles
-        )
+        # --- TENANTS
+
+        tenants: tuple[TenantOptionViewModel, ...] = (
+            self._present_tenants(
+                profiles=result.tenant_profiles,
+            ))
+
+        # --- GATEWAYS
 
         gateway_rows = tuple(
             self._present_gateway(profile)
             for profile in result.gateway_profiles
         )
 
-        assigned_sensor_count = sum(
+        # --- SENSORS
+
+        sensor_count = len(result.sensor_profiles)
+
+        sensor_rows = tuple(
+            self._present_sensor(profile)
+            for profile in result.sensor_profiles
+        )
+
+        assigned_sensor_count: int = sum(
             1
             for profile in result.sensor_profiles
             if profile.attached_user_ids
         )
+
+        online_sensor_count: int = sum(
+            1
+            for status in result.sensor_online_statuses
+            if status.connectivity_state == "ONLINE"
+        )
+
+        online_sensor_ratio: str = (
+            f"{online_sensor_count} / {sensor_count}"
+        )
+
+        offline_sensor_percentage: float = 100. * (1 - (online_sensor_count / sensor_count))
+        offline_sensor_pct_str: str = f"{offline_sensor_percentage}"
 
         summary = SensingSummaryViewModel(
             sensor_count=len(result.sensor_profiles),
@@ -52,12 +78,10 @@ class SensingAdministrationPresenter:
                     len(result.sensor_profiles)
                     - assigned_sensor_count
             ),
+            online_sensor_count=online_sensor_count,
+            # online_sensor_ratio=online_sensor_ratio,
+            offline_sensor_percent=offline_sensor_pct_str,
         )
-
-        tenants: tuple[TenantOptionViewModel, ...] = (
-            self._present_tenants(
-                profiles=result.tenant_profiles,
-            ))
 
         return SensingAdministrationViewModel(
             title="Tenant Devices",

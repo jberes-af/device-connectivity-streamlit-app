@@ -6,6 +6,10 @@ from src.application.ports.sensing.realtime_database_port import (
     RealtimeDatabasePort,
 )
 
+from src.application.ports.sensing.sensor_connectivity_status_port import (
+    SensorConnectivityStatusPort
+)
+
 # --- INFRASTRUCTURE CONFIGURATION
 
 from src.infrastructure.config.settings_model import (
@@ -16,6 +20,10 @@ from src.infrastructure.config.app_config_models import (
 )
 
 # --- REPOSITORY BUILDERS
+
+from src.main.infrastructure_containers.compose_root_aws_appsync import (
+    build_aws_appsync_adapter
+)
 
 from src.main.infrastructure_containers.firebase_rtdb import (
     build_realtime_database_adapter,
@@ -87,6 +95,8 @@ from src.main.infrastructure_containers.firebase_repositories import (
 class InfrastructureContainer:
     settings: Settings
 
+    appsync: SensorConnectivityStatusPort
+
     rtdb: RealtimeDatabasePort
     sensing_repositories: FirebaseSensingRepositories
 
@@ -107,7 +117,15 @@ def build_infrastructure_container(
         settings: Settings,
         app_config: AppRuntimeConfig,
 ) -> InfrastructureContainer:
-    # FIREBASE REAL-TIME DATABASE
+    # --- AWS APPSYNC
+
+    appsync_adapter: SensorConnectivityStatusPort = (
+        build_aws_appsync_adapter(
+            settings=settings,
+        )
+    )
+
+    # --- FIREBASE REAL-TIME DATABASE
 
     fb_rtdb: RealtimeDatabasePort = build_realtime_database_adapter(
         settings=settings,
@@ -194,6 +212,8 @@ def build_infrastructure_container(
 
     return InfrastructureContainer(
         settings=settings,
+
+        appsync=appsync_adapter,
 
         rtdb=fb_rtdb,
         sensing_repositories=sensing_repos,

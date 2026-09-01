@@ -8,22 +8,22 @@ from datetime import datetime
 class MostRecentSensorEventDTO:
     sensor_id: str
     activated_at: datetime | None
-    # sensor_state: str | None
 
 
 @dataclass(frozen=True)
 class SensorLastSeenDTO:
     sensor_id: str
-    last_seen_time_utc: datetime | str
-    last_seen_time_cst: datetime | str
-    connectivity_status: str
-    status_timestamp: datetime
+    last_seen_at_utc: datetime | None
+    status_at_utc: datetime | None
+    connectivity_state: str | None
 
 
 @dataclass(frozen=True)
-class SensorConnectivityStatusResultDTO:
-    user_id: str
-    sensor_ids: list[str]
+class GetSensorLiveStatusRequestDTO:
+    sensor_ids: tuple[str, ...]
 
-    sensor_online_statuses: list[SensorLastSeenDTO]
-    most_recent_events: list[MostRecentSensorEventDTO]
+
+@dataclass(frozen=True)
+class GetSensorLiveStatusResultDTO:
+    sensor_online_statuses: tuple[SensorLastSeenDTO, ...]
+    most_recent_events: tuple[MostRecentSensorEventDTO, ...]

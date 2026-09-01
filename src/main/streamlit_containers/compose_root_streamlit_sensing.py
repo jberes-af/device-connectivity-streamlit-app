@@ -14,6 +14,6 @@ def build_sensing_page_dependencies(
         app_container: AppContainer,
 ) -> SensingPageDependencies:
     return SensingPageDependencies(
-        use_case=app_container.build_sensing_admin_view_use_case,
+        build_sensing_admin_view_use_case=app_container.build_sensing_admin_view_use_case,
         presenter=app_container.sensing_admin_page_presenter,
     )

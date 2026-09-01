@@ -28,7 +28,7 @@ def render_main_sensing(
 
     st.subheader(view_model.title)
 
-    # --- TENANT SELECTBOX
+    # --- TENANT SELECT-BOX
 
     tenant_names = tuple(
         tenant.tenant_name
@@ -90,10 +90,10 @@ def _render_summary(
     with col_sensors:
         render_attribute_card(
             id="sensor_count",
-            title="Sensors",
-            attribute_count=str(summary.sensor_count),
+            title="Online / Total Sensors",
+            attribute_count=f"{summary.online_sensor_count} / {summary.sensor_count}",
             attributes=(
-                "Registered sensing devices",
+                f"Registered sensing devices ({summary.offline_sensor_percent:.1f}% offline)",
             ),
             key="devices_overview_sensor_count",
         )

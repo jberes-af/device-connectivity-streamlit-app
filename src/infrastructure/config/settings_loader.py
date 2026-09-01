@@ -3,6 +3,7 @@
 from pathlib import Path
 from typing import Any
 
+from src.infrastructure.config.aws_settings_loader import load_appsync_settings
 from src.infrastructure.config.firebase_settings_loader import (
     load_firebase_admin_settings,
     load_firebase_client_settings,
@@ -26,7 +27,7 @@ from src.infrastructure.config.settings_model import (
     FirebaseAdminSettings,
     FirebaseClientSettings,
     FirebaseWebSettings,
-    Settings,
+    Settings, AppSynSettings,
     # M365Settings,
 )
 
@@ -55,6 +56,9 @@ def load_settings(
         client=firebase_client,
     )
 
+    appsync: AppSynSettings = load_appsync_settings(
+        secret_provider=secret_provider)
+
     # m365_auth: M365Settings = load_microsoft365_settings(secret_provider)
 
     return Settings(
@@ -69,4 +73,6 @@ def load_settings(
         firebase_admin=firebase_admin,
 
         # m365_authentication=m365_auth,
+
+        appsync=appsync,
     )

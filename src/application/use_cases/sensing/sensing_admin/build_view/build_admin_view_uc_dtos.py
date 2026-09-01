@@ -11,6 +11,10 @@ from src.application.use_cases.sensing.sensing_admin.admin_profiles.device_admin
     SensorProfileDTO,
 )
 
+from src.application.use_cases.sensing.live_status.sensor_connectivity_uc_dtos import (
+    SensorLastSeenDTO,
+    MostRecentSensorEventDTO,
+)
 
 @dataclass(frozen=True)
 class BuildSensingAdminViewRequestDTO:
@@ -24,3 +28,6 @@ class BuildSensingAdminViewResultDTO:
     selected_tenant_name: str | None
     sensor_profiles: tuple[SensorProfileDTO, ...]
     gateway_profiles: tuple[GatewayProfileDTO, ...]
+    sensor_online_statuses: tuple[SensorLastSeenDTO, ...]
+    most_recent_events: tuple[MostRecentSensorEventDTO, ...]
+

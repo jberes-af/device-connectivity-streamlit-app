@@ -11,7 +11,8 @@ class SensingSummaryViewModel:
     gateway_count: int
     assigned_sensor_count: int
     unassigned_sensor_count: int
-
+    online_sensor_count: int
+    offline_sensor_percent: str
 
 @dataclass(frozen=True)
 class SensorOverviewRowViewModel:

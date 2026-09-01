@@ -48,7 +48,7 @@ class GetSensorConnectivityStatusUseCase:
         # Get sensor online status ---------------------------------------
 
         sensor_online_statuses: list[SensorLastSeenDTO] = [
-            self._read_last_seen_service.get_last_seen_utc(device_id=sensor_id)
+            self._read_last_seen_service.get_last_seen_utc(sensor_id=sensor_id)
             for sensor_id in sensor_ids
         ]
 

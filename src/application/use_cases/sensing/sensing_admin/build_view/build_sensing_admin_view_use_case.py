@@ -12,6 +12,11 @@ from src.application.use_cases.tenant.tenant_profiles_uc_dtos import (
     GetTenantProfilesResultDTO
 )
 
+from src.application.use_cases.sensing.live_status.sensor_connectivity_uc_dtos import (
+    GetSensorLiveStatusRequestDTO,
+    GetSensorLiveStatusResultDTO
+)
+
 from src.application.use_cases.sensing.sensing_admin.build_view.build_admin_view_uc_dtos import (
     BuildSensingAdminViewRequestDTO,
     BuildSensingAdminViewResultDTO,
@@ -25,6 +30,10 @@ from src.application.use_cases.sensing.sensing_admin.admin_profiles.get_device_a
     GetDeviceAdministrationUseCase
 )
 
+from src.application.use_cases.sensing.live_status.get_sensor_connectivity_status_use_case import (
+    GetSensorLiveStatusUseCase
+)
+
 logger = logging.getLogger(__name__)
 
 _TENANTS_TO_EXCLUDE: list[str] = ["Alerta Family"]
@@ -36,14 +45,19 @@ class BuildSensingAdministrationViewUseCase:
             self,
             get_tenant_profiles_use_case: GetTenantProfilesUseCase,
             get_device_admin_profiles_use_case: GetDeviceAdministrationUseCase,
+            get_sensor_connectivity_status_use_case: GetSensorLiveStatusUseCase,
+
     ) -> None:
         self._get_tenant_profiles_uc = get_tenant_profiles_use_case
         self._get_device_admin_uc = get_device_admin_profiles_use_case
+        self._get_connectivity_status_uc = get_sensor_connectivity_status_use_case
 
     def execute(
             self,
             request: BuildSensingAdminViewRequestDTO,
     ) -> BuildSensingAdminViewResultDTO:
+
+        # --- TENANT PROFILES
 
         exclude_alerta_family: bool = True
 
@@ -93,11 +107,28 @@ class BuildSensingAdministrationViewUseCase:
 
         selected_id = tenant_name_to_id_mapping.get(selected_name)
 
+        # --- SENSING ADMIN PROFILES
+
         detail_result: GetDeviceAdministrationResultDTO = self._get_device_admin_uc.execute(
             GetDevicesAdministrationRequestDTO(
                 tenant_ids=(selected_id,),
             )
         )
+
+        # --- SENSOR CONNECTIVITY STATUSES
+
+        sensor_ids: tuple[str, ...] = tuple([
+            p.sensor_id for p in detail_result.sensor_profiles
+        ])
+
+        connectivity_request = GetSensorLiveStatusRequestDTO(
+            sensor_ids=sensor_ids,
+        )
+
+        live_status_result: GetSensorLiveStatusResultDTO = (
+            self._get_connectivity_status_uc.execute(
+                request=connectivity_request,
+            ))
 
         return BuildSensingAdminViewResultDTO(
             tenant_profiles=available_tenant_profiles,
@@ -105,4 +136,6 @@ class BuildSensingAdministrationViewUseCase:
             selected_tenant_name=selected_name,
             sensor_profiles=detail_result.sensor_profiles,
             gateway_profiles=detail_result.gateway_profiles,
+            sensor_online_statuses=live_status_result.sensor_online_statuses,
+            most_recent_events=live_status_result.most_recent_events,
         )

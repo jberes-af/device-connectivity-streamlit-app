@@ -7,6 +7,12 @@ from typing import Any
 
 
 @dataclass(frozen=True, slots=True)
+class AppSynSettings:
+    api_key: str
+    endpoint: str
+
+
+@dataclass(frozen=True, slots=True)
 class FirebaseClientSettings:
     api_key: str
     auth_domain: str
@@ -49,3 +55,5 @@ class Settings:
     firebase_admin: FirebaseAdminSettings
 
     # m365_authentication: M365Settings
+
+    appsync: AppSynSettings

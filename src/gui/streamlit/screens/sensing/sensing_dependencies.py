@@ -13,5 +13,5 @@ from src.interface_adapters.presenters.sensing.sensing_admin.sensing_admin_prese
 
 @dataclass(frozen=True, slots=True)
 class SensingPageDependencies:
-    use_case: BuildSensingAdministrationViewUseCase
+    build_sensing_admin_view_use_case: BuildSensingAdministrationViewUseCase
     presenter: SensingAdministrationPresenter

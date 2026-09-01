@@ -60,6 +60,10 @@ from src.application.use_cases.residents.sensing.get_resident_sensing_profile_uc
     GetResidentSensingProfileUseCase,
 )
 
+from src.application.use_cases.sensing.live_status.get_sensor_connectivity_status_use_case import (
+    GetSensorLiveStatusUseCase,
+)
+
 from src.application.use_cases.sensing.trends.build_sensor_events_use_case import (
     BuildSensorEventsUseCase,
 )
@@ -129,6 +133,7 @@ class AppContainer:
     # --- DEVICE / SENSING ADMIN
 
     get_device_admin_use_case: GetDeviceAdministrationUseCase
+    get_sensor_connectivity_status_use_case: GetSensorLiveStatusUseCase
     build_sensing_admin_view_use_case: BuildSensingAdministrationViewUseCase
     sensing_admin_page_presenter: SensingAdministrationPresenter
 
@@ -229,6 +234,11 @@ def build_application_container(
         sensor_event_repository=sensing_repos.sensor_event_repository,
     )
 
+    get_connectivity_status = GetSensorLiveStatusUseCase(
+        appsync_connectivity_port=infrastructure.appsync,
+        sensor_event_repository=sensing_repos.sensor_event_repository,
+    )
+
     # --- TENANT RECORDS
 
     get_tenant_profiles = GetTenantProfilesUseCase(
@@ -239,7 +249,7 @@ def build_application_container(
     build_main_sensing_admin_view = BuildSensingAdministrationViewUseCase(
         get_tenant_profiles_use_case=get_tenant_profiles,
         get_device_admin_profiles_use_case=get_device_administration,
-
+        get_sensor_connectivity_status_use_case=get_connectivity_status,
     )
 
     return AppContainer(
@@ -263,6 +273,7 @@ def build_application_container(
         build_sensor_event_timeline_use_case=build_sensor_events,
 
         get_device_admin_use_case=get_device_administration,
+        get_sensor_connectivity_status_use_case=get_connectivity_status,
         build_sensing_admin_view_use_case=build_main_sensing_admin_view,
         sensing_admin_page_presenter=SensingAdministrationPresenter(),
 
