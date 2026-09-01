@@ -61,19 +61,12 @@ class LoginForm:
             st.error(view_model.message)
             return
 
-        if len(result.memberships) != 1:
-            st.error(
-                "Unable to determine a single active tenant membership."
-            )
-            return
-
         membership = result.memberships[0]
 
         st.session_state["session_context"] = SessionContext(
             user_context=UserContext(
                 user_id=result.user_id,
                 tenant_id=membership.tenant_id,
-                role=membership.role,
             )
         )
 

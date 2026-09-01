@@ -106,6 +106,8 @@ class FetchRepositoryService:
         self._tenant_repos = infrastructure.tenant_repository
         self._treatment_repos = infrastructure.treatment_repository
 
+    # --- ACCESS
+
     def fetch_user_tenant_membership_service(self):
         return FetchUserTenantMembershipService(
             user_tenant_membership_repository=(
@@ -137,10 +139,14 @@ class FetchRepositoryService:
                 self._access_repos.user_resource_assignment_repository
             ))
 
+    # --- DEVICE
+
     def fetch_device_admin_service(self):
         return FetchDeviceAdminService(
             device_admin_repository=self._device_repos.device_admin_profile_repository
         )
+
+    # --- DIAGNOSIS
 
     def fetch_diagnosis_definition_service(self):
         return FetchDiagnosisDefinitionService(
@@ -152,6 +158,8 @@ class FetchRepositoryService:
             patient_diagnosis_repository=self._patient_repos.patient_diagnosis_repository,
         )
 
+    # --- PAYER
+
     def fetch_patient_payer_service(self):
         return FetchPatientPayerProfileService(
             patient_payer_repository=self._patient_repos.patient_payer_repository,
@@ -162,10 +170,14 @@ class FetchRepositoryService:
             payer_repository=self._payer_repos.payer_repository,
         )
 
+    # --- PROVIDER
+
     def fetch_provider_profile_service(self):
         return FetchProviderProfileService(
             provider_repository=self._provider_repos.provider_repository,
         )
+
+    # --- RESIDENT
 
     def fetch_resident_contacts_service(self):
         return FetchResidentContactsService(
@@ -177,6 +189,8 @@ class FetchRepositoryService:
             resident_profile_repository=self._resident_repos.resident_profile_repository,
         )
 
+    # --- RTM
+
     def fetch_rtm_enrollment_service(self):
         return FetchRtmEnrollmentService(
             rtm_enrollment_repository=self._rtm_repos.rtm_enrollment_repository,
@@ -187,10 +201,14 @@ class FetchRepositoryService:
             rtm_necessity_repository=self._rtm_repos.rtm_necessity_repository,
         )
 
+    # --- TENANT
+
     def fetch_tenant_admin_service(self):
         return FetchTenantAdminService(
             tenant_repository=self._tenant_repos.tenant_profile_repository,
         )
+
+    # --- TREATMENT
 
     def fetch_therapeutic_goal_service(self):
         return FetchTherapeuticGoalService(

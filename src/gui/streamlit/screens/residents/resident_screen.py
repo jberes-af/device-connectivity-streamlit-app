@@ -5,6 +5,8 @@ from streamlit.elements.lib.column_types import Column
 import logging
 import streamlit as st
 
+from src.application.context import AccessScope
+
 from src.application.use_cases.residents.main.resident_uc_dtos import (
     GetAllResidentRecordsRequestDTO,
     GetAllResidentRecordsResultDTO,
@@ -58,6 +60,7 @@ logger = logging.getLogger(__name__)
 
 def render_residents_page(
         container: AppContainer,
+        access_scope: AccessScope,
 ) -> None:
     presenter: ResidentMainPagePresenter = (
         container.resident_main_page_presenter
@@ -66,6 +69,7 @@ def render_residents_page(
     records_result: GetAllResidentRecordsResultDTO = (
         _load_resident_records(
             container=container,
+            access_scope=access_scope,
         )
     )
 
@@ -121,17 +125,17 @@ def render_residents_page(
 def _load_resident_records(
         *,
         container: AppContainer,
+        access_scope: AccessScope,
 ) -> GetAllResidentRecordsResultDTO:
-    request = GetAllResidentRecordsRequestDTO(
-        user_id=container.user_context.user_id,
-        user_tenant_id=container.user_context.tenant_id,
-        user_role=container.user_context.role,
-    )
+    request = GetAllResidentRecordsRequestDTO()
 
     return (
         container
         .get_resident_records_for_user_use_case
-        .execute(request)
+        .execute(
+            request=request,
+            access_scope=access_scope,
+        )
     )
 
 

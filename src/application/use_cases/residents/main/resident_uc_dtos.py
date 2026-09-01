@@ -46,9 +46,9 @@ class ResidentOverviewDevDTO:
 
 @dataclass(frozen=True)
 class GetAllResidentRecordsRequestDTO:
-    user_id: str
-    user_tenant_id: str
-    user_role: UserRoleEnum
+    user_id: str | None = None
+    user_tenant_id: str | None = None
+    user_role: UserRoleEnum | None = None
 
 
 @dataclass(frozen=True)

@@ -12,7 +12,6 @@ sys.path.insert(0, str(PROJECT_ROOT))
 # --- APPLICATION
 
 from src.application.context import (
-    AccessScope,
     SessionContext,
 )
 
@@ -100,8 +99,6 @@ def initialize_session_state() -> None:
 
 def logout() -> None:
     st.session_state["session_context"] = SessionContext()
-    # st.session_state.pop("access_scope", None)
-    # st.session_state.pop("access_scope_user_id", None)
     st.rerun()
 
 
@@ -125,11 +122,11 @@ def ensure_access_scope(
 
     result: BuildAccessScopeResultDTO = (
         app_container
-        .get_user_access_scope_use_case
+        .build_access_scope_use_case
         .execute(request=request)
     )
 
-    session.access_scope: AccessScope = result.access_scope
+    session.access_scope = result.access_scope
     st.session_state["session_context"] = session
 
     return session

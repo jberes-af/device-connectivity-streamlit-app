@@ -121,7 +121,7 @@ class DeviceAdministrationPresenter:
             ),
 
             hardware_version=self._text(
-                profile.hardware_version0
+                profile.hardware_version
             ),
 
             install_date=self._date(profile.install_date),

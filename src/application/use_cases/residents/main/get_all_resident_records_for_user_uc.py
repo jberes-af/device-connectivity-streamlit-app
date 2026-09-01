@@ -69,10 +69,13 @@ class GetAllResidentRecordsForUserUseCase:
                 access_scope=access_scope,
             ))
 
+        logging.info("profiles: %s", profiles)
+
         resident_ids = tuple(
             profile.resident_id
             for profile in profiles
         )
+        logging.info("resident_ids: %s", resident_ids)
 
         # --- FETCH RELATED CONTACT RECORDS
 
@@ -82,6 +85,8 @@ class GetAllResidentRecordsForUserUseCase:
                 resident_ids=resident_ids,
             )
         )
+
+        logging.info("contacts: %s", contacts)
 
         contacts_by_resident_id = {
             contact.resident_id: contact

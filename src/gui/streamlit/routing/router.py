@@ -51,6 +51,8 @@ def render_router(
         sensing_dependencies: SensingPageDependencies,
 ) -> None:
     routes = build_routes(
+        app_container=container,
+        access_scope=access_scope,
         dashboard_dependencies=dashboard_dependencies,
         sensing_dependencies=sensing_dependencies,
     )

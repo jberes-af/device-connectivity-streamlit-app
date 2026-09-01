@@ -1,4 +1,4 @@
-# /src/infrastructure/persistence/google_sheets/repos/resident_profile_repository.py
+# /src/infrastructure/persistence/google_sheets/repos/resident/resident_profile_repository.py
 
 from typing import Sequence
 

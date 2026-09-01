@@ -1,11 +1,12 @@
 # /src/infrastructure/persistence/google_sheets/repos/resident/resident_contact_information.py
 
+from typing import Sequence
 
 from src.application.ports.resident_repo_ports import (
     ResidentContactInformationRepositoryPort,
 )
 
-from src.domain.entities.person.resident_entities import (
+from src.domain.entities.resident.resident_entities import (
     ResidentInCaseOfNeedContact,
 )
 
@@ -57,10 +58,38 @@ class GoogleSheetsResidentContactInformationRepository(
             self,
             resident_id: str,
     ) -> ResidentInCaseOfNeedContact:
-        raw_row = self._find_single_row(
+        raw_row: RawRow = self._find_single_row(
             rows=self._read_rows(),
             column_name=self.ID_COLUMN,
             value=resident_id,
         )
 
         return self._mapper.to_domain(raw_row)
+
+    from typing import Sequence
+
+    def get_by_ids(
+            self,
+            resident_ids: Sequence[str],
+    ) -> tuple[ResidentInCaseOfNeedContact, ...]:
+        raw_rows: list[RawRow] = (
+            self._find_rows_for_multiple_values(
+                rows=self._read_rows(),
+                column_name=self.ID_COLUMN,
+                values=resident_ids,
+            )
+        )
+
+        print()
+        print("*******************")
+
+        print('raw rows')
+        print(raw_rows)
+
+        print("*******************")
+        print()
+
+        return tuple(
+            self._mapper.to_domain(row)
+            for row in raw_rows
+        )

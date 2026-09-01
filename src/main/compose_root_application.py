@@ -96,7 +96,7 @@ class AppContainer:
 
     user_context: UserContext
 
-    get_user_access_scope_use_case: BuildAccessScopeUseCase
+    build_access_scope_use_case: BuildAccessScopeUseCase
 
     # --- DASHBOARD
 
@@ -139,7 +139,7 @@ def build_application_container(
 
     # --- ACCESS RECORDS
 
-    get_access_scope = BuildAccessScopeUseCase(
+    build_access_scope = BuildAccessScopeUseCase(
         fetch_user_tenant_membership_service=_repo.fetch_user_tenant_membership_service(),
         fetch_user_tenant_role_assignment_service=_repo.fetch_user_tenant_role_assignment_service(),
         fetch_role_permission_service=_repo.fetch_role_permission_service(),
@@ -155,9 +155,8 @@ def build_application_container(
     # --- RESIDENT RECORDS
 
     get_resident_records_for_user = GetAllResidentRecordsForUserUseCase(
-        # user_resident_access_repository=.user_resident_access_repository,  # IS THIS NEEDED?????
-        fetch_resident_profile_repository=_repo.fetch_resident_profile_service(),
-        fetch_resident_contacts_repository=_repo.fetch_resident_contacts_service(),
+        fetch_resident_profile_service=_repo.fetch_resident_profile_service(),
+        fetch_resident_contacts_service=_repo.fetch_resident_contacts_service(),
     )
 
     # --- RESIDENT / PATIENT DIAGNOSES & TREATMENT RECORDS
@@ -212,6 +211,7 @@ def build_application_container(
 
     get_device_administration = GetDeviceAdministrationUseCase(
         fetch_device_admin_service=_repo.fetch_device_admin_service(),
+        fetch_tenant_service=_repo.fetch_tenant_admin_service(),
         gateway_repository=sensing_repos.gateway_repository,
         sensor_repository=sensing_repos.sensor_device_repository,
         user_sensing_repository=sensing_repos.user_sensing_repository,
@@ -220,7 +220,7 @@ def build_application_container(
     return AppContainer(
         user_context=user_context,
 
-        get_user_access_scope_use_case=get_access_scope,
+        build_access_scope_use_case=build_access_scope,
 
         build_main_dashboard_use_case=build_main_dashboard,
         main_dashboard_presenter=main_dashboard_presenter,

@@ -1,4 +1,4 @@
-# /src/infrastructure/persistence/mappers/resident/resident_contact_information_row_mapper.py
+# /src/infrastructure/persistence/google_sheets.mappers/resident/resident_contact_information_row_mapper.py
 
 from src.infrastructure.persistence.common.types import RawRow
 
@@ -6,7 +6,7 @@ from src.infrastructure.persistence.google_sheets.schemas.resident.resident_cont
     ResidentContactInformationColumns,
 )
 
-from src.domain.entities.person.resident_entities import ResidentContactInformation
+from src.domain.entities.resident.resident_entities import ResidentInCaseOfNeedContact   # ResidentContactInformation
 
 from src.infrastructure.persistence.common.utils_parsing import (
     parse_required_text,
@@ -16,10 +16,10 @@ from src.infrastructure.persistence.common.utils_parsing import (
 class ResidentContactInformationRowMapper:
 
     @staticmethod
-    def to_domain(row: RawRow) -> ResidentContactInformation:
+    def to_domain(row: RawRow) -> ResidentInCaseOfNeedContact:
         schema = ResidentContactInformationColumns
 
-        return ResidentContactInformation(
+        return ResidentInCaseOfNeedContact(
             resident_id=parse_required_text(
                 row.get(schema.RESIDENT_ID),
                 field_name=schema.RESIDENT_ID,
@@ -40,11 +40,15 @@ class ResidentContactInformationRowMapper:
                 row.get(schema.PRIMARY_CONTACT_ADDRESS),
                 field_name=schema.PRIMARY_CONTACT_ADDRESS,
             ),
+            contact_relationship=parse_required_text(
+                row.get(schema.PRIMARY_CONTACT_RELATIONSHIP),
+                field_name=schema.PRIMARY_CONTACT_RELATIONSHIP,
+            ),
         )
 
     @staticmethod
     def to_row(
-            resident_contact_information: ResidentContactInformation,
+            resident_contact_information: ResidentInCaseOfNeedContact,
     ) -> RawRow:
         schema = ResidentContactInformationColumns
 
@@ -64,5 +68,9 @@ class ResidentContactInformationRowMapper:
 
             schema.PRIMARY_CONTACT_ADDRESS:
                 resident_contact_information.contact_address,
+
+            schema.PRIMARY_CONTACT_RELATIONSHIP:
+                resident_contact_information.contact_relationship,
+
 
         }
