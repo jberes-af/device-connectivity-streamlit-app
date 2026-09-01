@@ -62,26 +62,24 @@ class BuildSensingAdministrationViewUseCase:
         exclude_alerta_family: bool = True
 
         tenants_result: GetTenantProfilesResultDTO = (
-            self._get_tenant_profiles_uc.execute())
+            self._get_tenant_profiles_uc.execute()
+        )
 
         if exclude_alerta_family:
-            available_tenant_profiles: tuple[TenantProfileDTO, ...] = tuple([
-                p
-                for p in tenants_result.tenant_profiles
-                if p.tenant_name not in _TENANTS_TO_EXCLUDE
-            ])
-        else:
-            available_tenant_profiles: tuple[TenantProfileDTO, ...] = (
-                tenants_result.tenant_profiles)
-
-        if not available_tenant_profiles:
-            return BuildSensingAdminViewResultDTO(
-                tenant_profiles=(),
-                selected_tenant_id=None,
-                selected_tenant_name=None,
-                sensor_profiles=(),
-                gateway_profiles=()
+            available_tenant_profiles = tuple(
+                profile
+                for profile in tenants_result.tenant_profiles
+                if profile.tenant_name not in _TENANTS_TO_EXCLUDE
             )
+        else:
+            available_tenant_profiles = tenants_result.tenant_profiles
+
+        sorted_tenants: tuple[TenantProfileDTO, ...] = tuple(
+            sorted(
+                available_tenant_profiles,
+                key=lambda profile: profile.tenant_name.casefold(),
+            )
+        )
 
         """
         valid_tenant_ids: set[str] = {
@@ -92,17 +90,17 @@ class BuildSensingAdministrationViewUseCase:
 
         valid_tenant_names: set[str] = {
             item.tenant_name
-            for item in available_tenant_profiles
+            for item in sorted_tenants
         }
 
         selected_name = request.selected_tenant_name
 
         if selected_name not in valid_tenant_names:
-            selected_name = available_tenant_profiles[0].tenant_name
+            selected_name = sorted_tenants[0].tenant_name
 
         tenant_name_to_id_mapping = {
             r.tenant_name: r.tenant_id
-            for r in available_tenant_profiles
+            for r in sorted_tenants
         }
 
         selected_id = tenant_name_to_id_mapping.get(selected_name)
@@ -131,7 +129,7 @@ class BuildSensingAdministrationViewUseCase:
             ))
 
         return BuildSensingAdminViewResultDTO(
-            tenant_profiles=available_tenant_profiles,
+            tenant_profiles=sorted_tenants,
             selected_tenant_id=selected_id,
             selected_tenant_name=selected_name,
             sensor_profiles=detail_result.sensor_profiles,

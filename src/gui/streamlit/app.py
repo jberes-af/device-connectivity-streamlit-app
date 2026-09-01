@@ -71,7 +71,7 @@ from src.main.host_inputs import HostInputs, load_host_inputs
 # --- PROGRAM
 
 _APP_NAME = "Alerta Clinical Platform"
-_DEFAULT_ROUTE_ID = "residents"
+_DEFAULT_ROUTE_ID = "sensing"
 
 _PATH_FILE_FAVICON = PROJECT_ROOT / "src/gui/streamlit/static/favicon" / "favicon.ico"
 
