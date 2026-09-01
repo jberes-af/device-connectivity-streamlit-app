@@ -1,6 +1,14 @@
+# /src/gui/streamlit/screens/access_scope_screen.py
+
 import streamlit as st
 
-from src.application.context import AccessScope, UserContext
+from src.application.context import UserContext
+
+from src.application.use_cases.access.access_scope_uc_dtos import (
+    BuildAccessScopeResultDTO,
+)
+
+# from src.main.compose_root_application import AppContainer
 
 
 _CSS_EXPANDER_ACCESS = """
@@ -14,25 +22,36 @@ _CSS_EXPANDER_ACCESS = """
 
 def render_account_and_access_page(
         user_context: UserContext,
-        access_scope: AccessScope,
+        access_scope: BuildAccessScopeResultDTO,
 ) -> None:
-    st.title(":material/account_circle: Account & Access")
+    st.title("🚧 :material/account_circle: Account & Access")
+    # st.write("Organization and treatment monitoring overview.")
 
-    st.caption("User roles")
-    for role in sorted(access_scope.roles, key=lambda item: item.value):
-        st.write(role.value)
+    st.caption("User Role")
+
+    st.write("")
+    st.write("")
+
+    st.write(user_context.role.value)
+
+    st.write("")
+    st.write("")
 
     st.caption("Organization")
-    st.write(f"Active tenant ID: {user_context.tenant_id}")
+    st.write(access_scope.tenant_profile.tenant_name)
+    st.write(f"Tenant ID:       {access_scope.tenant_profile.tenant_id}")
+    st.write(f"Tenant Type:     {access_scope.tenant_profile.tenant_type}")
+    st.write(f"Address:         {access_scope.tenant_profile.tenant_street}")
+    st.write(f"                 {access_scope.tenant_profile.tenant_city} •"
+             f" {access_scope.tenant_profile.tenant_state} • "
+             f"{access_scope.tenant_profile.tenant_postal_code}")
+    st.write(f"Manager:         {access_scope.tenant_profile.tenant_manager}")
 
-    if access_scope.tenant_ids:
-        st.write("Authorized tenant IDs:")
-        for tenant_id in sorted(access_scope.tenant_ids):
-            st.write(tenant_id)
-    else:
-        st.write("Authorized tenant boundary: platform")
+    st.write("")
+    st.write("")
 
     st.caption("Access Scope")
+
     st.markdown(
         _CSS_EXPANDER_ACCESS,
         unsafe_allow_html=True,
@@ -41,6 +60,7 @@ def render_account_and_access_page(
     col1, col2, col3 = st.columns(3)
 
     with col1:
+
         with st.expander(
                 f"Residents ({len(access_scope.resident_ids)})"
         ):
@@ -48,6 +68,7 @@ def render_account_and_access_page(
                 st.write(resident_id)
 
     with col2:
+
         with st.expander(
                 f"Sensors ({len(access_scope.sensor_ids)})",
         ):
@@ -55,6 +76,7 @@ def render_account_and_access_page(
                 st.write(sensor_id)
 
     with col3:
+
         with st.expander(
                 f"Gateways ({len(access_scope.gateway_ids)})",
         ):

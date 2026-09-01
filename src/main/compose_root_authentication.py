@@ -56,7 +56,7 @@ def build_authentication_container(
     )
 
     membership_repository: UserTenantMembershipRepositoryPort = (
-        infrastructure.access_repository.user_tenant_membership_repository
+        infrastructure.user_repository.user_tenant_membership_repository
     )
 
     # --- APPLICATION USE CASE
@@ -78,4 +78,5 @@ def build_authentication_container(
         auth_controller=auth_controller,
         auth_presenter=auth_presenter,
     )
+
 

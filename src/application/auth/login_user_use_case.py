@@ -47,13 +47,15 @@ class LoginUser:
             authenticated_user.uid,
         )
 
+        # --- TENANT MEMBERSHIP
+
         if user is None:
             raise ValueError(
                 "Authenticated user is not registered in the application."
             )
 
         memberships = self._list_active_by_user_id(
-            user_id=authenticated_user.uid,
+            user_id=user.user_id,
         )
 
         if not memberships:
@@ -61,13 +63,8 @@ class LoginUser:
                 "User does not have an active tenant membership."
             )
 
-        if len(memberships) != 1:
-            raise ValueError(
-                "MVP login requires exactly one active tenant membership."
-            )
-
         return LoginResultDTO(
-            user_id=authenticated_user.uid,
+            user_id=user.user_id,
             email=authenticated_user.email,
             display_name=user.user_name,
             memberships=memberships,
@@ -78,7 +75,7 @@ class LoginUser:
             user_id: str,
     ) -> tuple[UserTenantMembership, ...]:
         memberships: tuple[UserTenantMembership, ...] = (
-            self._tenant_membership_repo.list_for_user_id(
+            self._tenant_membership_repo.list_tenant_memberships_by_user_id(
                 user_id=user_id,
             ))
 

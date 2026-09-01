@@ -45,7 +45,7 @@ class FetchRoleResourceScopeService:
     def fetch_resource_scopes_for_roles(
             self,
             *,
-            roles: Sequence[UserRoleEnum],
+            roles: tuple[UserRoleEnum, ...],
     ) -> tuple[RoleResourceScope, ...]:
         return tuple(
             self._scope_repo.list_for_roles(

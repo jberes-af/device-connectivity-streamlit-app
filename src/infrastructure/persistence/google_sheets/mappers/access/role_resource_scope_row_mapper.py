@@ -50,12 +50,12 @@ class RoleResourceScopeRowMapper:
         return {
 
             schema.ROLE:
-                role_resource_scope.role.value,
+                role_resource_scope.role,
 
             schema.RESOURCE_TYPE:
-                role_resource_scope.resource_type.value,
+                role_resource_scope.resource_type,
 
             schema.SCOPE:
-                role_resource_scope.scope.value,
+                role_resource_scope.scope,
 
         }

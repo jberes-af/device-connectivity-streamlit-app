@@ -21,13 +21,6 @@ from src.domain.entities.access.resource_access_entities import (
 
 class UserTenantMembershipRepositoryPort(Protocol):
 
-    def list_for_user_id(
-            self,
-            *,
-            user_id: str,
-    ) -> tuple[UserTenantMembership, ...]:
-        ...
-
     def get_by_user_and_tenant(
             self,
             *,
