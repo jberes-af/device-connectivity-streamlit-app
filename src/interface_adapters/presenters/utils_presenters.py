@@ -1,7 +1,7 @@
 # /src/interface_adapters/presenters/utils_presenters
 
 from datetime import datetime, date
-from enum import Enum
+from zoneinfo import ZoneInfo
 
 
 # --- BOOLEAN
@@ -58,7 +58,6 @@ def format_datetime(
     )
 
 
-
 def format_optional_datetime(
         value: datetime | None,
         *,
@@ -100,6 +99,14 @@ def format_elapsed_time(
 
     total_days = total_hours // 24
     return f"{total_days}d"
+
+
+def format_utc_to_timezone(
+        utc_time: datetime | None,
+        timezone: str | None = None,
+) -> datetime | None:
+    return utc_time.astimezone(ZoneInfo(timezone))
+
 
 # --- ENUM
 
@@ -200,5 +207,3 @@ def format_signed_delta(
         return None
 
     return f"{value:+d}"
-
-

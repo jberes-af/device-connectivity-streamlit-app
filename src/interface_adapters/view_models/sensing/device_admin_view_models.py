@@ -1,9 +1,10 @@
 # /src/interface_adapters/view_models/sensing/device_admin_view_models.py
 
 from dataclasses import dataclass
+from datetime import datetime
 
-from src.domain.enums.tenant.tenant_enums import TenantTypeEnum
 
+# from src.domain.enums.tenant.tenant_enums import TenantTypeEnum
 
 @dataclass(frozen=True)
 class SensingSummaryViewModel:
@@ -12,7 +13,9 @@ class SensingSummaryViewModel:
     assigned_sensor_count: int
     unassigned_sensor_count: int
     online_sensor_count: int
-    offline_sensor_percent: str
+    offline_sensor_count: int
+    offline_sensor_percent: float
+
 
 @dataclass(frozen=True)
 class SensorOverviewRowViewModel:
@@ -36,6 +39,20 @@ class SensorOverviewRowViewModel:
 
     ownership_start_date: str
     ownership_end_date: str
+
+
+@dataclass(frozen=True)
+class OfflineSensorRowViewModel:
+    sensor_id: str
+    sensor_type: str
+    name: str
+    location: str
+    zone: str
+    paired_gateway_id: str
+    last_seen_at_default_timezone: str | None
+    status_at_default_timezone: str | None
+    connectivity_state: str | None
+    last_activated_at_default_timezone: str | None
 
 
 @dataclass(frozen=True)
@@ -83,3 +100,4 @@ class SensingAdministrationViewModel:
     summary: SensingSummaryViewModel
     sensors: tuple[SensorOverviewRowViewModel, ...]
     gateways: tuple[GatewayOverviewRowViewModel, ...]
+    offline_sensors: tuple[OfflineSensorRowViewModel, ...]

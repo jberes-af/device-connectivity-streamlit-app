@@ -10,6 +10,7 @@ from src.interface_adapters.view_models.sensing.device_admin_view_models import 
     SensingAdministrationViewModel,
     GatewayOverviewRowViewModel,
     SensorOverviewRowViewModel,
+    OfflineSensorRowViewModel,
 )
 
 from src.gui.streamlit.components.cards.attribute_card_renderer import (
@@ -56,10 +57,11 @@ def render_main_sensing(
 
     st.subheader("Device Details")
 
-    sensor_tab, gateway_tab = st.tabs(
+    sensor_tab, gateway_tab, offline_tab = st.tabs(
         [
-            f"Sensors ({view_model.summary.sensor_count})",
-            f"Gateways ({view_model.summary.gateway_count})",
+            f"Sensor Profiles ({view_model.summary.sensor_count})",
+            f"Gateway Profiles ({view_model.summary.gateway_count})",
+            f"Offline Sensors ({int(view_model.summary.offline_sensor_count)})",
         ]
     )
 
@@ -71,6 +73,11 @@ def render_main_sensing(
     with gateway_tab:
         _render_gateway_section(
             gateways=view_model.gateways,
+        )
+
+    with offline_tab:
+        _render_offline_sensor_section(
+            sensors=view_model.offline_sensors,
         )
 
 
@@ -312,4 +319,82 @@ def _render_gateway_card(
         title=f"Gateway · {gateway.gateway_id}",
         property_fields=property_fields,
         key=f"gateway_{gateway.gateway_id}",
+    )
+
+
+# -------------------------------------------------------------------------
+# OFFLINE SENSOR SECTION
+# -------------------------------------------------------------------------
+
+
+def _render_offline_sensor_section(
+        *,
+        sensors: tuple[OfflineSensorRowViewModel, ...],
+) -> None:
+    if not sensors:
+        st.success("All sensors are online.")
+        return
+
+    for row_start in range(0, len(sensors), 2):
+        row_sensors = sensors[row_start:row_start + 2]
+        columns = st.columns(2)
+
+        for column, sensor in zip(columns, row_sensors):
+            with column:
+                _render_offline_sensor_card(
+                    sensor=sensor,
+                )
+
+
+def _render_offline_sensor_card(
+        *,
+        sensor: OfflineSensorRowViewModel,
+) -> None:
+    property_fields = (
+        PropertyFieldViewModel(
+            label="Sensor Type",
+            value=sensor.sensor_type,
+        ),
+        PropertyFieldViewModel(
+            label="Name",
+            value=sensor.name,
+        ),
+        PropertyFieldViewModel(
+            label="Location",
+            value=sensor.location,
+        ),
+        PropertyFieldViewModel(
+            label="Zone",
+            value=sensor.zone,
+        ),
+        PropertyFieldViewModel(
+            label="Gateway",
+            value=sensor.paired_gateway_id,
+        ),
+        PropertyFieldViewModel(
+            label="Last Online Signal",
+            value=sensor.last_seen_at_default_timezone,
+        ),
+
+        PropertyFieldViewModel(
+            label="Connection State",
+            value=sensor.connectivity_state,
+        ),
+
+        PropertyFieldViewModel(
+            label="Last Activation",
+            value=sensor.last_activated_at_default_timezone,
+        ),
+
+        PropertyFieldViewModel(
+            label="Status Time",
+            value=sensor.status_at_default_timezone,
+        ),
+
+    )
+
+    render_card_horizontal_properties(
+        title=_sensor_title(sensor),
+        property_fields=property_fields,
+        key=f"offline_sensor_{sensor.sensor_id}",
     )
