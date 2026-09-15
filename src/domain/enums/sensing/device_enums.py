@@ -23,6 +23,8 @@ class SensorPurposeEnum(StrEnum):
     INGRESS_EGRESS = "room_ingress_egress"
     GATEWAY = "gateway"
     OTHER = "other"
+    UNKNOWN = "unknown"
+    NOT_USED = "not_used"
 
 
 class SensorStateDefinitionEnum(StrEnum):
