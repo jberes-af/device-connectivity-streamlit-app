@@ -41,7 +41,7 @@ def render_main_sensing(
         col, _ = st.columns([1, 2])
         with col:
             st.selectbox(
-                "Select Tenant",
+                "Select Customer",
                 options=tenant_names,
                 key="sensing_selected_tenant_name",
             )

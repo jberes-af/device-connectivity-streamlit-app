@@ -138,7 +138,7 @@ class SensingAdministrationPresenter:
         )
 
         return SensingAdministrationViewModel(
-            title="Tenant Devices",
+            title="Customer Devices",
             tenants=tenants,
             selected_tenant_name=result.selected_tenant_name,
             summary=summary,
