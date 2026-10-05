@@ -64,22 +64,6 @@ def load_spreadsheet_ids(
         "SHEETS_ID_ACCESS"
     )
 
-    spreadsheet_name_billing = secret_provider.get_required(
-        "SHEETS_NAME_BILLING"
-    )
-
-    spreadsheet_id_billing = secret_provider.get_required(
-        "SHEETS_ID_BILLING"
-    )
-
-    spreadsheet_name_care_plan = secret_provider.get_required(
-        "SHEETS_NAME_CARE_PLAN"
-    )
-
-    spreadsheet_id_care_plan = secret_provider.get_required(
-        "SHEETS_ID_CARE_PLAN"
-    )
-
     spreadsheet_name_device = secret_provider.get_required(
         "SHEETS_NAME_DEVICE"
     )
@@ -88,68 +72,12 @@ def load_spreadsheet_ids(
         "SHEETS_ID_DEVICE"
     )
 
-    spreadsheet_name_diagnosis = secret_provider.get_required(
-        "SHEETS_NAME_DIAGNOSIS"
-    )
-
-    spreadsheet_id_diagnosis = secret_provider.get_required(
-        "SHEETS_ID_DIAGNOSIS"
-    )
-
-    spreadsheet_name_patient = secret_provider.get_required(
-        "SHEETS_NAME_PATIENT"
-    )
-
-    spreadsheet_id_patient = secret_provider.get_required(
-        "SHEETS_ID_PATIENT"
-    )
-
-    spreadsheet_name_payer = secret_provider.get_required(
-        "SHEETS_NAME_PAYER"
-    )
-
-    spreadsheet_id_payer = secret_provider.get_required(
-        "SHEETS_ID_PAYER"
-    )
-
-    spreadsheet_name_provider = secret_provider.get_required(
-        "SHEETS_NAME_PROVIDER"
-    )
-
-    spreadsheet_id_provider = secret_provider.get_required(
-        "SHEETS_ID_PROVIDER"
-    )
-
-    spreadsheet_name_resident = secret_provider.get_required(
-        "SHEETS_NAME_RESIDENT"
-    )
-
-    spreadsheet_id_resident = secret_provider.get_required(
-        "SHEETS_ID_RESIDENT"
-    )
-
-    spreadsheet_name_rtm = secret_provider.get_required(
-        "SHEETS_NAME_RTM"
-    )
-
-    spreadsheet_id_rtm = secret_provider.get_required(
-        "SHEETS_ID_RTM"
-    )
-
     spreadsheet_name_tenant = secret_provider.get_required(
         "SHEETS_NAME_TENANT"
     )
 
     spreadsheet_id_tenant = secret_provider.get_required(
         "SHEETS_ID_TENANT"
-    )
-
-    spreadsheet_name_treatment = secret_provider.get_required(
-        "SHEETS_NAME_TREATMENT"
-    )
-
-    spreadsheet_id_treatment = secret_provider.get_required(
-        "SHEETS_ID_TREATMENT"
     )
 
     spreadsheet_name_user = secret_provider.get_required(
@@ -162,16 +90,7 @@ def load_spreadsheet_ids(
 
     return {
         spreadsheet_name_access: spreadsheet_id_access,
-        spreadsheet_name_billing: spreadsheet_id_billing,
-        spreadsheet_name_care_plan: spreadsheet_id_care_plan,
         spreadsheet_name_device: spreadsheet_id_device,
-        spreadsheet_name_diagnosis: spreadsheet_id_diagnosis,
-        spreadsheet_name_patient: spreadsheet_id_patient,
-        spreadsheet_name_payer: spreadsheet_id_payer,
-        spreadsheet_name_provider: spreadsheet_id_provider,
-        spreadsheet_name_resident: spreadsheet_id_resident,
-        spreadsheet_name_rtm: spreadsheet_id_rtm,
         spreadsheet_name_tenant: spreadsheet_id_tenant,
-        spreadsheet_name_treatment: spreadsheet_id_treatment,
         spreadsheet_name_user: spreadsheet_id_user,
     }
