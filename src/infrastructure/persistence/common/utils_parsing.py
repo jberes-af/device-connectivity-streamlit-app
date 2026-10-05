@@ -331,6 +331,14 @@ def parse_optional_datetime(
     if not text:
         return None
 
+    # Parse ISO 8601 timestamps, including UTC "Z" and offsets.
+    try:
+        return datetime.fromisoformat(
+            text.replace("Z", "+00:00")
+        )
+    except ValueError:
+        pass
+
     accepted_formats = (
         "%Y-%m-%dT%H:%M:%S",
         "%Y-%m-%dT%H:%M",

@@ -55,6 +55,30 @@ class GoogleSheetsRolePermissionRepository(
             *,
             roles: Sequence[UserRoleEnum],
     ) -> tuple[RolePermission, ...]:
+        role_values = {role.value for role in roles}
+
+        if not role_values:
+            return ()
+
+        rows = self._read_rows()
+
+        matching_rows = (
+            row
+            for row in rows
+            if str(row.get("role", "")).strip() in role_values
+        )
+
+        return tuple(
+            self._mapper.to_domain(row)
+            for row in matching_rows
+        )
+
+    """
+    def list_for_roles(
+            self,
+            *,
+            roles: Sequence[UserRoleEnum],
+    ) -> tuple[RolePermission, ...]:
         role_set = set(roles)
 
         if not role_set:
@@ -65,8 +89,14 @@ class GoogleSheetsRolePermissionRepository(
             for row in self._read_rows()
         )
 
+        print()
+        print("records")
+        print(records)
+        print()
+
         return tuple(
             record
             for record in records
             if record.role in role_set
         )
+    """

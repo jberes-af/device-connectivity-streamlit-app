@@ -20,33 +20,6 @@ from src.main.application_service_containers.fetch_repos_services import (
 from src.application.use_cases.access.build_access_scope_use_case import (
     BuildAccessScopeUseCase,
 )
-from src.application.use_cases.dashboard.build_main_dashboard_use_case import (
-    BuildMainDashboardUseCase
-)
-
-from src.application.use_cases.residents.main.get_all_resident_records_for_user_uc import (
-    GetAllResidentRecordsForUserUseCase,
-)
-
-from src.application.use_cases.residents.payer.get_patient_payer_profile_uc import (
-    GetPatientPayerProfileUseCase,
-)
-
-from src.application.use_cases.residents.payer.get_payer_and_rtm_enrollment_uc import (
-    GetPatientPayerAndRtmEnrollmentUseCase,
-)
-
-from src.application.use_cases.residents.provider.get_patient_provider_profile_uc import (
-    GetPatientProviderProfileUseCase,
-)
-
-from src.application.use_cases.residents.treatment.get_patient_diagnosis_and_treatment_uc import (
-    GetPatientDiagnosesAndTreatmentsUseCase,
-)
-
-from src.application.use_cases.residents.rtm.get_rtm_enrollment_uc import (
-    GetRtmEnrollmentUseCase
-)
 
 from src.application.use_cases.sensing.sensing_admin.admin_profiles.get_device_admin_uc import (
     GetDeviceAdministrationUseCase,
@@ -54,10 +27,6 @@ from src.application.use_cases.sensing.sensing_admin.admin_profiles.get_device_a
 
 from src.application.use_cases.sensing.sensing_admin.build_view.build_sensing_admin_view_use_case import (
     BuildSensingAdministrationViewUseCase
-)
-
-from src.application.use_cases.residents.sensing.get_resident_sensing_profile_uc import (
-    GetResidentSensingProfileUseCase,
 )
 
 from src.application.use_cases.sensing.live_status.get_sensor_connectivity_status_use_case import (
@@ -78,17 +47,6 @@ from src.main.compose_root_infrastructure import InfrastructureContainer
 
 # --- INTERFACE ADAPTERS
 
-from src.interface_adapters.presenters.dashboard.dashboard_main_presenter import (
-    DashboardMainPagePresenter
-)
-
-from src.interface_adapters.presenters.residents.main_page.residents_page_presenter import (
-    ResidentMainPagePresenter,
-)
-
-from src.interface_adapters.presenters.residents.treatment.treatment_section_tabs_presenter import (
-    TreatmentSectionPresenter,
-)
 
 from src.interface_adapters.presenters.sensing.sensing_admin.sensing_admin_presenter import (
     SensingAdministrationPresenter,
@@ -110,24 +68,24 @@ class AppContainer:
 
     # --- DASHBOARD
 
-    build_main_dashboard_use_case: BuildMainDashboardUseCase
-    main_dashboard_presenter: DashboardMainPagePresenter
+    # build_main_dashboard_use_case: BuildMainDashboardUseCase
+    # main_dashboard_presenter: DashboardMainPagePresenter
 
     # --- RESIDENT
 
-    get_resident_records_for_user_use_case: GetAllResidentRecordsForUserUseCase
-    resident_main_page_presenter: ResidentMainPagePresenter
+    # get_resident_records_for_user_use_case: GetAllResidentRecordsForUserUseCase
+    # resident_main_page_presenter: ResidentMainPagePresenter
 
-    get_patient_diagnosis_and_treatment_use_case: GetPatientDiagnosesAndTreatmentsUseCase
-    treatment_section_presenter: TreatmentSectionPresenter
+    # get_patient_diagnosis_and_treatment_use_case: GetPatientDiagnosesAndTreatmentsUseCase
+    # treatment_section_presenter: TreatmentSectionPresenter
 
-    get_payers_and_rtm_enrollment_use_case: GetPatientPayerAndRtmEnrollmentUseCase
+    # get_payers_and_rtm_enrollment_use_case: GetPatientPayerAndRtmEnrollmentUseCase
     # presenter
 
-    get_patient_provider_profile_use_case: GetPatientProviderProfileUseCase
+    # get_patient_provider_profile_use_case: GetPatientProviderProfileUseCase
     # presenter
 
-    get_user_sensing_account_use_case: GetResidentSensingProfileUseCase
+    # get_user_sensing_account_use_case: GetResidentSensingProfileUseCase
     build_sensor_event_timeline_use_case: BuildSensorEventsUseCase
 
     # --- DEVICE / SENSING ADMIN
@@ -150,7 +108,6 @@ def build_application_container(
     _repo = FetchRepositoryService(
         infrastructure=infrastructure,
     )
-    patient_repos = infrastructure.patient_repository
     sensing_repos = infrastructure.sensing_repositories
 
     # --- ACCESS RECORDS
@@ -162,6 +119,7 @@ def build_application_container(
         fetch_user_resource_assignment_service=_repo.fetch_user_resource_assignment_service(),
         fetch_role_resource_scope_service=_repo.fetch_role_resource_scope_service(),
     )
+    """
 
     # MAIN DASHBOARD
 
@@ -210,14 +168,17 @@ def build_application_container(
         fetch_provider_profile_service=_repo.fetch_provider_profile_service(),
         patient_provider_repository=patient_repos.patient_provider_repository,
     )
+    """
 
     # --- RESIDENT SENSING RECORDS??? USER
 
+    """
     get_user_sensing_account = GetResidentSensingProfileUseCase(
         user_sensing_repository=sensing_repos.user_sensing_repository,
         gateway_repository=sensing_repos.gateway_repository,
         sensor_repository=sensing_repos.sensor_device_repository,
     )
+    """
 
     # --- DEVICE ADMIN
 
@@ -257,19 +218,19 @@ def build_application_container(
 
         build_access_scope_use_case=build_access_scope,
 
-        build_main_dashboard_use_case=build_main_dashboard,
-        main_dashboard_presenter=main_dashboard_presenter,
+        # build_main_dashboard_use_case=build_main_dashboard,
+        # main_dashboard_presenter=main_dashboard_presenter,
 
-        get_resident_records_for_user_use_case=get_resident_records_for_user,
-        resident_main_page_presenter=ResidentMainPagePresenter(),
+        # get_resident_records_for_user_use_case=get_resident_records_for_user,
+        # resident_main_page_presenter=ResidentMainPagePresenter(),
 
-        get_patient_diagnosis_and_treatment_use_case=get_diagnosis_and_treatment,
-        treatment_section_presenter=TreatmentSectionPresenter(),
+        # get_patient_diagnosis_and_treatment_use_case=get_diagnosis_and_treatment,
+        # treatment_section_presenter=TreatmentSectionPresenter(),
 
-        get_payers_and_rtm_enrollment_use_case=get_patient_payer_and_rtm_enrollment,
-        get_patient_provider_profile_use_case=get_patient_provider_profile,
+        # get_payers_and_rtm_enrollment_use_case=get_patient_payer_and_rtm_enrollment,
+        # get_patient_provider_profile_use_case=get_patient_provider_profile,
 
-        get_user_sensing_account_use_case=get_user_sensing_account,
+        # get_user_sensing_account_use_case=get_user_sensing_account,
         build_sensor_event_timeline_use_case=build_sensor_events,
 
         get_device_admin_use_case=get_device_administration,

@@ -26,7 +26,7 @@ class LoginForm:
         self.auth_presenter = auth_presenter
 
     def render(self) -> None:
-        st.write("Alerta Clinical Platform")
+        st.write("Alerta Home Device Connectivity Web Application")
         st.title("🔐 Sign in")
 
         email = st.text_input(

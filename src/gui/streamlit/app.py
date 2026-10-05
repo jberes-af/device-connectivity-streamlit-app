@@ -28,10 +28,6 @@ from src.gui.streamlit.session.session_context_adapter import (
 from src.gui.streamlit.auth.login_form import LoginForm
 from src.gui.streamlit.routing.router import render_router
 
-from src.gui.streamlit.screens.dashboard.dashboard_dependencies import (
-    DashboardPageDependencies,
-)
-
 from src.gui.streamlit.screens.sensing.sensing_dependencies import (
     SensingPageDependencies
 )
@@ -58,15 +54,9 @@ from src.main.compose_root_application import (
     build_application_container,
 )
 
-from src.main.streamlit_containers.compose_root_streamlit_dashboard import (
-    build_dashboard_page_dependencies,
-)
-
 from src.main.streamlit_containers.compose_root_streamlit_sensing import (
     build_sensing_page_dependencies
 )
-
-from src.main.host_inputs import HostInputs, load_host_inputs
 
 # --- PROGRAM
 
@@ -136,7 +126,7 @@ def render_authenticated_phase(
         *,
         session: SessionContext,
         app_container: AppContainer,
-        dashboard_dependencies: DashboardPageDependencies,
+        # dashboard_dependencies: DashboardPageDependencies,
         sensing_dependencies: SensingPageDependencies,
 ) -> None:
     if session.access_scope is None:
@@ -145,16 +135,16 @@ def render_authenticated_phase(
         )
 
     render_router(
-        app_name=_APP_NAME,
-        default_route=_DEFAULT_ROUTE_ID,
-        container=app_container,
-        access_scope=session.access_scope,
-        dashboard_dependencies=dashboard_dependencies,
+        # app_name=_APP_NAME,
+        # default_route=_DEFAULT_ROUTE_ID,
+        # container=app_container,
+        # access_scope=session.access_scope,
+        # dashboard_dependencies=dashboard_dependencies,
         sensing_dependencies=sensing_dependencies,
     )
 
-    if st.sidebar.button("Logout"):
-        logout()
+    # if st.sidebar.button("Logout"):
+    # logout()
 
 
 def render_login_phase(authentication: AuthenticationContainer) -> None:
@@ -183,12 +173,13 @@ def run_app() -> None:
 
     infrastructure: InfrastructureContainer = get_infrastructure_container()
 
-    host_inputs: HostInputs = load_host_inputs()
+    bypass_authentication: bool = False
 
     # --- AUTHENTICATION
 
-    if host_inputs.bypass_authentication:
-        session: SessionContext = host_inputs.session_context
+
+    if bypass_authentication:
+        raise RuntimeError()
 
     else:
         session: SessionContext = get_session_context()
@@ -225,11 +216,6 @@ def run_app() -> None:
 
     # --- PAGE COMPOSITION
 
-    dashboard_dependencies: DashboardPageDependencies = (
-        build_dashboard_page_dependencies(
-            app_container=app_container,
-        )
-    )
 
     sensing_dependencies: SensingPageDependencies = (
         build_sensing_page_dependencies(
@@ -242,7 +228,7 @@ def run_app() -> None:
     render_authenticated_phase(
         session=session,
         app_container=app_container,
-        dashboard_dependencies=dashboard_dependencies,
+        # dashboard_dependencies=dashboard_dependencies,
         sensing_dependencies=sensing_dependencies,
     )
 

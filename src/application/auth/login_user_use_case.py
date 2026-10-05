@@ -61,10 +61,12 @@ class LoginUser:
                 "User does not have an active tenant membership."
             )
 
+        """
         if len(memberships) != 1:
             raise ValueError(
                 "MVP login requires exactly one active tenant membership."
             )
+        """
 
         return LoginResultDTO(
             user_id=authenticated_user.uid,

@@ -27,6 +27,7 @@ class SensorPurposeEnum(StrEnum):
     NOT_USED = "not_used"
 
 
+
 class SensorStateDefinitionEnum(StrEnum):
     OFF = "Off"
     ON = "On"

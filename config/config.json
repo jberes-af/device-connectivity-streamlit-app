@@ -4,12 +4,12 @@
       "user_tenant_membership": {
         "file_name": "access_admin",
         "worksheet_name": "user_tenant_membership",
-        "worksheet_range": "A1:D"
+        "worksheet_range": "A1:H"
       },
       "user_tenant_role_assignment": {
         "file_name": "access_admin",
         "worksheet_name": "user_tenant_role_assignment",
-        "worksheet_range": "A1:D"
+        "worksheet_range": "A1:H"
       },
       "role_permission": {
         "file_name": "access_admin",
@@ -19,12 +19,12 @@
       "user_resource_assignment": {
         "file_name": "access_admin",
         "worksheet_name": "user_resource_assignment",
-        "worksheet_range": "A1:H"
+        "worksheet_range": "A1:J"
       },
       "resident_sensor_link": {
         "file_name": "access_admin",
         "worksheet_name": "resident_sensor_link",
-        "worksheet_range": "A1:E"
+        "worksheet_range": "A1:G"
       },
       "role_resource_scope": {
         "file_name": "access_admin",
@@ -34,96 +34,7 @@
       "resident_gateway_link": {
         "file_name": "access_admin",
         "worksheet_name": "resident_gateway_link",
-        "worksheet_range": "A1:E"
-      }
-    },
-    "tables_billing": {
-      "billing_case": {
-        "file_name": "billing_admin",
-        "worksheet_name": "billing_case",
-        "worksheet_range": "A1:Z"
-      },
-      "billing_case_note": {
-        "file_name": "billing_admin",
-        "worksheet_name": "billing_case_note",
-        "worksheet_range": "A1:Z"
-      },
-      "billing_code_evaluation": {
-        "file_name": "billing_admin",
-        "worksheet_name": "billing_code_evaluation",
-        "worksheet_range": "A1:Z"
-      },
-      "billing_code_requirement_result": {
-        "file_name": "billing_admin",
-        "worksheet_name": "billing_code_requirement_result",
-        "worksheet_range": "A1:Z"
-      },
-      "billing_evidence_reference": {
-        "file_name": "billing_admin",
-        "worksheet_name": "billing_evidence_reference",
-        "worksheet_range": "A1:Z"
-      },
-      "billing_requirement_assessment": {
-        "file_name": "billing_admin",
-        "worksheet_name": "billing_requirement_assessment",
-        "worksheet_range": "A1:Z"
-      },
-      "billing_requirement_evidence": {
-        "file_name": "billing_admin",
-        "worksheet_name": "billing_requirement_evidence",
-        "worksheet_range": "A1:Z"
-      },
-      "billing_review": {
-        "file_name": "billing_admin",
-        "worksheet_name": "billing_review",
-        "worksheet_range": "A1:Z"
-      },
-      "claim_export": {
-        "file_name": "billing_admin",
-        "worksheet_name": "claim_export",
-        "worksheet_range": "A1:Z"
-      },
-      "claim_line": {
-        "file_name": "billing_admin",
-        "worksheet_name": "claim_line",
-        "worksheet_range": "A1:Z"
-      },
-      "claim_reparation": {
-        "file_name": "billing_admin",
-        "worksheet_name": "claim_reparation",
-        "worksheet_range": "A1:Z"
-      }
-    },
-    "tables_care_plan": {
-      "care_plan_profile": {
-        "file_name": "care_plan_admin",
-        "worksheet_name": "care_plan",
-        "worksheet_range": "A1:Z"
-      },
-      "functional_status": {
-        "file_name": "care_plan_admin",
-        "worksheet_name": "functional_status",
-        "worksheet_range": "A1:Z"
-      },
-      "care_plan_goal": {
-        "file_name": "care_plan_admin",
-        "worksheet_name": "care_plan_goal",
-        "worksheet_range": "A1:Z"
-      },
-      "care_plan_task": {
-        "file_name": "care_plan_admin",
-        "worksheet_name": "care_plan_task",
-        "worksheet_range": "A1:Z"
-      },
-      "care_plan_risk": {
-        "file_name": "care_plan_admin",
-        "worksheet_name": "care_plan_risk",
-        "worksheet_range": "A1:Z"
-      },
-      "care_plan_instruction": {
-        "file_name": "care_plan_admin",
-        "worksheet_name": "care_plan_instruction",
-        "worksheet_range": "A1:Z"
+        "worksheet_range": "A1:G"
       }
     },
     "tables_device": {
@@ -133,165 +44,11 @@
         "worksheet_range": "A1:M"
       }
     },
-    "tables_diagnosis": {
-      "diagnosis_definition": {
-        "file_name": "diagnosis_admin",
-        "worksheet_name": "diagnosis_profile",
-        "worksheet_range": "A1:C"
-      }
-    },
-    "tables_patient": {
-      "patient_diagnosis": {
-        "file_name": "patient_admin",
-        "worksheet_name": "patient_diagnosis",
-        "worksheet_range": "A1:Z"
-      },
-      "patient_payer": {
-        "file_name": "patient_admin",
-        "worksheet_name": "patient_payer",
-        "worksheet_range": "A1:Z"
-      },
-      "patient_provider": {
-        "file_name": "patient_admin",
-        "worksheet_name": "patient_provider",
-        "worksheet_range": "A1:Z"
-      }
-    },
-    "tables_payer": {
-      "payer": {
-        "file_name": "payer_admin",
-        "worksheet_name": "payer",
-        "worksheet_range": "A1:L"
-      }
-    },
-    "tables_provider": {
-      "provider": {
-        "file_name": "provider_admin",
-        "worksheet_name": "provider",
-        "worksheet_range": "A1:Z"
-      },
-      "provider_communication": {
-        "file_name": "provider_admin",
-        "worksheet_name": "provider_communication",
-        "worksheet_range": "A1:Z"
-      },
-      "provider_review": {
-        "file_name": "provider_admin",
-        "worksheet_name": "provider_review",
-        "worksheet_range": "A1:Z"
-      },
-      "clinical_finding": {
-        "file_name": "provider_admin",
-        "worksheet_name": "clinical_finding",
-        "worksheet_range": "A1:Z"
-      },
-      "reviewed_data_item": {
-        "file_name": "provider_admin",
-        "worksheet_name": "reviewed_data_item",
-        "worksheet_range": "A1:Z"
-      },
-      "review_time_entry": {
-        "file_name": "provider_admin",
-        "worksheet_name": "review_time_entry",
-        "worksheet_range": "A1:Z"
-      }
-    },
-    "tables_resident": {
-      "resident_profile": {
-        "file_name": "resident_admin",
-        "worksheet_name": "resident_profile",
-        "worksheet_range": "A1:N"
-      },
-      "resident_contact_information": {
-        "file_name": "resident_admin",
-        "worksheet_name": "resident_contact_information",
-        "worksheet_range": "A1:F"
-      }
-    },
-    "tables_rtm": {
-      "rtm_enrollment": {
-        "file_name": "rtm_admin",
-        "worksheet_name": "rtm_enrollment",
-        "worksheet_range": "A1:K"
-      },
-      "rtm_necessity": {
-        "file_name": "rtm_admin",
-        "worksheet_name": "rtm_necessity",
-        "worksheet_range": "A1:U"
-      },
-      "rtm_interaction": {
-        "file_name": "rtm_admin",
-        "worksheet_name": "rtm_interaction",
-        "worksheet_range": "A1:I"
-      },
-      "reviewed_data_item": {
-        "file_name": "rtm_admin",
-        "worksheet_name": "reviewed_data_item",
-        "worksheet_range": "A1:D"
-      }
-    },
     "tables_tenant": {
       "tenant_profile": {
         "file_name": "tenant_admin",
         "worksheet_name": "tenant_profile",
         "worksheet_range": "A1:J"
-      }
-    },
-    "tables_treatment": {
-      "therapeutic_goal": {
-        "file_name": "treatment_admin",
-        "worksheet_name": "therapeutic_goal",
-        "worksheet_range": "A1:Z"
-      },
-      "treatment_intervention": {
-        "file_name": "treatment_admin",
-        "worksheet_name": "treatment_intervention",
-        "worksheet_range": "A1:Z"
-      },
-      "treatment_plan": {
-        "file_name": "treatment_admin",
-        "worksheet_name": "treatment_plan",
-        "worksheet_range": "A1:Z"
-      },
-      "treatment_plan_change": {
-        "file_name": "treatment_admin",
-        "worksheet_name": "treatment_plan_change",
-        "worksheet_range": "A1:Z"
-      },
-      "treatment_plan_diagnosis": {
-        "file_name": "treatment_admin",
-        "worksheet_name": "treatment_plan_diagnosis",
-        "worksheet_range": "A1:Z"
-      },
-      "treatment_plan_review": {
-        "file_name": "treatment_admin",
-        "worksheet_name": "treatment_plan_review",
-        "worksheet_range": "A1:Z"
-      },
-      "intervention_schedule": {
-        "file_name": "treatment_admin",
-        "worksheet_name": "intervention_schedule",
-        "worksheet_range": "A1:Z"
-      },
-      "measurement_period": {
-        "file_name": "treatment_admin",
-        "worksheet_name": "measurement_period",
-        "worksheet_range": "A1:Z"
-      },
-      "outcome_measure": {
-        "file_name": "treatment_admin",
-        "worksheet_name": "outcome_measure",
-        "worksheet_range": "A1:Z"
-      },
-      "treatment_monitoring_parameter": {
-        "file_name": "treatment_admin",
-        "worksheet_name": "treatment_monitoring_parameter",
-        "worksheet_range": "A1:Z"
-      },
-      "outcome_measurement": {
-        "file_name": "treatment_admin",
-        "worksheet_name": "outcome_measurement",
-        "worksheet_range": "A1:Z"
       }
     },
     "tables_user": {

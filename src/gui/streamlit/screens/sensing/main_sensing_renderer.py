@@ -25,7 +25,8 @@ from src.gui.streamlit.components.cards.card_property_value_renderer_hor import 
 def render_main_sensing(
         view_model: SensingAdministrationViewModel,
 ) -> None:
-    st.title("🚧 :material/sensors: Sensing")
+    st.title(":material/sensors: Device Connectivity Status")
+    st.caption("Update: October 5, 2026, 6:18 PM UTC")
 
     st.subheader(view_model.title)
 

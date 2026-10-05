@@ -7,8 +7,8 @@ from dataclasses import dataclass
 class UserProfile:
     user_id: str
     user_name: str
-    telephone: str
-    email_address: str
+    user_telephone: str
+    user_email_address: str
     user_image: str
     color_scheme: str
 

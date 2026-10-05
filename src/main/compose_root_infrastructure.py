@@ -38,45 +38,11 @@ from src.main.infrastructure_containers.sheets_repo_device_admin import (
     build_google_sheets_device_admin_repositories,
 )
 
-from src.main.infrastructure_containers.sheets_repo_diagnosis import (
-    GoogleSheetsDiagnosisRepositories,
-    build_google_sheets_diagnosis_repositories,
-)
-
-from src.main.infrastructure_containers.sheets_repo_patient import (
-    GoogleSheetsPatientRepositories,
-    build_google_sheets_patient_repositories,
-)
-
-from src.main.infrastructure_containers.sheets_repo_payer import (
-    GoogleSheetsPayerRepositories,
-    build_google_sheets_payer_repositories,
-)
-
-from src.main.infrastructure_containers.sheets_repo_provider import (
-    GoogleSheetsProviderRepositories,
-    build_google_sheets_provider_repositories,
-)
-
-from src.main.infrastructure_containers.sheets_repo_resident import (
-    GoogleSheetsResidentRepositories,
-    build_google_sheets_resident_repositories,
-)
-
-from src.main.infrastructure_containers.sheets_repo_rtm import (
-    GoogleSheetsRtmRepositories,
-    build_google_sheets_rtm_repositories,
-)
 
 from src.main.infrastructure_containers.sheets_repo_tenant import (
     GoogleSheetsTenantRepositories,
     build_google_sheets_tenant_repositories,
 )
-from src.main.infrastructure_containers.sheets_repo_treatment import (
-    GoogleSheetsTreatmentRepositories,
-    build_google_sheets_treatment_repositories,
-)
-
 from src.main.infrastructure_containers.sheets_repo_user import (
     GoogleSheetsUserRepositories,
     build_google_sheets_user_repositories,
@@ -102,14 +68,7 @@ class InfrastructureContainer:
 
     access_repository: GoogleSheetsAccessRepositories
     device_admin_repository: GoogleSheetsDeviceAdminRepositories
-    diagnosis_repository: GoogleSheetsDiagnosisRepositories
-    patient_repository: GoogleSheetsPatientRepositories
-    payer_repository: GoogleSheetsPayerRepositories
-    provider_repository: GoogleSheetsProviderRepositories
-    resident_repository: GoogleSheetsResidentRepositories
-    rtm_repository: GoogleSheetsRtmRepositories
     tenant_repository: GoogleSheetsTenantRepositories
-    treatment_repository: GoogleSheetsTreatmentRepositories
     user_repository: GoogleSheetsUserRepositories
 
 
@@ -150,53 +109,12 @@ def build_infrastructure_container(
         )
     )
 
-    diagnosis_repos: GoogleSheetsDiagnosisRepositories = (
-        build_google_sheets_diagnosis_repositories(
-            settings=settings,
-            app_config=app_config,
-        ))
-
-    payer_repos: GoogleSheetsPayerRepositories = (
-        build_google_sheets_payer_repositories(
-            settings=settings,
-            app_config=app_config,
-        ))
-
-    provider_repos: GoogleSheetsProviderRepositories = (
-        build_google_sheets_provider_repositories(
-            settings=settings,
-            app_config=app_config,
-        ))
-
-    patient_repos: GoogleSheetsPatientRepositories = (
-        build_google_sheets_patient_repositories(
-            settings=settings,
-            app_config=app_config,
-        ))
-
-    resident_repos: GoogleSheetsResidentRepositories = (
-        build_google_sheets_resident_repositories(
-            settings=settings,
-            app_config=app_config,
-        ))
-
-    rtm_repos: GoogleSheetsRtmRepositories = (
-        build_google_sheets_rtm_repositories(
-            settings=settings,
-            app_config=app_config,
-        ))
-
     tenant_repos: GoogleSheetsTenantRepositories = (
         build_google_sheets_tenant_repositories(
             settings=settings,
             app_config=app_config,
         ))
 
-    treatment_repos: GoogleSheetsTreatmentRepositories = (
-        build_google_sheets_treatment_repositories(
-            settings=settings,
-            app_config=app_config,
-        ))
 
     user_repos: GoogleSheetsUserRepositories = (
         build_google_sheets_user_repositories(
@@ -204,9 +122,6 @@ def build_infrastructure_container(
             app_config=app_config,
         ))
 
-    # billing repos TBD
-    # treatment plan
-    # treatment
 
     # --- ASSIGN PRESENTERS
 
@@ -220,13 +135,6 @@ def build_infrastructure_container(
 
         access_repository=access_repos,
         device_admin_repository=device_admin_repos,
-        diagnosis_repository=diagnosis_repos,
-        patient_repository=patient_repos,
-        payer_repository=payer_repos,
-        provider_repository=provider_repos,
-        resident_repository=resident_repos,
-        rtm_repository=rtm_repos,
         tenant_repository=tenant_repos,
-        treatment_repository=treatment_repos,
         user_repository=user_repos,
     )

@@ -5,33 +5,6 @@ from src.gui.streamlit.routing.route_types import Route
 from src.application.context import AccessScope
 from src.main.compose_root_application import AppContainer
 
-from src.gui.streamlit.screens.admin.administration_screen import (
-    render_administration_page,
-)
-
-from src.gui.streamlit.screens.billing.billing_screen import (
-    render_billing_page
-)
-
-from src.gui.streamlit.screens.dashboard.main_dashboard_view import (
-    render_dashboard_page
-)
-
-from src.gui.streamlit.screens.dashboard.dashboard_dependencies import (
-    DashboardPageDependencies,
-)
-
-from src.gui.streamlit.screens.residents.resident_screen import (
-    render_residents_page
-)
-
-from src.gui.streamlit.screens.reports.reports_screen import (
-    render_reports_page
-)
-
-from src.gui.streamlit.screens.schedule.schedule_screen import (
-    render_schedule_page
-)
 
 from src.gui.streamlit.screens.sensing.sensing_dependencies import (
     SensingPageDependencies
@@ -43,20 +16,19 @@ from src.gui.streamlit.screens.sensing.main_sensing_view import (
 
 
 def build_routes(
-        app_container: AppContainer,
-        access_scope: AccessScope,
-        dashboard_dependencies: DashboardPageDependencies,
         sensing_dependencies: SensingPageDependencies,
 ) -> tuple[Route, ...]:
+    def render_sensing() -> None:
+        render_sensing_page(
+            dependencies=sensing_dependencies,
+        )
+
+    """
     def render_dashboard() -> None:
         render_dashboard_page(
             dependencies=dashboard_dependencies,
         )
 
-    def render_sensing() -> None:
-        render_sensing_page(
-            dependencies=sensing_dependencies,
-        )
 
     def render_residents() -> None:
         render_residents_page(
@@ -107,5 +79,16 @@ def build_routes(
             label="Administration",
             legacy_handler=render_administration_page,
             icon=":material/note_alt:",
+        ),
+    )
+    """
+
+    return (
+        Route(
+            route_id="sensing",
+            label="Sensing",
+            # legacy_handler=render_sensing_page,
+            handler=render_sensing,
+            icon=":material/sensors:",
         ),
     )

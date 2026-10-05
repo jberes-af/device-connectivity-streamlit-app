@@ -12,9 +12,6 @@ from pathlib import Path
 
 # --- APPLICATION USE CASES
 
-from src.application.use_cases.get_patient_records.get_patient_overview_uc import (
-    GetPatientOverviewUseCase,
-)
 
 # --- INFRASTRUCTURE CONFIGURATION
 
@@ -48,9 +45,6 @@ from src.main.compo_root_google_sheets_repos.compo_root_patient_repos import (
 
 # --- INTERFACE ADAPTERS
 
-from src.interface_adapters.presenters.patient.patient_overview_presenter import (
-    PatientOverviewPresenter,
-)
 
 # --- SERVICE ADAPTERS
 

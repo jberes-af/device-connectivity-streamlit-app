@@ -15,17 +15,8 @@ from src.infrastructure.config.app_config_models import (
 class AppConfigLoader:
     GOOGLE_SHEETS_TABLE_GROUPS = (
         "tables_access",
-        "tables_billing",
-        "tables_care_plan",
-        "tables_diagnosis",
         "tables_device",
-        "tables_patient",
-        "tables_payer",
-        "tables_provider",
-        "tables_resident",
-        "tables_rtm",
         "tables_tenant",
-        "tables_treatment",
         "tables_user",
     )
 
